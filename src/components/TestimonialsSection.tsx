@@ -34,40 +34,50 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-20 bg-cream-beige">
+    <section className="py-20 bg-gradient-to-br from-muted via-background to-muted">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">What People Say</h2>
-          <p className="text-lg text-muted-foreground">
-            Hear from our satisfied parents, students, and alumni
+        <div className="text-center mb-16">
+          <Quote className="w-12 h-12 mx-auto mb-4 text-accent" />
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">What Our People Say</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Hear from our satisfied parents, students, and alumni about their experiences at Salem Group of Schools
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {testimonials.map((testimonial) => (
-            <Card key={testimonial.id} className="relative">
-              <CardContent className="pt-12 pb-6">
-                <Quote className="w-12 h-12 text-accent/30 absolute top-4 left-4" />
-                <p className="text-muted-foreground mb-6 relative z-10">
+            <Card 
+              key={testimonial.id} 
+              className="relative hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-t-accent"
+            >
+              <CardContent className="pt-12 pb-6 px-6">
+                <Quote className="w-10 h-10 text-accent/20 absolute top-6 left-6" />
+                <p className="text-muted-foreground mb-8 relative z-10 text-base leading-relaxed italic">
                   "{testimonial.message}"
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 mt-6 pt-6 border-t">
                   {testimonial.image_url && (
                     <img
                       src={testimonial.image_url}
                       alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
+                      className="w-14 h-14 rounded-full object-cover ring-2 ring-accent/20"
                     />
                   )}
                   <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    <div className="font-bold text-lg">{testimonial.name}</div>
+                    <div className="text-sm text-accent font-medium">{testimonial.role}</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {testimonials.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No testimonials available at the moment.</p>
+          </div>
+        )}
       </div>
     </section>
   );

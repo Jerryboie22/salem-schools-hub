@@ -1,0 +1,143 @@
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Shield, Database, Settings, FileEdit } from "lucide-react";
+
+const AdminPortal = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Authentication will be implemented
+    console.log("Admin login", email);
+  };
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <div className="gradient-hero py-20 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <Shield className="w-16 h-16 mx-auto mb-6" />
+          <h1 className="text-5xl font-bold mb-4">Admin Portal</h1>
+          <p className="text-xl opacity-90">Manage school operations and content</p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Login Form */}
+            <Card className="border-t-4 border-t-primary">
+              <CardHeader>
+                <CardTitle className="text-2xl">Admin Login</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Admin Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your admin email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">Access Admin Portal</Button>
+                  <p className="text-sm text-center text-muted-foreground">
+                    Authorized personnel only
+                  </p>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* Portal Features */}
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold mb-6">Admin Features</h2>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <FileEdit className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-1">Content Management</h3>
+                    <p className="text-sm text-muted-foreground">Manage website content, news, and gallery</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Database className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-1">Student Records</h3>
+                    <p className="text-sm text-muted-foreground">Access and manage student database</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Settings className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-1">System Settings</h3>
+                    <p className="text-sm text-muted-foreground">Configure school settings and preferences</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-1">User Management</h3>
+                    <p className="text-sm text-muted-foreground">Manage user accounts and permissions</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Security Notice */}
+          <Card className="mt-8 bg-muted border-l-4 border-l-primary">
+            <CardContent className="p-6">
+              <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-primary" />
+                Security Notice
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                This portal is restricted to authorized administrators only. All activities are logged and monitored for security purposes. Unauthorized access attempts will be reported.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default AdminPortal;

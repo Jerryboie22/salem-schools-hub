@@ -116,6 +116,42 @@ export type Database = {
         }
         Relationships: []
       }
+      leadership_team: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          order_index: number | null
+          position: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          order_index?: number | null
+          position: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          order_index?: number | null
+          position?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           created_at: string

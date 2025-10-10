@@ -1,64 +1,117 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
+    <nav className="bg-primary text-primary-foreground sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="text-2xl font-bold">Salem Group of Schools</div>
+            <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center font-bold text-xl">
+              SGS
+            </div>
+            <div className="hidden md:block">
+              <div className="font-bold text-xl">Salem Group of Schools</div>
+              <div className="text-xs opacity-90">Excellence in Education</div>
+            </div>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="hover:text-accent transition-colors">Home</Link>
-            <Link to="/about" className="hover:text-accent transition-colors">About</Link>
-            <div className="relative group">
-              <button className="hover:text-accent transition-colors">Our Schools</button>
-              <div className="absolute hidden group-hover:block pt-2 w-64">
-                <div className="bg-card text-card-foreground shadow-lg rounded-lg p-4 space-y-2">
-                  <Link to="/children-school" className="block hover:text-accent transition-colors py-2">Salem Children School</Link>
-                  <Link to="/primary-school" className="block hover:text-accent transition-colors py-2">Salem Nursery & Primary</Link>
-                  <Link to="/covenant-college" className="block hover:text-accent transition-colors py-2">Salem Covenant College</Link>
-                </div>
-              </div>
-            </div>
-            <Link to="/gallery" className="hover:text-accent transition-colors">Gallery</Link>
-            <Link to="/news" className="hover:text-accent transition-colors">News</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">Contact</Link>
-            <Button variant="secondary" asChild>
-              <Link to="/contact">Apply Now</Link>
-            </Button>
+          <div className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="hover:text-accent transition-colors font-medium">Home</Link>
+            
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-transparent hover:bg-primary/80 text-primary-foreground hover:text-accent">
+                    About Us
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 bg-background">
+                      <li><NavigationMenuLink asChild><Link to="/about" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Overview</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/leadership" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Leadership Team</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/vision-mission" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Vision & Mission</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/library" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Library</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/gallery" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Media & Gallery</div></Link></NavigationMenuLink></li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-transparent hover:bg-primary/80 text-primary-foreground hover:text-accent">Our Schools</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[350px] gap-2 p-4 bg-background">
+                      <li><NavigationMenuLink asChild><Link to="/children-school" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Children School</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/primary-school" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Primary School</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/covenant-college" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Covenant College</div></Link></NavigationMenuLink></li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <Link to="/news" className="hover:text-accent transition-colors font-medium">News</Link>
+            <Link to="/contact" className="hover:text-accent transition-colors font-medium">Contact</Link>
+            
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-accent text-accent-foreground hover:bg-accent/90">Portal Login</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[250px] gap-2 p-4 bg-background">
+                      <li><NavigationMenuLink asChild><Link to="/portal/student" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Student Portal</Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/portal/teacher" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Teacher Portal</Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/portal/parent" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Parent Portal</Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/portal/admin" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Admin Portal</Link></NavigationMenuLink></li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden pb-4 space-y-4">
-            <Link to="/" className="block hover:text-accent transition-colors py-2">Home</Link>
-            <Link to="/about" className="block hover:text-accent transition-colors py-2">About</Link>
-            <Link to="/children-school" className="block hover:text-accent transition-colors py-2 pl-4">Salem Children School</Link>
-            <Link to="/primary-school" className="block hover:text-accent transition-colors py-2 pl-4">Salem Nursery & Primary</Link>
-            <Link to="/covenant-college" className="block hover:text-accent transition-colors py-2 pl-4">Salem Covenant College</Link>
-            <Link to="/gallery" className="block hover:text-accent transition-colors py-2">Gallery</Link>
-            <Link to="/news" className="block hover:text-accent transition-colors py-2">News</Link>
-            <Link to="/contact" className="block hover:text-accent transition-colors py-2">Contact</Link>
-            <Button variant="secondary" className="w-full" asChild>
-              <Link to="/contact">Apply Now</Link>
-            </Button>
+          <div className="md:hidden pb-4 space-y-2">
+            <Link to="/" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Home</Link>
+            <div className="py-2"><div className="font-semibold mb-2">About Us</div><div className="pl-4 space-y-2">
+              <Link to="/about" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Overview</Link>
+              <Link to="/leadership" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Leadership</Link>
+              <Link to="/vision-mission" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Vision & Mission</Link>
+              <Link to="/library" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Library</Link>
+              <Link to="/gallery" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Gallery</Link>
+            </div></div>
+            <div className="py-2"><div className="font-semibold mb-2">Our Schools</div><div className="pl-4 space-y-2">
+              <Link to="/children-school" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Children School</Link>
+              <Link to="/primary-school" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Primary School</Link>
+              <Link to="/covenant-college" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Covenant College</Link>
+            </div></div>
+            <Link to="/news" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>News</Link>
+            <Link to="/contact" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Contact</Link>
+            <div className="py-2"><div className="font-semibold mb-2">Portals</div><div className="pl-4 space-y-2">
+              <Link to="/portal/student" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Student</Link>
+              <Link to="/portal/teacher" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Teacher</Link>
+              <Link to="/portal/parent" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Parent</Link>
+              <Link to="/portal/admin" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Admin</Link>
+            </div></div>
           </div>
         )}
       </div>
