@@ -13,7 +13,18 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
       colors: {
+        'navy-blue': 'hsl(var(--navy-blue))',
+        'light-yellow': 'hsl(var(--light-yellow))',
+        'sky-blue': 'hsl(var(--sky-blue))',
+        'soft-green': 'hsl(var(--soft-green))',
+        'cream-beige': 'hsl(var(--cream-beige))',
+        'charcoal-gray': 'hsl(var(--charcoal-gray))',
+        'cool-gray': 'hsl(var(--cool-gray))',
+        'golden-amber': 'hsl(var(--golden-amber))',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -46,16 +57,6 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
