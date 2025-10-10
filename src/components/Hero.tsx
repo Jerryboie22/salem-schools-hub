@@ -1,15 +1,20 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/children-school-pink.jpg";
+import heroImage from "@/assets/school-courtyard-hero.jpg";
+import logo from "@/assets/salem-logo.png";
 
 const Hero = () => {
   return (
-    <section className="relative h-[600px] flex items-center">
+    <section className="relative h-[600px] md:h-[700px] flex items-center">
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-primary/40"></div>
+      </div>
+      
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 md:top-12">
+        <img src={logo} alt="Salem Group of Schools Logo" className="h-20 md:h-24 w-auto drop-shadow-2xl" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">

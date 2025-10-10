@@ -18,9 +18,9 @@ const Index = () => {
       <Hero />
       
       {/* About Section */}
-      <section className="py-20 bg-background">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div className="order-2 md:order-1">
               <img 
                 src={aboutImg} 
@@ -36,7 +36,7 @@ const Index = () => {
               <p className="text-lg text-muted-foreground mb-6">
                 Our three schools provide continuous quality education from early childhood through secondary level, ensuring your child receives the best foundation for future success.
               </p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center gap-3">
                   <BookOpen className="w-8 h-8 text-accent" />
                   <span className="font-semibold">Excellence in Education</span>
@@ -67,9 +67,9 @@ const Index = () => {
       <GallerySlider />
 
       {/* Facilities Section */}
-      <section className="py-20 bg-cool-gray">
+      <section className="py-16 bg-muted">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">Our World-Class Facilities</h2>
               <p className="text-lg text-muted-foreground mb-6">
@@ -121,35 +121,35 @@ const Index = () => {
       <TestimonialsSection />
 
       {/* Contact & Map Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
+      <section className="py-16 bg-gradient-to-br from-[hsl(var(--gold-light))] via-[hsl(var(--cream))] to-[hsl(var(--gold-light))]">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary">Get In Touch</h2>
+              <p className="text-lg text-primary/80 max-w-2xl mx-auto">
                 We'd love to hear from you. Visit us or send us a message
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div>
-                <div className="space-y-6 mb-8">
-                  <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-[hsl(var(--gold))]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-[hsl(var(--gold-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
                     <div>
                       <h4 className="font-bold text-lg mb-1">Address</h4>
-                      <p className="text-muted-foreground">
+                      <p className="text-primary/70">
                         No. 17 Bolanle Awosika Street, Off Ilogbo Road, Ojuore, Ota, Ogun State
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -157,23 +157,23 @@ const Index = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-lg mb-1">Email</h4>
-                      <p className="text-muted-foreground">info@salemschools.edu.ng</p>
+                      <p className="text-primary/70">info@salemschools.edu.ng</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-[hsl(var(--gold))]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-[hsl(var(--gold-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     </div>
                     <div>
                       <h4 className="font-bold text-lg mb-1">Phone</h4>
-                      <p className="text-muted-foreground">+234 XXX XXX XXXX</p>
+                      <p className="text-primary/70">+234 XXX XXX XXXX</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -181,17 +181,17 @@ const Index = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-lg mb-1">Working Hours</h4>
-                      <p className="text-muted-foreground">Monday - Friday: 8:00 AM - 4:00 PM</p>
+                      <p className="text-primary/70">Monday - Friday: 8:00 AM - 4:00 PM</p>
                     </div>
                   </div>
                 </div>
 
-                <Button size="lg" className="w-full md:w-auto" asChild>
+                <Button size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90" asChild>
                   <Link to="/contact">Send Us a Message</Link>
                 </Button>
               </div>
 
-              <div className="h-[500px] rounded-xl overflow-hidden shadow-2xl ring-1 ring-black/5">
+              <div className="h-[500px] rounded-xl overflow-hidden shadow-2xl ring-1 ring-[hsl(var(--gold-dark))]/20">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.2868842!2d3.1897!3d6.6155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzYnNTUuOCJOIDPCsDExJzIyLjkiRQ!5e0!3m2!1sen!2sng!4v1234567890"
                   width="100%"

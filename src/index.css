@@ -18,6 +18,12 @@ All colors MUST be HSL.
     --cool-gray: 210 17% 97%;
     --golden-amber: 45 91% 61%;
     
+    /* Complementary cream/gold colors */
+    --cream: 40 80% 95%;
+    --gold-light: 45 90% 88%;
+    --gold: 48 96% 53%;
+    --gold-dark: 42 88% 45%;
+    
     --background: 0 0% 100%;
     --foreground: 0 0% 17%;
 
@@ -46,7 +52,7 @@ All colors MUST be HSL.
     --input: 210 17% 90%;
     --ring: 210 100% 16.5%;
 
-    --radius: 0.75rem;
+    --radius: 0.75rem%;
     
     /* Custom gradients */
     --gradient-hero: linear-gradient(135deg, hsl(210 100% 16.5%) 0%, hsl(207 65% 59%) 100%);
