@@ -11,6 +11,11 @@ import LeadershipManager from "./components/LeadershipManager";
 import TestimonialsManager from "./components/TestimonialsManager";
 import ContactMessagesManager from "./components/ContactMessagesManager";
 import { UserManagementManager } from "./components/UserManagementManager";
+import ClassesManager from "./components/ClassesManager";
+import AssignmentsManager from "./components/AssignmentsManager";
+import GradesManager from "./components/GradesManager";
+import ClassNotesManager from "./components/ClassNotesManager";
+import StudentClassesManager from "./components/StudentClassesManager";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -82,15 +87,40 @@ const AdminDashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="blog" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-8">
-            <TabsTrigger value="blog">Blog Posts</TabsTrigger>
+        <Tabs defaultValue="classes" className="w-full">
+          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-11 mb-8 h-auto flex-wrap">
+            <TabsTrigger value="classes">Classes</TabsTrigger>
+            <TabsTrigger value="assignments">Assignments</TabsTrigger>
+            <TabsTrigger value="grades">Grades</TabsTrigger>
+            <TabsTrigger value="classnotes">Class Notes</TabsTrigger>
+            <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
             <TabsTrigger value="leadership">Leadership</TabsTrigger>
             <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="classes">
+            <ClassesManager />
+          </TabsContent>
+
+          <TabsContent value="assignments">
+            <AssignmentsManager />
+          </TabsContent>
+
+          <TabsContent value="grades">
+            <GradesManager />
+          </TabsContent>
+
+          <TabsContent value="classnotes">
+            <ClassNotesManager />
+          </TabsContent>
+
+          <TabsContent value="studentclasses">
+            <StudentClassesManager />
+          </TabsContent>
 
           <TabsContent value="blog">
             <BlogPostsManager />
