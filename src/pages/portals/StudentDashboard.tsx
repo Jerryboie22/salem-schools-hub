@@ -118,17 +118,17 @@ const StudentDashboard = () => {
       return;
     }
 
+    // Check if user has student or admin role
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", session.user.id)
-      .eq("role", "student")
-      .maybeSingle();
+      .in("role", ["student", "admin"]);
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       toast({
         title: "Access Denied",
-        description: "You don't have student access.",
+        description: "You don't have student or admin access.",
         variant: "destructive",
       });
       navigate("/portal/student");

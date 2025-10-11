@@ -93,17 +93,17 @@ const ParentDashboard = () => {
       return;
     }
 
+    // Check if user has parent or admin role
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", session.user.id)
-      .eq("role", "parent")
-      .maybeSingle();
+      .in("role", ["parent", "admin"]);
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       toast({
         title: "Access Denied",
-        description: "You don't have parent access.",
+        description: "You don't have parent or admin access.",
         variant: "destructive",
       });
       navigate("/portal/parent");

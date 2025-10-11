@@ -108,17 +108,17 @@ const TeacherDashboard = () => {
       return;
     }
 
+    // Check if user has teacher or admin role
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", session.user.id)
-      .eq("role", "teacher")
-      .maybeSingle();
+      .in("role", ["teacher", "admin"]);
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       toast({
         title: "Access Denied",
-        description: "You don't have teacher access.",
+        description: "You don't have teacher or admin access.",
         variant: "destructive",
       });
       navigate("/portal/teacher");
