@@ -55,9 +55,9 @@ const Navbar = () => {
                   <NavigationMenuTrigger className="bg-transparent hover:bg-primary/80 text-primary-foreground hover:text-accent">Our Schools</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[350px] gap-2 p-4 bg-background">
-                      <li><NavigationMenuLink asChild><Link to="/children-school" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Children School</div></Link></NavigationMenuLink></li>
-                      <li><NavigationMenuLink asChild><Link to="/primary-school" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Primary School</div></Link></NavigationMenuLink></li>
-                      <li><NavigationMenuLink asChild><Link to="/covenant-college" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Covenant College</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/schools/children" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Children School</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/schools/primary" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Primary School</div></Link></NavigationMenuLink></li>
+                      <li><NavigationMenuLink asChild><Link to="/schools/covenant" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Covenant College</div></Link></NavigationMenuLink></li>
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -100,9 +100,9 @@ const Navbar = () => {
               <Link to="/gallery" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Gallery</Link>
             </div></div>
             <div className="py-2"><div className="font-semibold mb-2">Our Schools</div><div className="pl-4 space-y-2">
-              <Link to="/children-school" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Children School</Link>
-              <Link to="/primary-school" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Primary School</Link>
-              <Link to="/covenant-college" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Covenant College</Link>
+              <Link to="/schools/children" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Children School</Link>
+              <Link to="/schools/primary" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Primary School</Link>
+              <Link to="/schools/covenant" className="block py-1 hover:text-accent" onClick={() => setIsOpen(false)}>Covenant College</Link>
             </div></div>
             <Link to="/news" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>News</Link>
             <Link to="/contact" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Contact</Link>

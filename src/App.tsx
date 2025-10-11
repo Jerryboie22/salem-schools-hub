@@ -16,6 +16,11 @@ import StudentPortal from "./pages/portals/StudentPortal";
 import TeacherPortal from "./pages/portals/TeacherPortal";
 import ParentPortal from "./pages/portals/ParentPortal";
 import AdminPortal from "./pages/portals/AdminPortal";
+import Auth from "./pages/Auth";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ChildrenSchool from "./pages/schools/ChildrenSchool";
+import PrimarySchool from "./pages/schools/PrimarySchool";
+import CovenantCollege from "./pages/schools/CovenantCollege";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +45,11 @@ const App = () => (
           <Route path="/portal/teacher" element={<TeacherPortal />} />
           <Route path="/portal/parent" element={<ParentPortal />} />
           <Route path="/portal/admin" element={<AdminPortal />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/schools/children" element={<ChildrenSchool />} />
+          <Route path="/schools/primary" element={<PrimarySchool />} />
+          <Route path="/schools/covenant" element={<CovenantCollege />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
