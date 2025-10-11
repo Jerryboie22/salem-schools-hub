@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,11 +13,54 @@ import { Shield, Database, Settings, FileEdit } from "lucide-react";
 const AdminPortal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Authentication will be implemented
-    console.log("Admin login", email);
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast({
+        title: "Login failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Check if user has admin role
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!roleData) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have admin privileges.",
+        variant: "destructive",
+      });
+      await supabase.auth.signOut();
+      setLoading(false);
+      return;
+    }
+
+    toast({
+      title: "Welcome Admin!",
+      description: "Login successful.",
+    });
+    navigate("/admin/dashboard");
+    setLoading(false);
   };
 
   return (
@@ -60,7 +106,9 @@ const AdminPortal = () => {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full">Access Admin Portal</Button>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Logging in..." : "Access Admin Portal"}
+                  </Button>
                   <p className="text-sm text-center text-muted-foreground">
                     Authorized personnel only
                   </p>

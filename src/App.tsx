@@ -16,6 +16,9 @@ import StudentPortal from "./pages/portals/StudentPortal";
 import TeacherPortal from "./pages/portals/TeacherPortal";
 import ParentPortal from "./pages/portals/ParentPortal";
 import AdminPortal from "./pages/portals/AdminPortal";
+import StudentDashboard from "./pages/portals/StudentDashboard";
+import TeacherDashboard from "./pages/portals/TeacherDashboard";
+import ParentDashboard from "./pages/portals/ParentDashboard";
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ChildrenSchool from "./pages/schools/ChildrenSchool";
@@ -42,8 +45,11 @@ const App = () => (
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/portal/student" element={<StudentPortal />} />
+          <Route path="/portal/student/dashboard" element={<StudentDashboard />} />
           <Route path="/portal/teacher" element={<TeacherPortal />} />
+          <Route path="/portal/teacher/dashboard" element={<TeacherDashboard />} />
           <Route path="/portal/parent" element={<ParentPortal />} />
+          <Route path="/portal/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/portal/admin" element={<AdminPortal />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
