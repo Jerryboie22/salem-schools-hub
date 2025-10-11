@@ -19,7 +19,6 @@ import AdminPortal from "./pages/portals/AdminPortal";
 import StudentDashboard from "./pages/portals/StudentDashboard";
 import TeacherDashboard from "./pages/portals/TeacherDashboard";
 import ParentDashboard from "./pages/portals/ParentDashboard";
-import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ChildrenSchool from "./pages/schools/ChildrenSchool";
 import PrimarySchool from "./pages/schools/PrimarySchool";
@@ -51,7 +50,6 @@ const App = () => (
           <Route path="/portal/parent" element={<ParentPortal />} />
           <Route path="/portal/parent/dashboard" element={<ParentDashboard />} />
           <Route path="/portal/admin" element={<AdminPortal />} />
-          <Route path="/auth" element={<Auth />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/schools/children" element={<ChildrenSchool />} />
           <Route path="/schools/primary" element={<PrimarySchool />} />
