@@ -88,19 +88,30 @@ const AdminDashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="classes" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-11 mb-8 h-auto flex-wrap">
-            <TabsTrigger value="classes">Classes</TabsTrigger>
-            <TabsTrigger value="assignments">Assignments</TabsTrigger>
-            <TabsTrigger value="grades">Grades</TabsTrigger>
-            <TabsTrigger value="classnotes">Class Notes</TabsTrigger>
-            <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
-            <TabsTrigger value="blog">Blog</TabsTrigger>
-            <TabsTrigger value="gallery">Gallery</TabsTrigger>
-            <TabsTrigger value="leadership">Leadership</TabsTrigger>
-            <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-          </TabsList>
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold mb-4">Portal Management</h2>
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-4 h-auto flex-wrap">
+              <TabsTrigger value="classes">Classes</TabsTrigger>
+              <TabsTrigger value="assignments">Assignments</TabsTrigger>
+              <TabsTrigger value="grades">Grades</TabsTrigger>
+              <TabsTrigger value="classnotes">Class Notes</TabsTrigger>
+              <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
+            </TabsList>
+            
+            <h2 className="text-lg font-semibold mb-4 mt-6">Website Content</h2>
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-4 h-auto flex-wrap">
+              <TabsTrigger value="blog">Blog</TabsTrigger>
+              <TabsTrigger value="gallery">Gallery</TabsTrigger>
+              <TabsTrigger value="leadership">Leadership</TabsTrigger>
+              <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
+              <TabsTrigger value="messages">Messages</TabsTrigger>
+            </TabsList>
+            
+            <h2 className="text-lg font-semibold mb-4 mt-6">System Management</h2>
+            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-5 mb-4 h-auto">
+              <TabsTrigger value="users">Users</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="classes">
             <ClassesManager />
