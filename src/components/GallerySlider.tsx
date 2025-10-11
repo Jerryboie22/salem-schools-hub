@@ -12,6 +12,7 @@ interface GalleryImage {
 }
 
 const GallerySlider = () => {
+  const navigate = useNavigate();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -46,8 +47,6 @@ const GallerySlider = () => {
   if (images.length === 0) {
     return null;
   }
-
-  const navigate = useNavigate();
 
   return (
     <section className="py-16 bg-gradient-to-b from-background to-muted/30">
