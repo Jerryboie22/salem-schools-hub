@@ -10,6 +10,7 @@ import GalleryManager from "./components/GalleryManager";
 import LeadershipManager from "./components/LeadershipManager";
 import TestimonialsManager from "./components/TestimonialsManager";
 import ContactMessagesManager from "./components/ContactMessagesManager";
+import { UserManagementManager } from "./components/UserManagementManager";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -82,12 +83,13 @@ const AdminDashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="blog" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-6 mb-8">
             <TabsTrigger value="blog">Blog Posts</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
             <TabsTrigger value="leadership">Leadership</TabsTrigger>
             <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
           </TabsList>
 
           <TabsContent value="blog">
@@ -108,6 +110,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="messages">
             <ContactMessagesManager />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagementManager />
           </TabsContent>
         </Tabs>
       </div>
