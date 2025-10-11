@@ -4,17 +4,86 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, User, CreditCard, Calendar, MessageSquare } from "lucide-react";
+import { LogOut, Users, FileText, GraduationCap, Calendar } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
+interface Student {
+  student_id: string;
+}
+
+interface Assignment {
+  id: string;
+  title: string;
+  due_date: string;
+  classes: { name: string };
+}
+
+interface Grade {
+  id: string;
+  subject: string;
+  score: number;
+  max_score: number;
+  term: string;
+}
 
 const ParentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [grades, setGrades] = useState<Grade[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     checkAccess();
   }, []);
+
+  const fetchParentData = async (parentId: string) => {
+    // Fetch linked students
+    const { data: studentsData } = await supabase
+      .from("parent_students")
+      .select("student_id")
+      .eq("parent_id", parentId);
+
+    if (studentsData && studentsData.length > 0) {
+      setStudents(studentsData);
+      const studentIds = studentsData.map((s) => s.student_id);
+
+      // Fetch assignments for students' classes
+      const { data: studentClassesData } = await supabase
+        .from("student_classes")
+        .select("class_id")
+        .in("student_id", studentIds);
+
+      if (studentClassesData) {
+        const classIds = studentClassesData.map((sc) => sc.class_id);
+        const { data: assignmentsData } = await supabase
+          .from("assignments")
+          .select(`
+            id,
+            title,
+            due_date,
+            classes (name)
+          `)
+          .in("class_id", classIds)
+          .order("due_date", { ascending: true })
+          .limit(10);
+
+        if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+      }
+
+      // Fetch grades for students
+      const { data: gradesData } = await supabase
+        .from("grades")
+        .select("id, subject, score, max_score, term")
+        .in("student_id", studentIds)
+        .order("created_at", { ascending: false })
+        .limit(10);
+
+      if (gradesData) setGrades(gradesData);
+    }
+  };
 
   const checkAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -42,6 +111,7 @@ const ParentDashboard = () => {
     }
 
     setUserEmail(session.user.email || "");
+    await fetchParentData(session.user.id);
     setLoading(false);
   };
 
@@ -77,58 +147,127 @@ const ParentDashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {students.length === 0 ? (
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Student Progress</CardTitle>
-              <User className="h-4 w-4 text-muted-foreground" />
+            <CardHeader>
+              <CardTitle>No Students Linked</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">View child's grades</p>
+              <p className="text-muted-foreground">
+                You haven't linked any students to your account yet. Please contact the school administrator to link your child's account.
+              </p>
             </CardContent>
           </Card>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Linked Students</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{students.length}</div>
+                  <p className="text-xs text-muted-foreground">Children enrolled</p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Fee Payment</CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Pay school fees</p>
-            </CardContent>
-          </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Assignments</CardTitle>
+                  <FileText className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{assignments.length}</div>
+                  <p className="text-xs text-muted-foreground">Active assignments</p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Messages</CardTitle>
-              <MessageSquare className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Contact teachers</p>
-            </CardContent>
-          </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Grades</CardTitle>
+                  <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{grades.length}</div>
+                  <p className="text-xs text-muted-foreground">Recent grades</p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Calendar</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">School events</p>
-            </CardContent>
-          </Card>
-        </div>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Calendar</CardTitle>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">School events</p>
+                </CardContent>
+              </Card>
+            </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome to Your Parent Portal</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Monitor your child's academic progress, pay fees, communicate with teachers, and stay updated with school activities.
-            </p>
-          </CardContent>
-        </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Child's Assignments</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {assignments.length === 0 ? (
+                    <p className="text-muted-foreground text-sm">No assignments available</p>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Title</TableHead>
+                          <TableHead>Class</TableHead>
+                          <TableHead>Due Date</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {assignments.map((assignment) => (
+                          <TableRow key={assignment.id}>
+                            <TableCell className="font-medium">{assignment.title}</TableCell>
+                            <TableCell>{assignment.classes.name}</TableCell>
+                            <TableCell>{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Child's Grades</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {grades.length === 0 ? (
+                    <p className="text-muted-foreground text-sm">No grades available</p>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Subject</TableHead>
+                          <TableHead>Score</TableHead>
+                          <TableHead>Term</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {grades.map((grade) => (
+                          <TableRow key={grade.id}>
+                            <TableCell className="font-medium">{grade.subject}</TableCell>
+                            <TableCell>{grade.score}/{grade.max_score}</TableCell>
+                            <TableCell>{grade.term}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

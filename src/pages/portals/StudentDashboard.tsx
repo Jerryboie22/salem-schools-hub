@@ -6,15 +6,109 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, BookOpen, Calendar, FileText, Award } from "lucide-react";
 
+interface Assignment {
+  id: string;
+  title: string;
+  description: string;
+  due_date: string;
+  classes: { name: string };
+}
+
+interface Grade {
+  id: string;
+  subject: string;
+  score: number;
+  max_score: number;
+  term: string;
+}
+
+interface ClassNote {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+  classes: { name: string };
+}
+
+interface Schedule {
+  id: string;
+  subject: string;
+  day_of_week: number;
+  start_time: string;
+  end_time: string;
+  classes: { name: string };
+}
+
 const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [grades, setGrades] = useState<Grade[]>([]);
+  const [classNotes, setClassNotes] = useState<ClassNote[]>([]);
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     checkAccess();
   }, []);
+
+  const fetchStudentData = async (studentId: string) => {
+    // Fetch assignments for student's classes
+    const { data: assignmentsData } = await supabase
+      .from("assignments")
+      .select(`
+        id,
+        title,
+        description,
+        due_date,
+        classes (name)
+      `)
+      .order("due_date", { ascending: true })
+      .limit(5);
+
+    if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+
+    // Fetch grades
+    const { data: gradesData } = await supabase
+      .from("grades")
+      .select("id, subject, score, max_score, term")
+      .eq("student_id", studentId)
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    if (gradesData) setGrades(gradesData);
+
+    // Fetch class notes
+    const { data: notesData } = await supabase
+      .from("class_notes")
+      .select(`
+        id,
+        title,
+        content,
+        created_at,
+        classes (name)
+      `)
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    if (notesData) setClassNotes(notesData as ClassNote[]);
+
+    // Fetch schedule
+    const { data: scheduleData } = await supabase
+      .from("class_schedules")
+      .select(`
+        id,
+        subject,
+        day_of_week,
+        start_time,
+        end_time,
+        classes (name)
+      `)
+      .order("day_of_week", { ascending: true });
+
+    if (scheduleData) setSchedules(scheduleData as Schedule[]);
+  };
 
   const checkAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -42,6 +136,7 @@ const StudentDashboard = () => {
     }
 
     setUserEmail(session.user.email || "");
+    await fetchStudentData(session.user.id);
     setLoading(false);
   };
 

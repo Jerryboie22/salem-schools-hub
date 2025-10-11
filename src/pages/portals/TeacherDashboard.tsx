@@ -6,15 +6,99 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, Users, Calendar, FileText, ClipboardCheck } from "lucide-react";
 
+interface Class {
+  id: string;
+  name: string;
+}
+
+interface Assignment {
+  id: string;
+  title: string;
+  description: string;
+  due_date: string;
+  classes: { name: string };
+}
+
 const TeacherDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
+  const [teacherId, setTeacherId] = useState("");
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [showAssignmentDialog, setShowAssignmentDialog] = useState(false);
+  const [newAssignment, setNewAssignment] = useState({
+    title: "",
+    description: "",
+    class_id: "",
+    due_date: "",
+  });
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     checkAccess();
   }, []);
+
+  const fetchTeacherData = async (userId: string) => {
+    // Fetch classes
+    const { data: classesData } = await supabase
+      .from("classes")
+      .select("id, name")
+      .order("name");
+
+    if (classesData) setClasses(classesData);
+
+    // Fetch teacher's assignments
+    const { data: assignmentsData } = await supabase
+      .from("assignments")
+      .select(`
+        id,
+        title,
+        description,
+        due_date,
+        classes (name)
+      `)
+      .eq("teacher_id", userId)
+      .order("due_date", { ascending: false })
+      .limit(10);
+
+    if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+  };
+
+  const handleCreateAssignment = async () => {
+    if (!newAssignment.title || !newAssignment.class_id || !newAssignment.due_date) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase.from("assignments").insert({
+      title: newAssignment.title,
+      description: newAssignment.description,
+      class_id: newAssignment.class_id,
+      due_date: newAssignment.due_date,
+      teacher_id: teacherId,
+    });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create assignment",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Assignment created successfully",
+      });
+      setShowAssignmentDialog(false);
+      setNewAssignment({ title: "", description: "", class_id: "", due_date: "" });
+      fetchTeacherData(teacherId);
+    }
+  };
 
   const checkAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -42,6 +126,8 @@ const TeacherDashboard = () => {
     }
 
     setUserEmail(session.user.email || "");
+    setTeacherId(session.user.id);
+    await fetchTeacherData(session.user.id);
     setLoading(false);
   };
 
