@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Upload, X } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -33,6 +33,8 @@ const BlogPostsManager = () => {
     author: "Salem Admin",
     is_published: true,
   });
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -52,13 +54,55 @@ const BlogPostsManager = () => {
     setPosts(data || []);
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({ title: "Error", description: "File size must be less than 5MB", variant: "destructive" });
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!selectedFile) return formData.featured_image;
+
+    setUploading(true);
+    try {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      toast({ title: "Error uploading image", description: error.message, variant: "destructive" });
+      return formData.featured_image;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const imageUrl = await uploadImage();
+    const dataToSubmit = { ...formData, featured_image: imageUrl };
 
     if (editingPost) {
       const { error } = await supabase
         .from("blog_posts")
-        .update(formData)
+        .update(dataToSubmit)
         .eq("id", editingPost.id);
 
       if (error) {
@@ -67,7 +111,7 @@ const BlogPostsManager = () => {
       }
       toast({ title: "Success", description: "Post updated successfully" });
     } else {
-      const { error } = await supabase.from("blog_posts").insert([formData]);
+      const { error } = await supabase.from("blog_posts").insert([dataToSubmit]);
 
       if (error) {
         toast({ title: "Error creating post", description: error.message, variant: "destructive" });
@@ -109,6 +153,7 @@ const BlogPostsManager = () => {
 
   const resetForm = () => {
     setEditingPost(null);
+    setSelectedFile(null);
     setFormData({
       title: "",
       slug: "",
@@ -147,12 +192,37 @@ const BlogPostsManager = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Featured Image URL</Label>
-              <Input
-                value={formData.featured_image}
-                onChange={(e) => setFormData({ ...formData, featured_image: e.target.value })}
-                placeholder="https://example.com/image.jpg"
-              />
+              <Label>Featured Image</Label>
+              <div className="flex gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="flex-1"
+                />
+                {selectedFile && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setSelectedFile(null)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+              {selectedFile && (
+                <p className="text-sm text-muted-foreground">
+                  Selected: {selectedFile.name}
+                </p>
+              )}
+              {formData.featured_image && !selectedFile && (
+                <img 
+                  src={formData.featured_image} 
+                  alt="Current featured" 
+                  className="w-32 h-32 object-cover rounded-md mt-2"
+                />
+              )}
             </div>
             <div className="space-y-2">
               <Label>Excerpt</Label>
@@ -180,8 +250,8 @@ const BlogPostsManager = () => {
               <Label>Published</Label>
             </div>
             <div className="flex gap-2">
-              <Button type="submit">
-                {editingPost ? "Update" : "Create"} Post
+              <Button type="submit" disabled={uploading}>
+                {uploading ? "Uploading..." : editingPost ? "Update" : "Create"} Post
               </Button>
               {editingPost && (
                 <Button type="button" variant="outline" onClick={resetForm}>

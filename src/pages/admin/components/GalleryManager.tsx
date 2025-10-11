@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, X } from "lucide-react";
 
 interface GalleryImage {
   id: string;
@@ -26,6 +26,8 @@ const GalleryManager = () => {
     order_index: 0,
     is_active: true,
   });
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,10 +47,57 @@ const GalleryManager = () => {
     setImages(data || []);
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({ title: "Error", description: "File size must be less than 5MB", variant: "destructive" });
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!selectedFile) {
+      toast({ title: "Error", description: "Please select an image", variant: "destructive" });
+      return null;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('gallery-images')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('gallery-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      toast({ title: "Error uploading image", description: error.message, variant: "destructive" });
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { error } = await supabase.from("gallery_images").insert([formData]);
+    const imageUrl = await uploadImage();
+    if (!imageUrl) return;
+
+    const dataToSubmit = { ...formData, image_url: imageUrl };
+
+    const { error } = await supabase.from("gallery_images").insert([dataToSubmit]);
 
     if (error) {
       toast({ title: "Error adding image", description: error.message, variant: "destructive" });
@@ -57,6 +106,7 @@ const GalleryManager = () => {
 
     toast({ title: "Success", description: "Image added successfully" });
     setFormData({ title: "", description: "", image_url: "", order_index: 0, is_active: true });
+    setSelectedFile(null);
     fetchImages();
   };
 
@@ -111,12 +161,31 @@ const GalleryManager = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Image URL</Label>
-              <Input
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                required
-              />
+              <Label>Image File</Label>
+              <div className="flex gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  required={!selectedFile}
+                  className="flex-1"
+                />
+                {selectedFile && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setSelectedFile(null)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+              {selectedFile && (
+                <p className="text-sm text-muted-foreground">
+                  Selected: {selectedFile.name}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Order</Label>
@@ -126,9 +195,9 @@ const GalleryManager = () => {
                 onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) })}
               />
             </div>
-            <Button type="submit">
+            <Button type="submit" disabled={uploading || !selectedFile}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Image
+              {uploading ? "Uploading..." : "Add Image"}
             </Button>
           </form>
         </CardContent>
