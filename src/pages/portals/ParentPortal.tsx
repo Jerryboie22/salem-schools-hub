@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, CreditCard, Calendar, MessageSquare } from "lucide-react";
+import { User } from "lucide-react";
 
 const ParentPortal = () => {
   const [email, setEmail] = useState("");
@@ -138,146 +138,91 @@ const ParentPortal = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Login/Signup Form */}
-            <Card className="border-t-4 border-t-accent">
-              <CardHeader>
-                <CardTitle className="text-2xl">Parent Portal Access</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="login" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-4">
-                    <TabsTrigger value="login">Login</TabsTrigger>
-                    <TabsTrigger value="signup">Sign Up</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="login">
-                    <form onSubmit={handleLogin} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="login-email">Email</Label>
-                        <Input
-                          id="login-email"
-                          type="email"
-                          placeholder="Enter your email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="login-password">Password</Label>
-                        <Input
-                          id="login-password"
-                          type="password"
-                          placeholder="Enter your password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Logging in..." : "Login to Portal"}
-                      </Button>
-                    </form>
-                  </TabsContent>
-                  
-                  <TabsContent value="signup">
-                    <form onSubmit={handleSignUp} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-email">Email</Label>
-                        <Input
-                          id="signup-email"
-                          type="email"
-                          placeholder="Enter your email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-password">Password</Label>
-                        <Input
-                          id="signup-password"
-                          type="password"
-                          placeholder="Create a password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="confirm-password">Confirm Password</Label>
-                        <Input
-                          id="confirm-password"
-                          type="password"
-                          placeholder="Re-enter your password"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Creating account..." : "Create Account"}
-                      </Button>
-                    </form>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-
-            {/* Portal Features */}
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold mb-6">Portal Features</h2>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <User className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-1">Student Progress</h3>
-                    <p className="text-sm text-muted-foreground">View your child's grades and attendance records</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <CreditCard className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-1">Fee Payment</h3>
-                    <p className="text-sm text-muted-foreground">Pay school fees and view payment history</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MessageSquare className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-1">Teacher Communication</h3>
-                    <p className="text-sm text-muted-foreground">Send messages to your child's teachers</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-1">School Calendar</h3>
-                    <p className="text-sm text-muted-foreground">Stay updated on school events and activities</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+        <div className="max-w-md mx-auto">
+          <Card className="border-t-4 border-t-accent">
+            <CardHeader>
+              <CardTitle className="text-2xl">Parent Portal Access</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="login" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-4">
+                  <TabsTrigger value="login">Login</TabsTrigger>
+                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="login">
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="login-email">Email</Label>
+                      <Input
+                        id="login-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="login-password">Password</Label>
+                      <Input
+                        id="login-password"
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading ? "Logging in..." : "Login to Portal"}
+                    </Button>
+                  </form>
+                </TabsContent>
+                
+                <TabsContent value="signup">
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email</Label>
+                      <Input
+                        id="signup-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Password</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        placeholder="Create a password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirm-password">Confirm Password</Label>
+                      <Input
+                        id="confirm-password"
+                        type="password"
+                        placeholder="Re-enter your password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading ? "Creating account..." : "Create Account"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
 
           {/* Help Section */}
           <Card className="mt-8 bg-muted">
