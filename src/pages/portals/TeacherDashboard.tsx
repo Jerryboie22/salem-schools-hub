@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, Users, Calendar, FileText, ClipboardCheck } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface Class {
   id: string;
@@ -201,6 +207,118 @@ const TeacherDashboard = () => {
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">View your timetable</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>My Classes</CardTitle>
+              <span className="text-2xl font-bold text-primary">{classes.length}</span>
+            </CardHeader>
+            <CardContent>
+              {classes.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No classes assigned</p>
+              ) : (
+                <div className="space-y-2">
+                  {classes.map((cls) => (
+                    <div key={cls.id} className="p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <p className="font-medium">{cls.name}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Recent Assignments</CardTitle>
+              <Dialog open={showAssignmentDialog} onOpenChange={setShowAssignmentDialog}>
+                <DialogTrigger asChild>
+                  <Button size="sm">Create New</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Create New Assignment</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Title</Label>
+                      <Input
+                        id="title"
+                        value={newAssignment.title}
+                        onChange={(e) => setNewAssignment({ ...newAssignment, title: e.target.value })}
+                        placeholder="Assignment title"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea
+                        id="description"
+                        value={newAssignment.description}
+                        onChange={(e) => setNewAssignment({ ...newAssignment, description: e.target.value })}
+                        placeholder="Assignment description"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="class">Class</Label>
+                      <Select
+                        value={newAssignment.class_id}
+                        onValueChange={(value) => setNewAssignment({ ...newAssignment, class_id: value })}
+                      >
+                        <SelectTrigger id="class">
+                          <SelectValue placeholder="Select a class" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {classes.map((cls) => (
+                            <SelectItem key={cls.id} value={cls.id}>
+                              {cls.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="due_date">Due Date</Label>
+                      <Input
+                        id="due_date"
+                        type="datetime-local"
+                        value={newAssignment.due_date}
+                        onChange={(e) => setNewAssignment({ ...newAssignment, due_date: e.target.value })}
+                      />
+                    </div>
+                    <Button onClick={handleCreateAssignment} className="w-full">
+                      Create Assignment
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardHeader>
+            <CardContent>
+              {assignments.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No assignments created yet</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Class</TableHead>
+                      <TableHead>Due Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {assignments.map((assignment) => (
+                      <TableRow key={assignment.id}>
+                        <TableCell className="font-medium">{assignment.title}</TableCell>
+                        <TableCell>{assignment.classes.name}</TableCell>
+                        <TableCell>{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </div>

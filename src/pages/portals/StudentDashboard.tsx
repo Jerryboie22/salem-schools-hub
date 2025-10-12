@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, BookOpen, Calendar, FileText, Award } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface Assignment {
   id: string;
@@ -210,6 +211,119 @@ const StudentDashboard = () => {
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">Browse e-books</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Assignments</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {assignments.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No assignments available</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Class</TableHead>
+                      <TableHead>Due Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {assignments.map((assignment) => (
+                      <TableRow key={assignment.id}>
+                        <TableCell className="font-medium">{assignment.title}</TableCell>
+                        <TableCell>{assignment.classes.name}</TableCell>
+                        <TableCell>{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Grades</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {grades.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No grades available</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Subject</TableHead>
+                      <TableHead>Score</TableHead>
+                      <TableHead>Term</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {grades.map((grade) => (
+                      <TableRow key={grade.id}>
+                        <TableCell className="font-medium">{grade.subject}</TableCell>
+                        <TableCell>{grade.score}/{grade.max_score}</TableCell>
+                        <TableCell>{grade.term || 'N/A'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Class Notes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {classNotes.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No class notes available</p>
+              ) : (
+                <div className="space-y-4">
+                  {classNotes.map((note) => (
+                    <div key={note.id} className="border-b pb-3 last:border-0">
+                      <h4 className="font-medium">{note.title}</h4>
+                      <p className="text-sm text-muted-foreground">{note.classes.name}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {new Date(note.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Weekly Schedule</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {schedules.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No schedule available</p>
+              ) : (
+                <div className="space-y-3">
+                  {schedules.map((schedule) => {
+                    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                    return (
+                      <div key={schedule.id} className="border-b pb-2 last:border-0">
+                        <p className="font-medium">{schedule.subject}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {days[schedule.day_of_week]} • {schedule.start_time} - {schedule.end_time}
+                        </p>
+                        <p className="text-xs text-muted-foreground">{schedule.classes.name}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
