@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen, Calendar, FileText, Award } from "lucide-react";
+import { LogOut, BookOpen, Calendar, FileText, Award, Users } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,6 +75,13 @@ interface Class {
   name: string;
 }
 
+interface Attendance {
+  id: string;
+  date: string;
+  status: string;
+  classes: { name: string };
+}
+
 const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
@@ -92,6 +100,7 @@ const StudentDashboard = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [schoolFees, setSchoolFees] = useState<SchoolFee[]>([]);
   const [allClasses, setAllClasses] = useState<Class[]>([]);
+  const [attendance, setAttendance] = useState<Attendance[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -180,6 +189,15 @@ const StudentDashboard = () => {
       .order("created_at", { ascending: false })
       .limit(5);
     if (gradesData) setGrades(gradesData);
+
+    // 8) Fetch attendance records
+    const { data: attendanceData } = await supabase
+      .from("attendance")
+      .select("id, date, status, classes(name)")
+      .eq("student_id", studentId)
+      .order("date", { ascending: false })
+      .limit(10);
+    if (attendanceData) setAttendance(attendanceData as Attendance[]);
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -425,11 +443,14 @@ const StudentDashboard = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Library</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Attendance</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">Browse e-books</p>
+              <div className="text-2xl font-bold">
+                {attendance.filter(a => a.status === 'present').length}/{attendance.length}
+              </div>
+              <p className="text-xs text-muted-foreground">Days present</p>
             </CardContent>
           </Card>
         </div>
@@ -546,6 +567,47 @@ const StudentDashboard = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Attendance Records</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {attendance.length === 0 ? (
+              <p className="text-muted-foreground text-sm">No attendance records yet</p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Class</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {attendance.map((record) => (
+                    <TableRow key={record.id}>
+                      <TableCell>{new Date(record.date).toLocaleDateString()}</TableCell>
+                      <TableCell>{record.classes?.name || 'N/A'}</TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={
+                            record.status === 'present' ? 'default' : 
+                            record.status === 'absent' ? 'destructive' : 
+                            record.status === 'late' ? 'secondary' : 
+                            'outline'
+                          }
+                        >
+                          {record.status.toUpperCase()}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
 
         <Card className="mb-6">
           <CardHeader>

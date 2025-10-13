@@ -102,6 +102,50 @@ export type Database = {
           },
         ]
       }
+      attendance: {
+        Row: {
+          class_id: string
+          created_at: string | null
+          date: string
+          id: string
+          notes: string | null
+          status: string
+          student_id: string
+          teacher_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          class_id: string
+          created_at?: string | null
+          date: string
+          id?: string
+          notes?: string | null
+          status: string
+          student_id: string
+          teacher_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          class_id?: string
+          created_at?: string | null
+          date?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          student_id?: string
+          teacher_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_posts: {
         Row: {
           author: string | null

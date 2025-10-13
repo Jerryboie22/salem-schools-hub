@@ -11,8 +11,10 @@ import { Label } from "@/components/ui/label";
 import LessonPlansManager from "@/pages/admin/components/LessonPlansManager";
 import SchedulesManager from "@/pages/admin/components/SchedulesManager";
 import StudentClassesManager from "@/pages/admin/components/StudentClassesManager";
+import TeacherStudentsView from "@/pages/admin/components/TeacherStudentsView";
 import GradesManager from "@/pages/admin/components/GradesManager";
 import AssignmentsManager from "@/pages/admin/components/AssignmentsManager";
+import AttendanceManager from "@/pages/admin/components/AttendanceManager";
 
 interface Profile {
   full_name: string;
@@ -141,8 +143,9 @@ const TeacherDashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="attendance">Attendance</TabsTrigger>
             <TabsTrigger value="lesson-plans">Lesson Plans</TabsTrigger>
             <TabsTrigger value="schedules">Schedules</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
@@ -197,6 +200,10 @@ const TeacherDashboard = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="attendance">
+            <AttendanceManager />
+          </TabsContent>
+
           <TabsContent value="lesson-plans">
             <LessonPlansManager teacherId={teacherId} />
           </TabsContent>
@@ -206,7 +213,7 @@ const TeacherDashboard = () => {
           </TabsContent>
 
           <TabsContent value="students">
-            <StudentClassesManager />
+            <TeacherStudentsView />
           </TabsContent>
 
           <TabsContent value="assignments">
