@@ -8,6 +8,13 @@ import { LogOut, BookOpen, Calendar, FileText, Award } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Assignment {
   id: string;
@@ -62,6 +69,11 @@ interface StudentClass {
   classes: { name: string };
 }
 
+interface Class {
+  id: string;
+  name: string;
+}
+
 const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
@@ -79,12 +91,19 @@ const StudentDashboard = () => {
   const [classNotes, setClassNotes] = useState<ClassNote[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [schoolFees, setSchoolFees] = useState<SchoolFee[]>([]);
+  const [allClasses, setAllClasses] = useState<Class[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     checkAccess();
+    fetchAllClasses();
   }, []);
+
+  const fetchAllClasses = async () => {
+    const { data } = await supabase.from("classes").select("*").order("name");
+    if (data) setAllClasses(data);
+  };
 
   const fetchStudentData = async (studentId: string) => {
     // 1) Get student's classes
@@ -172,7 +191,7 @@ const StudentDashboard = () => {
     const filePath = `${studentId}/${Date.now()}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('gallery-images')
+      .from('avatars')
       .upload(filePath, file);
 
     if (uploadError) {
@@ -182,11 +201,32 @@ const StudentDashboard = () => {
     }
 
     const { data: { publicUrl } } = supabase.storage
-      .from('gallery-images')
+      .from('avatars')
       .getPublicUrl(filePath);
 
     setProfile({ ...profile, avatar_url: publicUrl });
     setUploading(false);
+  };
+
+  const handleClassChange = async (classId: string) => {
+    // First, remove existing class assignments
+    await supabase
+      .from("student_classes")
+      .delete()
+      .eq("student_id", studentId);
+
+    // Then add the new class assignment
+    const { error } = await supabase
+      .from("student_classes")
+      .insert({ student_id: studentId, class_id: classId });
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to update class", variant: "destructive" });
+      return;
+    }
+
+    toast({ title: "Success", description: "Class updated successfully" });
+    await fetchStudentData(studentId);
   };
 
   const handleUpdateProfile = async () => {
@@ -317,10 +357,21 @@ const StudentDashboard = () => {
             </div>
             <div className="space-y-2">
               <Label>Class</Label>
-              <Input
-                value={studentClasses.map(sc => sc.classes.name).join(", ") || "No class assigned"}
-                disabled
-              />
+              <Select 
+                value={studentClasses[0]?.class_id || ""} 
+                onValueChange={handleClassChange}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your class" />
+                </SelectTrigger>
+                <SelectContent>
+                  {allClasses.map((cls) => (
+                    <SelectItem key={cls.id} value={cls.id}>
+                      {cls.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Address</Label>
