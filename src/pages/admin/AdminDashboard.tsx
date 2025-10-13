@@ -16,6 +16,8 @@ import AssignmentsManager from "./components/AssignmentsManager";
 import GradesManager from "./components/GradesManager";
 import ClassNotesManager from "./components/ClassNotesManager";
 import StudentClassesManager from "./components/StudentClassesManager";
+import SubjectsManager from "./components/SubjectsManager";
+import SchoolFeesManager from "./components/SchoolFeesManager";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -90,12 +92,14 @@ const AdminDashboard = () => {
         <Tabs defaultValue="classes" className="w-full">
           <div className="mb-8">
             <h2 className="text-lg font-semibold mb-4">Portal Management</h2>
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-4 h-auto flex-wrap">
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-4 h-auto flex-wrap">
               <TabsTrigger value="classes">Classes</TabsTrigger>
+              <TabsTrigger value="subjects">Subjects</TabsTrigger>
               <TabsTrigger value="assignments">Assignments</TabsTrigger>
               <TabsTrigger value="grades">Grades</TabsTrigger>
               <TabsTrigger value="classnotes">Class Notes</TabsTrigger>
               <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
+              <TabsTrigger value="schoolfees">School Fees</TabsTrigger>
             </TabsList>
             
             <h2 className="text-lg font-semibold mb-4 mt-6">Website Content</h2>
@@ -131,6 +135,14 @@ const AdminDashboard = () => {
 
           <TabsContent value="studentclasses">
             <StudentClassesManager />
+          </TabsContent>
+
+          <TabsContent value="subjects">
+            <SubjectsManager />
+          </TabsContent>
+
+          <TabsContent value="schoolfees">
+            <SchoolFeesManager />
           </TabsContent>
 
           <TabsContent value="blog">
