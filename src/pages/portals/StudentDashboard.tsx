@@ -52,9 +52,14 @@ interface SchoolFee {
 
 interface Profile {
   full_name: string;
-  phone: string;
   address: string;
   date_of_birth: string;
+  avatar_url: string;
+}
+
+interface StudentClass {
+  class_id: string;
+  classes: { name: string };
 }
 
 const StudentDashboard = () => {
@@ -63,10 +68,12 @@ const StudentDashboard = () => {
   const [studentId, setStudentId] = useState("");
   const [profile, setProfile] = useState<Profile>({
     full_name: "",
-    phone: "",
     address: "",
     date_of_birth: "",
+    avatar_url: "",
   });
+  const [studentClasses, setStudentClasses] = useState<StudentClass[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [grades, setGrades] = useState<Grade[]>([]);
   const [classNotes, setClassNotes] = useState<ClassNote[]>([]);
@@ -83,24 +90,25 @@ const StudentDashboard = () => {
     // 1) Get student's classes
     const { data: scData } = await supabase
       .from("student_classes")
-      .select("class_id")
+      .select("class_id, classes(name)")
       .eq("student_id", studentId);
 
+    if (scData) setStudentClasses(scData as StudentClass[]);
     const classIds = (scData || []).map((sc) => sc.class_id);
 
     // 2) Load profile
     const { data: profileData } = await supabase
       .from("profiles")
-      .select("full_name, phone, address, date_of_birth")
+      .select("full_name, address, date_of_birth, avatar_url")
       .eq("id", studentId)
       .maybeSingle();
 
     if (profileData) {
       setProfile({
         full_name: profileData.full_name || "",
-        phone: profileData.phone || "",
         address: profileData.address || "",
         date_of_birth: profileData.date_of_birth || "",
+        avatar_url: profileData.avatar_url || "",
       });
     }
 
@@ -155,6 +163,32 @@ const StudentDashboard = () => {
     if (gradesData) setGrades(gradesData);
   };
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const fileExt = file.name.split('.').pop();
+    const filePath = `${studentId}/${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('gallery-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('gallery-images')
+      .getPublicUrl(filePath);
+
+    setProfile({ ...profile, avatar_url: publicUrl });
+    setUploading(false);
+  };
+
   const handleUpdateProfile = async () => {
     const { error } = await supabase.from("profiles").upsert({
       id: studentId,
@@ -166,6 +200,7 @@ const StudentDashboard = () => {
       toast({ title: "Error", description: "Failed to update profile", variant: "destructive" });
     } else {
       toast({ title: "Success", description: "Profile updated successfully" });
+      await fetchStudentData(studentId);
     }
   };
 
@@ -220,9 +255,20 @@ const StudentDashboard = () => {
     <div className="min-h-screen bg-muted/30">
       <header className="bg-background border-b sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold">Student Dashboard</h1>
-            <p className="text-sm text-muted-foreground">{userEmail}</p>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-lg font-bold">{profile.full_name?.[0] || "S"}</span>
+                )}
+              </div>
+              <div>
+                <h1 className="text-xl font-bold">{profile.full_name || "Student"}</h1>
+                <p className="text-xs text-muted-foreground">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class assigned"}</p>
+              </div>
+            </div>
           </div>
           <Button onClick={handleSignOut} variant="outline" size="sm">
             <LogOut className="w-4 h-4 mr-2" />
@@ -237,6 +283,26 @@ const StudentDashboard = () => {
             <CardTitle>My Profile</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-3xl font-bold">{profile.full_name?.[0] || "S"}</span>
+                )}
+              </div>
+              <div>
+                <Label>Profile Picture</Label>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  disabled={uploading}
+                  className="mt-2"
+                />
+                {uploading && <p className="text-xs text-muted-foreground mt-1">Uploading...</p>}
+              </div>
+            </div>
             <div className="space-y-2">
               <Label>Email</Label>
               <Input value={userEmail} disabled />
@@ -250,11 +316,10 @@ const StudentDashboard = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Phone Number</Label>
+              <Label>Class</Label>
               <Input
-                value={profile.phone}
-                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                placeholder="Enter your phone number"
+                value={studentClasses.map(sc => sc.classes.name).join(", ") || "No class assigned"}
+                disabled
               />
             </div>
             <div className="space-y-2">
