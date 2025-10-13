@@ -26,12 +26,21 @@ interface Grade {
   term: string;
 }
 
+interface SchoolFee {
+  id: string;
+  term: string;
+  academic_year: string;
+  amount: number;
+  classes: { name: string };
+}
+
 const ParentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
   const [students, setStudents] = useState<Student[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [grades, setGrades] = useState<Grade[]>([]);
+  const [schoolFees, setSchoolFees] = useState<SchoolFee[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -71,6 +80,14 @@ const ParentDashboard = () => {
           .limit(10);
 
         if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+
+        // Fetch school fees for these classes
+        const { data: feesData } = await supabase
+          .from("school_fees")
+          .select(`id, term, academic_year, amount, classes(name)`)
+          .in("class_id", classIds)
+          .order("term", { ascending: true });
+        if (feesData) setSchoolFees(feesData as SchoolFee[]);
       }
 
       // Fetch grades for students
@@ -266,6 +283,38 @@ const ParentDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>School Fees</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {schoolFees.length === 0 ? (
+                  <p className="text-muted-foreground text-sm">No fees available for your child's class</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Class</TableHead>
+                        <TableHead>Term</TableHead>
+                        <TableHead>Academic Year</TableHead>
+                        <TableHead>Amount</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {schoolFees.map((fee) => (
+                        <TableRow key={fee.id}>
+                          <TableCell>{fee.classes?.name}</TableCell>
+                          <TableCell>{fee.term}</TableCell>
+                          <TableCell>{fee.academic_year}</TableCell>
+                          <TableCell>{Number(fee.amount).toLocaleString()}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
           </>
         )}
       </div>

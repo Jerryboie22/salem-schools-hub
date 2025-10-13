@@ -25,6 +25,7 @@ interface Class {
 
 const StudentPortal = () => {
   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
@@ -130,13 +131,14 @@ const StudentPortal = () => {
     }
 
     if (data.user) {
-      // Assign student role and class
-      const [roleRes, classRes] = await Promise.all([
+      // Assign student role and class and create profile
+      const [roleRes, classRes, profileRes] = await Promise.all([
         supabase.from("user_roles").insert({ user_id: data.user.id, role: "student" }),
         supabase.from("student_classes").insert({ student_id: data.user.id, class_id: selectedClass }),
+        supabase.from("profiles").upsert({ id: data.user.id, email, full_name: fullName })
       ]);
 
-      if (roleRes.error || classRes.error) {
+      if (roleRes.error || classRes.error || profileRes.error) {
         toast({
           title: "Setup failed",
           description: "Please contact support.",
@@ -152,6 +154,7 @@ const StudentPortal = () => {
       });
       
       setEmail("");
+      setFullName("");
       setPassword("");
       setConfirmPassword("");
       setSelectedClass("");
@@ -224,6 +227,17 @@ const StudentPortal = () => {
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="full-name">Full Name</Label>
+                      <Input
+                        id="full-name"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
                         required
                       />
                     </div>

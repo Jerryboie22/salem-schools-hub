@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, BookOpen, Calendar, FileText, Award } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Assignment {
   id: string;
@@ -40,13 +42,36 @@ interface Schedule {
   classes: { name: string };
 }
 
+interface SchoolFee {
+  id: string;
+  term: string;
+  academic_year: string;
+  amount: number;
+  classes: { name: string };
+}
+
+interface Profile {
+  full_name: string;
+  phone: string;
+  address: string;
+  date_of_birth: string;
+}
+
 const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [profile, setProfile] = useState<Profile>({
+    full_name: "",
+    phone: "",
+    address: "",
+    date_of_birth: "",
+  });
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [grades, setGrades] = useState<Grade[]>([]);
   const [classNotes, setClassNotes] = useState<ClassNote[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [schoolFees, setSchoolFees] = useState<SchoolFee[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -55,60 +80,79 @@ const StudentDashboard = () => {
   }, []);
 
   const fetchStudentData = async (studentId: string) => {
-    // Fetch assignments for student's classes
-    const { data: assignmentsData } = await supabase
-      .from("assignments")
-      .select(`
-        id,
-        title,
-        description,
-        due_date,
-        classes (name)
-      `)
-      .order("due_date", { ascending: true })
-      .limit(5);
+    // 1) Get student's classes
+    const { data: scData } = await supabase
+      .from("student_classes")
+      .select("class_id")
+      .eq("student_id", studentId);
 
-    if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+    const classIds = (scData || []).map((sc) => sc.class_id);
 
-    // Fetch grades
+    // 2) Load profile
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("full_name, phone, address, date_of_birth")
+      .eq("id", studentId)
+      .maybeSingle();
+
+    if (profileData) {
+      setProfile({
+        full_name: profileData.full_name || "",
+        phone: profileData.phone || "",
+        address: profileData.address || "",
+        date_of_birth: profileData.date_of_birth || "",
+      });
+    }
+
+    // 3) Fetch assignments for student's classes
+    if (classIds.length > 0) {
+      const { data: assignmentsData } = await supabase
+        .from("assignments")
+        .select(`id, title, description, due_date, classes (name)`) 
+        .in("class_id", classIds)
+        .order("due_date", { ascending: true })
+        .limit(5);
+      if (assignmentsData) setAssignments(assignmentsData as Assignment[]);
+
+      // 4) Class notes for student's classes
+      const { data: notesData } = await supabase
+        .from("class_notes")
+        .select(`id, title, content, created_at, classes (name)`) 
+        .in("class_id", classIds)
+        .order("created_at", { ascending: false })
+        .limit(5);
+      if (notesData) setClassNotes(notesData as ClassNote[]);
+
+      // 5) Weekly schedule for student's classes
+      const { data: scheduleData } = await supabase
+        .from("class_schedules")
+        .select(`id, subject, day_of_week, start_time, end_time, classes (name)`) 
+        .in("class_id", classIds)
+        .order("day_of_week", { ascending: true });
+      if (scheduleData) setSchedules(scheduleData as Schedule[]);
+
+      // 6) School fees for student's classes
+      const { data: feesData } = await supabase
+        .from("school_fees")
+        .select(`id, term, academic_year, amount, classes(name)`) 
+        .in("class_id", classIds)
+        .order("term", { ascending: true });
+      if (feesData) setSchoolFees(feesData as SchoolFee[]);
+    } else {
+      setAssignments([]);
+      setClassNotes([]);
+      setSchedules([]);
+      setSchoolFees([]);
+    }
+
+    // 7) Fetch grades (always by student id)
     const { data: gradesData } = await supabase
       .from("grades")
       .select("id, subject, score, max_score, term")
       .eq("student_id", studentId)
       .order("created_at", { ascending: false })
       .limit(5);
-
     if (gradesData) setGrades(gradesData);
-
-    // Fetch class notes
-    const { data: notesData } = await supabase
-      .from("class_notes")
-      .select(`
-        id,
-        title,
-        content,
-        created_at,
-        classes (name)
-      `)
-      .order("created_at", { ascending: false })
-      .limit(5);
-
-    if (notesData) setClassNotes(notesData as ClassNote[]);
-
-    // Fetch schedule
-    const { data: scheduleData } = await supabase
-      .from("class_schedules")
-      .select(`
-        id,
-        subject,
-        day_of_week,
-        start_time,
-        end_time,
-        classes (name)
-      `)
-      .order("day_of_week", { ascending: true });
-
-    if (scheduleData) setSchedules(scheduleData as Schedule[]);
   };
 
   const checkAccess = async () => {
@@ -137,6 +181,7 @@ const StudentDashboard = () => {
     }
 
     setUserEmail(session.user.email || "");
+    setStudentId(session.user.id);
     await fetchStudentData(session.user.id);
     setLoading(false);
   };
@@ -173,6 +218,50 @@ const StudentDashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>My Profile</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input value={userEmail} disabled />
+            </div>
+            <div className="space-y-2">
+              <Label>Full Name</Label>
+              <Input
+                value={profile.full_name}
+                onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Phone Number</Label>
+              <Input
+                value={profile.phone}
+                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Address</Label>
+              <Input
+                value={profile.address}
+                onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                placeholder="Enter your address"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Date of Birth</Label>
+              <Input
+                type="date"
+                value={profile.date_of_birth}
+                onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
+              />
+            </div>
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          </CardContent>
+        </Card>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -327,6 +416,38 @@ const StudentDashboard = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>School Fees</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {schoolFees.length === 0 ? (
+              <p className="text-muted-foreground text-sm">No fees available for your class</p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Class</TableHead>
+                    <TableHead>Term</TableHead>
+                    <TableHead>Academic Year</TableHead>
+                    <TableHead>Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {schoolFees.map((fee) => (
+                    <TableRow key={fee.id}>
+                      <TableCell>{fee.classes?.name}</TableCell>
+                      <TableCell>{fee.term}</TableCell>
+                      <TableCell>{fee.academic_year}</TableCell>
+                      <TableCell>{Number(fee.amount).toLocaleString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
