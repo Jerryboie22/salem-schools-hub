@@ -155,6 +155,20 @@ const StudentDashboard = () => {
     if (gradesData) setGrades(gradesData);
   };
 
+  const handleUpdateProfile = async () => {
+    const { error } = await supabase.from("profiles").upsert({
+      id: studentId,
+      ...profile,
+      email: userEmail,
+    });
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to update profile", variant: "destructive" });
+    } else {
+      toast({ title: "Success", description: "Profile updated successfully" });
+    }
+  };
+
   const checkAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     
