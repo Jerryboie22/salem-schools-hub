@@ -24,7 +24,17 @@ All colors MUST be HSL.
     --gold: 48 96% 53%;
     --gold-dark: 42 88% 45%;
     
-    --background: 0 0% 100%;
+    /* Portal-specific colors */
+    --student-primary: 207 90% 54%;
+    --student-secondary: 187 85% 43%;
+    --teacher-primary: 271 81% 56%;
+    --teacher-secondary: 291 64% 42%;
+    --parent-primary: 339 80% 59%;
+    --parent-secondary: 350 89% 60%;
+    --admin-primary: 24 95% 56%;
+    --admin-secondary: 33 100% 50%;
+    
+    --background: 220 17% 98%;
     --foreground: 0 0% 17%;
 
     --card: 0 0% 100%;
@@ -52,11 +62,16 @@ All colors MUST be HSL.
     --input: 210 17% 90%;
     --ring: 210 100% 16.5%;
 
-    --radius: 0.75rem%;
+    --radius: 0.75rem;
     
-    /* Custom gradients */
+    /* Creative gradients */
     --gradient-hero: linear-gradient(135deg, hsl(210 100% 16.5%) 0%, hsl(207 65% 59%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(45 91% 61%) 0%, hsl(48 100% 87%) 100%);
+    --gradient-student: linear-gradient(135deg, hsl(207 90% 54%) 0%, hsl(187 85% 43%) 100%);
+    --gradient-teacher: linear-gradient(135deg, hsl(271 81% 56%) 0%, hsl(291 64% 42%) 100%);
+    --gradient-parent: linear-gradient(135deg, hsl(339 80% 59%) 0%, hsl(350 89% 60%) 100%);
+    --gradient-admin: linear-gradient(135deg, hsl(24 95% 56%) 0%, hsl(33 100% 50%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
   }
 }
 
@@ -84,8 +99,36 @@ All colors MUST be HSL.
     background: var(--gradient-accent);
   }
   
+  .gradient-student {
+    background: var(--gradient-student);
+  }
+  
+  .gradient-teacher {
+    background: var(--gradient-teacher);
+  }
+  
+  .gradient-parent {
+    background: var(--gradient-parent);
+  }
+  
+  .gradient-admin {
+    background: var(--gradient-admin);
+  }
+  
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  
   .animate-fade-in {
     animation: fadeIn 0.6s ease-in;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
   }
   
   @keyframes fadeIn {
@@ -97,5 +140,43 @@ All colors MUST be HSL.
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  .stat-card {
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
   }
 }

@@ -310,212 +310,249 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="bg-background border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
+      <header className="glass-effect border-b sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl gradient-student flex items-center justify-center overflow-hidden shadow-lg">
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-lg font-bold">{profile.full_name?.[0] || "S"}</span>
+                  <span className="text-2xl font-bold text-white">{profile.full_name?.[0] || "S"}</span>
                 )}
               </div>
               <div>
-                <h1 className="text-xl font-bold">{profile.full_name || "Student"}</h1>
-                <p className="text-xs text-muted-foreground">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class assigned"}</p>
+                <h1 className="text-2xl font-bold text-cyan-600">{profile.full_name || "Student Portal"}</h1>
+                <p className="text-sm text-muted-foreground">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class"}</p>
               </div>
             </div>
+            <Button onClick={handleSignOut} className="gradient-student text-white">
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
-          <Button onClick={handleSignOut} variant="outline" size="sm">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>My Profile</CardTitle>
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Profile Section */}
+        <Card className="gradient-card border-0 shadow-xl animate-slide-up overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 gradient-student opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <CardHeader className="relative">
+            <CardTitle className="text-2xl flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg gradient-student"></div>
+              My Profile
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+          <CardContent className="space-y-4 relative">
+            <div className="flex items-center gap-6 mb-6">
+              <div className="w-32 h-32 rounded-3xl gradient-student flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white">
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-3xl font-bold">{profile.full_name?.[0] || "S"}</span>
+                  <span className="text-5xl font-bold text-white">{profile.full_name?.[0] || "S"}</span>
                 )}
               </div>
-              <div>
-                <Label>Profile Picture</Label>
+              <div className="flex-1">
+                <Label className="text-sm font-semibold text-muted-foreground">Profile Picture</Label>
                 <Input
                   type="file"
                   accept="image/*"
                   onChange={handleAvatarUpload}
                   disabled={uploading}
-                  className="mt-2"
+                  className="mt-2 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:gradient-student file:text-white hover:file:opacity-90"
                 />
-                {uploading && <p className="text-xs text-muted-foreground mt-1">Uploading...</p>}
+                {uploading && <p className="text-xs text-cyan-600 mt-1 animate-pulse">Uploading...</p>}
               </div>
             </div>
-            <div className="space-y-2">
-              <Label>Email</Label>
-              <Input value={userEmail} disabled />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Email</Label>
+                <Input value={userEmail} disabled className="bg-muted/50" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Full Name</Label>
+                <Input
+                  value={profile.full_name}
+                  onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
+                  placeholder="Enter your full name"
+                  className="focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Class</Label>
+                <Select 
+                  value={studentClasses[0]?.class_id || ""} 
+                  onValueChange={handleClassChange}
+                >
+                  <SelectTrigger className="focus:ring-2 focus:ring-cyan-500">
+                    <SelectValue placeholder="Select your class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {allClasses.map((cls) => (
+                      <SelectItem key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Date of Birth</Label>
+                <Input
+                  type="date"
+                  value={profile.date_of_birth}
+                  onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
+                  className="focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-sm font-semibold">Address</Label>
+                <Input
+                  value={profile.address}
+                  onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                  placeholder="Enter your address"
+                  className="focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label>Full Name</Label>
-              <Input
-                value={profile.full_name}
-                onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                placeholder="Enter your full name"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Class</Label>
-              <Select 
-                value={studentClasses[0]?.class_id || ""} 
-                onValueChange={handleClassChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your class" />
-                </SelectTrigger>
-                <SelectContent>
-                  {allClasses.map((cls) => (
-                    <SelectItem key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Address</Label>
-              <Input
-                value={profile.address}
-                onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                placeholder="Enter your address"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Date of Birth</Label>
-              <Input
-                type="date"
-                value={profile.date_of_birth}
-                onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
-              />
-            </div>
-            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+            <Button onClick={handleUpdateProfile} className="gradient-student text-white border-0 shadow-lg hover:shadow-xl transition-all w-full md:w-auto">
+              Update Profile
+            </Button>
           </CardContent>
         </Card>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-up" style={{animationDelay: '0.1s'}}>
+          <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Academic Calendar</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Academic Calendar</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-md">
+                <Calendar className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">View term dates and schedules</p>
+              <div className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Active</div>
+              <p className="text-xs text-muted-foreground mt-1">View term dates</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-teal-400 to-emerald-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Assignments</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Assignments</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-md">
+                <FileText className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">Access course materials</p>
+              <div className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent">{assignments.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Active tasks</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-400 to-purple-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Grades</CardTitle>
-              <Award className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Grades</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center shadow-md">
+                <Award className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">Check your results</p>
+              <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">{grades.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Recent scores</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-rose-400 to-pink-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Attendance</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Attendance</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center shadow-md">
+                <Users className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
                 {attendance.filter(a => a.status === 'present').length}/{attendance.length}
               </div>
-              <p className="text-xs text-muted-foreground">Days present</p>
+              <p className="text-xs text-muted-foreground mt-1">Days present</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <Card>
+        {/* Data Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 gradient-student"></div>
             <CardHeader>
-              <CardTitle>Recent Assignments</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></div>
+                Recent Assignments
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {assignments.length === 0 ? (
-                <p className="text-muted-foreground text-sm">No assignments available</p>
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No assignments available</p>
+                </div>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Class</TableHead>
-                      <TableHead>Due Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {assignments.map((assignment) => (
-                      <TableRow key={assignment.id}>
-                        <TableCell className="font-medium">{assignment.title}</TableCell>
-                        <TableCell>{assignment.classes.name}</TableCell>
-                        <TableCell>{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div className="space-y-3">
+                  {assignments.map((assignment) => (
+                    <div key={assignment.id} className="p-4 rounded-xl bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-100 hover:shadow-md transition-all">
+                      <h4 className="font-semibold text-cyan-900">{assignment.title}</h4>
+                      <div className="flex items-center gap-4 mt-2 text-sm">
+                        <span className="text-cyan-600 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                          {assignment.classes.name}
+                        </span>
+                        <span className="text-muted-foreground">
+                          Due: {new Date(assignment.due_date).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 gradient-student"></div>
             <CardHeader>
-              <CardTitle>Recent Grades</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-violet-400 to-purple-500 rounded-full"></div>
+                Recent Grades
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {grades.length === 0 ? (
-                <p className="text-muted-foreground text-sm">No grades available</p>
+                <div className="text-center py-12">
+                  <Award className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No grades available</p>
+                </div>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Subject</TableHead>
-                      <TableHead>Score</TableHead>
-                      <TableHead>Term</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {grades.map((grade) => (
-                      <TableRow key={grade.id}>
-                        <TableCell className="font-medium">{grade.subject}</TableCell>
-                        <TableCell>{grade.score}/{grade.max_score}</TableCell>
-                        <TableCell>{grade.term || 'N/A'}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div className="space-y-3">
+                  {grades.map((grade) => (
+                    <div key={grade.id} className="p-4 rounded-xl bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-100 hover:shadow-md transition-all">
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-semibold text-violet-900">{grade.subject}</h4>
+                        <span className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                          {grade.score}/{grade.max_score}
+                        </span>
+                      </div>
+                      <p className="text-sm text-violet-600 mt-1">{grade.term || 'N/A'}</p>
+                    </div>
+                  ))}
+                </div>
               )}
             </CardContent>
           </Card>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <Card>
