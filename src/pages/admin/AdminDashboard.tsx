@@ -77,12 +77,15 @@ const AdminDashboard = () => {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      <header className="glass-effect border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold bg-gradient-admin bg-clip-text text-transparent">Admin Dashboard</h1>
-            <Button onClick={handleSignOut} className="gradient-admin text-white border-0 shadow-lg hover:shadow-xl transition-all">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b sticky top-0 z-10 backdrop-blur-sm bg-opacity-95">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
+              <p className="text-sm text-muted-foreground mt-1">Manage your school system</p>
+            </div>
+            <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full sm:w-auto">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -90,36 +93,51 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="classes" className="w-full">
-          <div className="mb-8 animate-fade-in">
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <div className="w-1 h-6 rounded-full gradient-admin"></div>
-              Portal Management
-            </h2>
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-4 h-auto flex-wrap bg-white shadow-md border-0">
-              <TabsTrigger value="classes" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Classes</TabsTrigger>
-              <TabsTrigger value="subjects" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Subjects</TabsTrigger>
-              <TabsTrigger value="assignments" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Assignments</TabsTrigger>
-              <TabsTrigger value="grades" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Grades</TabsTrigger>
-              <TabsTrigger value="classnotes" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Class Notes</TabsTrigger>
-              <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
-              <TabsTrigger value="schoolfees">School Fees</TabsTrigger>
-            </TabsList>
+          <div className="mb-6 animate-fade-in space-y-6">
+            {/* Portal Management */}
+            <div>
+              <h2 className="text-base sm:text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
+                <div className="w-1 h-5 rounded-full bg-primary"></div>
+                Portal Management
+              </h2>
+              <TabsList className="w-full h-auto bg-muted/50 p-1 flex flex-wrap gap-1">
+                <TabsTrigger value="classes" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Classes</TabsTrigger>
+                <TabsTrigger value="subjects" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Subjects</TabsTrigger>
+                <TabsTrigger value="assignments" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Assignments</TabsTrigger>
+                <TabsTrigger value="grades" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Grades</TabsTrigger>
+                <TabsTrigger value="classnotes" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Class Notes</TabsTrigger>
+                <TabsTrigger value="studentclasses" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Student Classes</TabsTrigger>
+                <TabsTrigger value="schoolfees" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">School Fees</TabsTrigger>
+              </TabsList>
+            </div>
             
-            <h2 className="text-lg font-semibold mb-4 mt-6">Website Content</h2>
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-4 h-auto flex-wrap">
-              <TabsTrigger value="blog">Blog</TabsTrigger>
-              <TabsTrigger value="gallery">Gallery</TabsTrigger>
-              <TabsTrigger value="leadership">Leadership</TabsTrigger>
-              <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-              <TabsTrigger value="messages">Messages</TabsTrigger>
-            </TabsList>
+            {/* Website Content */}
+            <div>
+              <h2 className="text-base sm:text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
+                <div className="w-1 h-5 rounded-full bg-accent"></div>
+                Website Content
+              </h2>
+              <TabsList className="w-full h-auto bg-muted/50 p-1 flex flex-wrap gap-1">
+                <TabsTrigger value="blog" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Blog</TabsTrigger>
+                <TabsTrigger value="gallery" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Gallery</TabsTrigger>
+                <TabsTrigger value="leadership" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Leadership</TabsTrigger>
+                <TabsTrigger value="testimonials" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Testimonials</TabsTrigger>
+                <TabsTrigger value="messages" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Messages</TabsTrigger>
+              </TabsList>
+            </div>
             
-            <h2 className="text-lg font-semibold mb-4 mt-6">System Management</h2>
-            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-5 mb-4 h-auto">
-              <TabsTrigger value="users">Users</TabsTrigger>
-            </TabsList>
+            {/* System Management */}
+            <div>
+              <h2 className="text-base sm:text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
+                <div className="w-1 h-5 rounded-full bg-secondary"></div>
+                System Management
+              </h2>
+              <TabsList className="w-full h-auto bg-muted/50 p-1">
+                <TabsTrigger value="users" className="flex-1 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground text-xs sm:text-sm">User Management</TabsTrigger>
+              </TabsList>
+            </div>
           </div>
 
           <TabsContent value="classes">

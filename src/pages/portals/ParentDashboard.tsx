@@ -151,13 +151,13 @@ const ParentDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-red-50">
       <header className="glass-effect border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-parent bg-clip-text text-transparent">Parent Dashboard</h1>
-              <p className="text-sm text-muted-foreground">{userEmail}</p>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-parent bg-clip-text text-transparent">Parent Dashboard</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">{userEmail}</p>
             </div>
-            <Button onClick={handleSignOut} className="gradient-parent text-white border-0 shadow-lg hover:shadow-xl transition-all">
+            <Button onClick={handleSignOut} size="sm" className="gradient-parent text-white border-0 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -165,7 +165,7 @@ const ParentDashboard = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         {students.length === 0 ? (
           <Card>
             <CardHeader>
@@ -179,7 +179,7 @@ const ParentDashboard = () => {
           </Card>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-slide-up">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 animate-slide-up">
               <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-rose-400 to-pink-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -237,7 +237,7 @@ const ParentDashboard = () => {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
               <Card className="border-0 shadow-xl overflow-hidden">
                 <div className="h-2 bg-gradient-to-r from-rose-400 to-pink-500"></div>
                 <CardHeader>

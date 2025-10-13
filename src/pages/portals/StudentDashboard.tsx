@@ -312,22 +312,22 @@ const StudentDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
       <header className="glass-effect border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl gradient-student flex items-center justify-center overflow-hidden shadow-lg">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl gradient-student flex items-center justify-center overflow-hidden shadow-lg flex-shrink-0">
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-2xl font-bold text-white">{profile.full_name?.[0] || "S"}</span>
+                  <span className="text-xl sm:text-2xl font-bold text-white">{profile.full_name?.[0] || "S"}</span>
                 )}
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-cyan-600">{profile.full_name || "Student Portal"}</h1>
-                <p className="text-sm text-muted-foreground">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class"}</p>
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-2xl font-bold text-cyan-600 truncate">{profile.full_name || "Student Portal"}</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class"}</p>
               </div>
             </div>
-            <Button onClick={handleSignOut} className="gradient-student text-white">
+            <Button onClick={handleSignOut} size="sm" className="gradient-student text-white w-full sm:w-auto">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -335,19 +335,19 @@ const StudentDashboard = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-4 py-6 space-y-6">
         {/* Profile Section */}
-        <Card className="gradient-card border-0 shadow-xl animate-slide-up overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 gradient-student opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <CardHeader className="relative">
-            <CardTitle className="text-2xl flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-student"></div>
+        <Card className="gradient-card border-0 shadow-lg animate-slide-up overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 gradient-student opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <CardHeader className="relative p-4 sm:p-6">
+            <CardTitle className="text-lg sm:text-2xl flex items-center gap-2">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg gradient-student flex-shrink-0"></div>
               My Profile
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 relative">
-            <div className="flex items-center gap-6 mb-6">
-              <div className="w-32 h-32 rounded-3xl gradient-student flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white">
+          <CardContent className="space-y-4 relative p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl gradient-student flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white flex-shrink-0">
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (

@@ -129,13 +129,13 @@ const TeacherDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-fuchsia-50">
       <header className="glass-effect border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-teacher bg-clip-text text-transparent">Teacher Dashboard</h1>
-              <p className="text-sm text-muted-foreground">{userEmail}</p>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-teacher bg-clip-text text-transparent">Teacher Dashboard</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">{userEmail}</p>
             </div>
-            <Button onClick={handleSignOut} className="gradient-teacher text-white border-0 shadow-lg hover:shadow-xl transition-all">
+            <Button onClick={handleSignOut} size="sm" className="gradient-teacher text-white border-0 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -143,17 +143,19 @@ const TeacherDashboard = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="attendance">Attendance</TabsTrigger>
-            <TabsTrigger value="lesson-plans">Lesson Plans</TabsTrigger>
-            <TabsTrigger value="schedules">Schedules</TabsTrigger>
-            <TabsTrigger value="students">Students</TabsTrigger>
-            <TabsTrigger value="assignments">Assignments</TabsTrigger>
-            <TabsTrigger value="grades">Grades</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-4 px-4">
+            <TabsList className="inline-flex w-full sm:w-auto min-w-full h-auto p-1 gap-1 bg-white/80 backdrop-blur">
+              <TabsTrigger value="profile" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Profile</TabsTrigger>
+              <TabsTrigger value="attendance" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Attendance</TabsTrigger>
+              <TabsTrigger value="lesson-plans" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Lesson Plans</TabsTrigger>
+              <TabsTrigger value="schedules" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Schedules</TabsTrigger>
+              <TabsTrigger value="students" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Students</TabsTrigger>
+              <TabsTrigger value="assignments" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Assignments</TabsTrigger>
+              <TabsTrigger value="grades" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap">Grades</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="profile">
             <Card>
