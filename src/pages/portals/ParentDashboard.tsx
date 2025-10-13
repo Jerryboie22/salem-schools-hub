@@ -149,17 +149,19 @@ const ParentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="bg-background border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold">Parent Dashboard</h1>
-            <p className="text-sm text-muted-foreground">{userEmail}</p>
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-red-50">
+      <header className="glass-effect border-b sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-parent bg-clip-text text-transparent">Parent Dashboard</h1>
+              <p className="text-sm text-muted-foreground">{userEmail}</p>
+            </div>
+            <Button onClick={handleSignOut} className="gradient-parent text-white border-0 shadow-lg hover:shadow-xl transition-all">
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
-          <Button onClick={handleSignOut} variant="outline" size="sm">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
         </div>
       </header>
 
@@ -177,141 +179,181 @@ const ParentDashboard = () => {
           </Card>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-slide-up">
+              <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-rose-400 to-pink-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Linked Students</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Linked Students</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center shadow-md">
+                    <Users className="h-5 w-5 text-white" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{students.length}</div>
-                  <p className="text-xs text-muted-foreground">Children enrolled</p>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">{students.length}</div>
+                  <p className="text-xs text-muted-foreground mt-1">Children enrolled</p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-teal-400 to-emerald-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Assignments</CardTitle>
-                  <FileText className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Assignments</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-md">
+                    <FileText className="h-5 w-5 text-white" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{assignments.length}</div>
-                  <p className="text-xs text-muted-foreground">Active assignments</p>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent">{assignments.length}</div>
+                  <p className="text-xs text-muted-foreground mt-1">Active assignments</p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-400 to-purple-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Grades</CardTitle>
-                  <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Grades</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center shadow-md">
+                    <GraduationCap className="h-5 w-5 text-white" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{grades.length}</div>
-                  <p className="text-xs text-muted-foreground">Recent grades</p>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">{grades.length}</div>
+                  <p className="text-xs text-muted-foreground mt-1">Recent grades</p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400 to-orange-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Calendar</CardTitle>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Calendar</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md">
+                    <Calendar className="h-5 w-5 text-white" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">School events</p>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">Active</div>
+                  <p className="text-xs text-muted-foreground mt-1">School events</p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
+              <Card className="border-0 shadow-xl overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-rose-400 to-pink-500"></div>
                 <CardHeader>
-                  <CardTitle>Child's Assignments</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-2 h-8 bg-gradient-to-b from-rose-400 to-pink-500 rounded-full"></div>
+                    Child's Assignments
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {assignments.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">No assignments available</p>
+                    <div className="text-center py-12">
+                      <FileText className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                      <p className="text-muted-foreground">No assignments available</p>
+                    </div>
                   ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Title</TableHead>
-                          <TableHead>Class</TableHead>
-                          <TableHead>Due Date</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {assignments.map((assignment) => (
-                          <TableRow key={assignment.id}>
-                            <TableCell className="font-medium">{assignment.title}</TableCell>
-                            <TableCell>{assignment.classes.name}</TableCell>
-                            <TableCell>{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-rose-100">
+                            <TableHead className="font-semibold">Title</TableHead>
+                            <TableHead className="font-semibold">Class</TableHead>
+                            <TableHead className="font-semibold">Due Date</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {assignments.map((assignment) => (
+                            <TableRow key={assignment.id} className="hover:bg-rose-50/50 transition-colors">
+                              <TableCell className="font-medium">{assignment.title}</TableCell>
+                              <TableCell className="text-muted-foreground">{assignment.classes.name}</TableCell>
+                              <TableCell className="text-muted-foreground">{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   )}
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-0 shadow-xl overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-violet-400 to-purple-500"></div>
                 <CardHeader>
-                  <CardTitle>Child's Grades</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-2 h-8 bg-gradient-to-b from-violet-400 to-purple-500 rounded-full"></div>
+                    Child's Grades
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {grades.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">No grades available</p>
+                    <div className="text-center py-12">
+                      <GraduationCap className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                      <p className="text-muted-foreground">No grades available</p>
+                    </div>
                   ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Subject</TableHead>
-                          <TableHead>Score</TableHead>
-                          <TableHead>Term</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {grades.map((grade) => (
-                          <TableRow key={grade.id}>
-                            <TableCell className="font-medium">{grade.subject}</TableCell>
-                            <TableCell>{grade.score}/{grade.max_score}</TableCell>
-                            <TableCell>{grade.term}</TableCell>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-violet-100">
+                            <TableHead className="font-semibold">Subject</TableHead>
+                            <TableHead className="font-semibold">Score</TableHead>
+                            <TableHead className="font-semibold">Term</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {grades.map((grade) => (
+                            <TableRow key={grade.id} className="hover:bg-violet-50/50 transition-colors">
+                              <TableCell className="font-medium">{grade.subject}</TableCell>
+                              <TableCell className="font-bold text-violet-600">{grade.score}/{grade.max_score}</TableCell>
+                              <TableCell className="text-muted-foreground">{grade.term}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   )}
                 </CardContent>
               </Card>
             </div>
 
-            <Card className="mt-6">
+            <Card className="mt-6 border-0 shadow-xl overflow-hidden animate-slide-up" style={{animationDelay: '0.3s'}}>
+              <div className="h-2 bg-gradient-to-r from-indigo-400 to-blue-500"></div>
               <CardHeader>
-                <CardTitle>School Fees</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-8 bg-gradient-to-b from-indigo-400 to-blue-500 rounded-full"></div>
+                  School Fees
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {schoolFees.length === 0 ? (
-                  <p className="text-muted-foreground text-sm">No fees available for your child's class</p>
+                  <div className="text-center py-12">
+                    <FileText className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                    <p className="text-muted-foreground">No fees available for your child's class</p>
+                  </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Class</TableHead>
-                        <TableHead>Term</TableHead>
-                        <TableHead>Academic Year</TableHead>
-                        <TableHead>Amount</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {schoolFees.map((fee) => (
-                        <TableRow key={fee.id}>
-                          <TableCell>{fee.classes?.name}</TableCell>
-                          <TableCell>{fee.term}</TableCell>
-                          <TableCell>{fee.academic_year}</TableCell>
-                          <TableCell>{Number(fee.amount).toLocaleString()}</TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-indigo-100">
+                          <TableHead className="font-semibold">Class</TableHead>
+                          <TableHead className="font-semibold">Term</TableHead>
+                          <TableHead className="font-semibold">Academic Year</TableHead>
+                          <TableHead className="font-semibold">Amount</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {schoolFees.map((fee) => (
+                          <TableRow key={fee.id} className="hover:bg-indigo-50/50 transition-colors">
+                            <TableCell className="font-medium">{fee.classes?.name}</TableCell>
+                            <TableCell className="text-muted-foreground">{fee.term}</TableCell>
+                            <TableCell className="text-muted-foreground">{fee.academic_year}</TableCell>
+                            <TableCell className="font-bold text-indigo-600">₦{Number(fee.amount).toLocaleString()}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>

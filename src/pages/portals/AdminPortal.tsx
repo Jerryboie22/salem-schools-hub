@@ -64,11 +64,13 @@ const AdminPortal = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navbar />
-      <div className="gradient-hero py-20 text-primary-foreground">
+      <div className="gradient-admin py-20 text-white">
         <div className="container mx-auto px-4 text-center">
-          <Shield className="w-16 h-16 mx-auto mb-6" />
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+            <Shield className="w-12 h-12" />
+          </div>
           <h1 className="text-5xl font-bold mb-4">Admin Portal</h1>
           <p className="text-xl opacity-90">Manage school operations and content</p>
         </div>
@@ -78,7 +80,8 @@ const AdminPortal = () => {
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Login Form */}
-            <Card className="border-t-4 border-t-primary">
+            <Card className="border-0 shadow-2xl overflow-hidden animate-scale-in">
+              <div className="h-2 gradient-admin"></div>
               <CardHeader>
                 <CardTitle className="text-2xl">Admin Login</CardTitle>
               </CardHeader>
@@ -93,6 +96,7 @@ const AdminPortal = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   <div className="space-y-2">
@@ -104,9 +108,10 @@ const AdminPortal = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      className="focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full gradient-admin text-white border-0 shadow-lg hover:shadow-xl transition-all" disabled={loading}>
                     {loading ? "Logging in..." : "Access Admin Portal"}
                   </Button>
                   <p className="text-sm text-center text-muted-foreground">
@@ -117,51 +122,51 @@ const AdminPortal = () => {
             </Card>
 
             {/* Portal Features */}
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fade-in" style={{animationDelay: '0.2s'}}>
               <h2 className="text-2xl font-bold mb-6">Admin Features</h2>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FileEdit className="w-5 h-5 text-primary" />
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <FileEdit className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-1">Content Management</h3>
+                    <h3 className="font-bold text-lg mb-1">Content Management</h3>
                     <p className="text-sm text-muted-foreground">Manage website content, news, and gallery</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Database className="w-5 h-5 text-accent" />
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <Database className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-1">Student Records</h3>
+                    <h3 className="font-bold text-lg mb-1">Student Records</h3>
                     <p className="text-sm text-muted-foreground">Access and manage student database</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Settings className="w-5 h-5 text-primary" />
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <Settings className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-1">System Settings</h3>
+                    <h3 className="font-bold text-lg mb-1">System Settings</h3>
                     <p className="text-sm text-muted-foreground">Configure school settings and preferences</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-5 h-5 text-accent" />
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <Shield className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-1">User Management</h3>
+                    <h3 className="font-bold text-lg mb-1">User Management</h3>
                     <p className="text-sm text-muted-foreground">Manage user accounts and permissions</p>
                   </div>
                 </CardContent>
@@ -170,13 +175,15 @@ const AdminPortal = () => {
           </div>
 
           {/* Security Notice */}
-          <Card className="mt-8 bg-muted border-l-4 border-l-primary">
-            <CardContent className="p-6">
-              <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-                <Shield className="w-5 h-5 text-primary" />
+          <Card className="mt-8 border-0 shadow-xl bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-l-orange-500 animate-fade-in" style={{animationDelay: '0.4s'}}>
+            <CardContent className="p-8">
+              <h3 className="font-bold text-xl mb-3 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
                 Security Notice
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground">
                 This portal is restricted to authorized administrators only. All activities are logged and monitored for security purposes. Unauthorized access attempts will be reported.
               </p>
             </CardContent>

@@ -77,27 +77,32 @@ const AdminDashboard = () => {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="bg-background border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-          <Button onClick={handleSignOut} variant="outline" size="sm">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+      <header className="glass-effect border-b sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold bg-gradient-admin bg-clip-text text-transparent">Admin Dashboard</h1>
+            <Button onClick={handleSignOut} className="gradient-admin text-white border-0 shadow-lg hover:shadow-xl transition-all">
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="classes" className="w-full">
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Portal Management</h2>
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-4 h-auto flex-wrap">
-              <TabsTrigger value="classes">Classes</TabsTrigger>
-              <TabsTrigger value="subjects">Subjects</TabsTrigger>
-              <TabsTrigger value="assignments">Assignments</TabsTrigger>
-              <TabsTrigger value="grades">Grades</TabsTrigger>
-              <TabsTrigger value="classnotes">Class Notes</TabsTrigger>
+          <div className="mb-8 animate-fade-in">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-1 h-6 rounded-full gradient-admin"></div>
+              Portal Management
+            </h2>
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-4 h-auto flex-wrap bg-white shadow-md border-0">
+              <TabsTrigger value="classes" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Classes</TabsTrigger>
+              <TabsTrigger value="subjects" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Subjects</TabsTrigger>
+              <TabsTrigger value="assignments" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Assignments</TabsTrigger>
+              <TabsTrigger value="grades" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Grades</TabsTrigger>
+              <TabsTrigger value="classnotes" className="data-[state=active]:gradient-admin data-[state=active]:text-white">Class Notes</TabsTrigger>
               <TabsTrigger value="studentclasses">Student Classes</TabsTrigger>
               <TabsTrigger value="schoolfees">School Fees</TabsTrigger>
             </TabsList>

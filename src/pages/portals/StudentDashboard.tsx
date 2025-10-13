@@ -553,24 +553,37 @@ const StudentDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 animate-slide-up" style={{animationDelay: '0.3s'}}>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 bg-gradient-to-r from-teal-400 to-emerald-500"></div>
             <CardHeader>
-              <CardTitle>Class Notes</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-teal-400 to-emerald-500 rounded-full"></div>
+                Class Notes
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {classNotes.length === 0 ? (
-                <p className="text-muted-foreground text-sm">No class notes available</p>
+                <div className="text-center py-12">
+                  <BookOpen className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No class notes available</p>
+                </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {classNotes.map((note) => (
-                    <div key={note.id} className="border-b pb-3 last:border-0">
-                      <h4 className="font-medium">{note.title}</h4>
-                      <p className="text-sm text-muted-foreground">{note.classes.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {new Date(note.created_at).toLocaleDateString()}
-                      </p>
+                    <div key={note.id} className="p-4 rounded-xl bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-100 hover:shadow-md transition-all">
+                      <h4 className="font-semibold text-teal-900">{note.title}</h4>
+                      <div className="flex items-center gap-4 mt-2 text-sm">
+                        <span className="text-teal-600 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                          {note.classes.name}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {new Date(note.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -578,24 +591,37 @@ const StudentDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 bg-gradient-to-r from-amber-400 to-orange-500"></div>
             <CardHeader>
-              <CardTitle>Weekly Schedule</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-amber-400 to-orange-500 rounded-full"></div>
+                Weekly Schedule
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {schedules.length === 0 ? (
-                <p className="text-muted-foreground text-sm">No schedule available</p>
+                <div className="text-center py-12">
+                  <Calendar className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No schedule available</p>
+                </div>
               ) : (
                 <div className="space-y-3">
                   {schedules.map((schedule) => {
                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                     return (
-                      <div key={schedule.id} className="border-b pb-2 last:border-0">
-                        <p className="font-medium">{schedule.subject}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {days[schedule.day_of_week]} • {schedule.start_time} - {schedule.end_time}
-                        </p>
-                        <p className="text-xs text-muted-foreground">{schedule.classes.name}</p>
+                      <div key={schedule.id} className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 hover:shadow-md transition-all">
+                        <h4 className="font-semibold text-amber-900">{schedule.subject}</h4>
+                        <div className="flex items-center gap-4 mt-2 text-sm">
+                          <span className="text-amber-600 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            {days[schedule.day_of_week]}
+                          </span>
+                          <span className="text-muted-foreground">
+                            {schedule.start_time} - {schedule.end_time}
+                          </span>
+                        </div>
+                        <p className="text-xs text-amber-600 mt-1">{schedule.classes.name}</p>
                       </div>
                     );
                   })}
@@ -605,88 +631,112 @@ const StudentDashboard = () => {
           </Card>
         </div>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Attendance Records</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {attendance.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No attendance records yet</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Class</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attendance.map((record) => (
-                    <TableRow key={record.id}>
-                      <TableCell>{new Date(record.date).toLocaleDateString()}</TableCell>
-                      <TableCell>{record.classes?.name || 'N/A'}</TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={
-                            record.status === 'present' ? 'default' : 
-                            record.status === 'absent' ? 'destructive' : 
-                            record.status === 'late' ? 'secondary' : 
-                            'outline'
-                          }
-                        >
-                          {record.status.toUpperCase()}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 gap-6 animate-slide-up" style={{animationDelay: '0.4s'}}>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 bg-gradient-to-r from-rose-400 to-pink-500"></div>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-rose-400 to-pink-500 rounded-full"></div>
+                Attendance Records
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {attendance.length === 0 ? (
+                <div className="text-center py-12">
+                  <Users className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No attendance records yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-rose-100">
+                        <TableHead className="font-semibold">Date</TableHead>
+                        <TableHead className="font-semibold">Class</TableHead>
+                        <TableHead className="font-semibold">Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {attendance.map((record) => (
+                        <TableRow key={record.id} className="hover:bg-rose-50/50 transition-colors">
+                          <TableCell className="font-medium">{new Date(record.date).toLocaleDateString()}</TableCell>
+                          <TableCell className="text-muted-foreground">{record.classes?.name || 'N/A'}</TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant={
+                                record.status === 'present' ? 'default' : 
+                                record.status === 'absent' ? 'destructive' : 
+                                record.status === 'late' ? 'secondary' : 
+                                'outline'
+                              }
+                              className="font-semibold"
+                            >
+                              {record.status.toUpperCase()}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>School Fees</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {schoolFees.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No fees available for your class</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Class</TableHead>
-                    <TableHead>Term</TableHead>
-                    <TableHead>Academic Year</TableHead>
-                    <TableHead>Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {schoolFees.map((fee) => (
-                    <TableRow key={fee.id}>
-                      <TableCell>{fee.classes?.name}</TableCell>
-                      <TableCell>{fee.term}</TableCell>
-                      <TableCell>{fee.academic_year}</TableCell>
-                      <TableCell>{Number(fee.amount).toLocaleString()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 bg-gradient-to-r from-indigo-400 to-blue-500"></div>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-indigo-400 to-blue-500 rounded-full"></div>
+                School Fees
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {schoolFees.length === 0 ? (
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No fees available for your class</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-indigo-100">
+                        <TableHead className="font-semibold">Class</TableHead>
+                        <TableHead className="font-semibold">Term</TableHead>
+                        <TableHead className="font-semibold">Academic Year</TableHead>
+                        <TableHead className="font-semibold">Amount</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {schoolFees.map((fee) => (
+                        <TableRow key={fee.id} className="hover:bg-indigo-50/50 transition-colors">
+                          <TableCell className="font-medium">{fee.classes?.name}</TableCell>
+                          <TableCell className="text-muted-foreground">{fee.term}</TableCell>
+                          <TableCell className="text-muted-foreground">{fee.academic_year}</TableCell>
+                          <TableCell className="font-bold text-indigo-600">₦{Number(fee.amount).toLocaleString()}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome to Your Student Portal</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
+        <Card className="border-0 shadow-xl overflow-hidden gradient-card animate-scale-in" style={{animationDelay: '0.5s'}}>
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 rounded-full gradient-student mx-auto mb-4 flex items-center justify-center">
+              <BookOpen className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold mb-2 bg-gradient-student bg-clip-text text-transparent">
+              Welcome to Your Student Portal
+            </h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Your personalized dashboard for accessing academic resources, viewing grades, and staying updated with school activities.
             </p>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

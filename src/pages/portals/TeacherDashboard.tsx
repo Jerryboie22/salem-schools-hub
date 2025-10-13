@@ -127,17 +127,19 @@ const TeacherDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="bg-background border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
-            <p className="text-sm text-muted-foreground">{userEmail}</p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-fuchsia-50">
+      <header className="glass-effect border-b sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-teacher bg-clip-text text-transparent">Teacher Dashboard</h1>
+              <p className="text-sm text-muted-foreground">{userEmail}</p>
+            </div>
+            <Button onClick={handleSignOut} className="gradient-teacher text-white border-0 shadow-lg hover:shadow-xl transition-all">
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
-          <Button onClick={handleSignOut} variant="outline" size="sm">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
         </div>
       </header>
 
