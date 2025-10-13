@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent, DialogClose } from "./ui/dialog";
 
 interface GalleryImage {
   id: string;
@@ -15,6 +16,7 @@ const GallerySlider = () => {
   const navigate = useNavigate();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const imagesPerPage = 8; // 2 rows x 4 columns
 
   useEffect(() => {
@@ -78,6 +80,7 @@ const GallerySlider = () => {
             {currentImages.map((image, idx) => (
               <div 
                 key={image.id} 
+                onClick={() => setSelectedImage(image)}
                 className="relative aspect-square rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer animate-fade-in border-2 border-transparent hover:border-primary/30"
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
@@ -146,6 +149,31 @@ const GallerySlider = () => {
           </Button>
         </div>
       </div>
+
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-7xl w-full p-0 bg-black/95 border-0">
+          <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 hover:bg-white/20 transition-colors">
+            <X className="h-6 w-6 text-white" />
+          </DialogClose>
+          {selectedImage && (
+            <div className="relative w-full h-[90vh] flex items-center justify-center p-4">
+              <img
+                src={selectedImage.image_url}
+                alt={selectedImage.title || "Gallery image"}
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+              {selectedImage.title && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                  <h3 className="text-white text-2xl font-bold">{selectedImage.title}</h3>
+                  {selectedImage.description && (
+                    <p className="text-white/80 mt-2">{selectedImage.description}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

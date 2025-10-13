@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
-import { Images } from "lucide-react";
+import { Images, X } from "lucide-react";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 
 interface GalleryImage {
   id: string;
@@ -13,6 +14,7 @@ interface GalleryImage {
 
 const Gallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   useEffect(() => {
     fetchGalleryImages();
@@ -51,7 +53,8 @@ const Gallery = () => {
           {images.map((image) => (
             <div
               key={image.id}
-              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              onClick={() => setSelectedImage(image)}
+              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
@@ -83,6 +86,31 @@ const Gallery = () => {
           </div>
         )}
       </div>
+
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-7xl w-full p-0 bg-black/95 border-0">
+          <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 hover:bg-white/20 transition-colors">
+            <X className="h-6 w-6 text-white" />
+          </DialogClose>
+          {selectedImage && (
+            <div className="relative w-full h-[90vh] flex items-center justify-center p-4">
+              <img
+                src={selectedImage.image_url}
+                alt={selectedImage.title || "Gallery image"}
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+              {selectedImage.title && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                  <h3 className="text-white text-2xl font-bold">{selectedImage.title}</h3>
+                  {selectedImage.description && (
+                    <p className="text-white/80 mt-2">{selectedImage.description}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
       <Footer />
     </div>
   );
