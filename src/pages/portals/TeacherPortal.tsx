@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -10,14 +10,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface Class {
+  id: string;
+  name: string;
+}
 
 const TeacherPortal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
+  const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchClasses();
+  }, []);
+
+  const fetchClasses = async () => {
+    const { data } = await supabase.from("classes").select("*").order("name");
+    if (data) setClasses(data);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,6 +237,28 @@ const TeacherPortal = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Select Classes You'll Teach</Label>
+                      <div className="max-h-40 overflow-y-auto border rounded-lg p-2 space-y-2">
+                        {classes.map((cls) => (
+                          <label key={cls.id} className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              checked={selectedClasses.includes(cls.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedClasses([...selectedClasses, cls.id]);
+                                } else {
+                                  setSelectedClasses(selectedClasses.filter(id => id !== cls.id));
+                                }
+                              }}
+                              className="rounded"
+                            />
+                            <span className="text-sm">{cls.name}</span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>
                       {loading ? "Creating account..." : "Create Account"}

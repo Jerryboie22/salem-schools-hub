@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -10,14 +10,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface Class {
+  id: string;
+  name: string;
+}
 
 const StudentPortal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchClasses();
+  }, []);
+
+  const fetchClasses = async () => {
+    const { data } = await supabase.from("classes").select("*").order("name");
+    if (data) setClasses(data);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +100,15 @@ const StudentPortal = () => {
       return;
     }
 
+    if (!selectedClass) {
+      toast({
+        title: "Class required",
+        description: "Please select a class.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
     const { data, error } = await supabase.auth.signUp({
@@ -98,14 +130,15 @@ const StudentPortal = () => {
     }
 
     if (data.user) {
-      // Assign student role
-      const { error: roleError } = await supabase
-        .from("user_roles")
-        .insert({ user_id: data.user.id, role: "student" });
+      // Assign student role and class
+      const [roleRes, classRes] = await Promise.all([
+        supabase.from("user_roles").insert({ user_id: data.user.id, role: "student" }),
+        supabase.from("student_classes").insert({ student_id: data.user.id, class_id: selectedClass }),
+      ]);
 
-      if (roleError) {
+      if (roleRes.error || classRes.error) {
         toast({
-          title: "Role assignment failed",
+          title: "Setup failed",
           description: "Please contact support.",
           variant: "destructive",
         });
@@ -121,6 +154,7 @@ const StudentPortal = () => {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setSelectedClass("");
     }
 
     setLoading(false);
@@ -214,6 +248,21 @@ const StudentPortal = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="class-select">Select Your Class</Label>
+                      <Select value={selectedClass} onValueChange={setSelectedClass} required>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose your class" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {classes.map((cls) => (
+                            <SelectItem key={cls.id} value={cls.id}>
+                              {cls.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>
                       {loading ? "Creating account..." : "Create Account"}
