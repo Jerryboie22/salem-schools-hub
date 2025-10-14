@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
+import logo from "@/assets/salem-logo-new.jpg";
 
 const Footer = () => {
   return (
@@ -8,8 +9,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Salem Group of Schools</h3>
-            <p className="text-sm opacity-90 mb-4">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt="Salem Logo" className="w-16 h-16 rounded-full object-cover" />
+              <div>
+                <h3 className="text-xl font-bold">Salem Group of Schools</h3>
+                <p className="text-xs opacity-75">Excellence in Education</p>
+              </div>
+            </div>
+            <p className="text-sm opacity-90">
               Building a generation rooted in knowledge, discipline, and excellence. Quality education from nursery to secondary level.
             </p>
           </div>

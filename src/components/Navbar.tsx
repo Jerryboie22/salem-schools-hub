@@ -9,6 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import logo from "@/assets/salem-logo-new.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,9 +22,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center font-bold text-xl">
-              SGS
-            </div>
+            <img src={logo} alt="Salem Logo" className="w-12 h-12 rounded-full object-cover" />
             <div className="hidden md:block">
               <div className="font-bold text-xl">Salem Group of Schools</div>
               <div className="text-xs opacity-90">Excellence in Education</div>

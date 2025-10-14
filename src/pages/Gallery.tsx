@@ -49,28 +49,28 @@ const Gallery = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {images.map((image) => (
             <div
               key={image.id}
               onClick={() => setSelectedImage(image)}
-              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+              className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] cursor-pointer bg-card"
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={image.image_url}
                   alt={image.title || "Gallery image"}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
               </div>
               {(image.title || image.description) && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <div className="p-6 text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
+                  <div className="p-8 text-white w-full">
                     {image.title && (
-                      <h3 className="text-xl font-bold mb-2">{image.title}</h3>
+                      <h3 className="text-2xl md:text-3xl font-bold mb-3 drop-shadow-lg">{image.title}</h3>
                     )}
                     {image.description && (
-                      <p className="text-sm text-white/90">{image.description}</p>
+                      <p className="text-base md:text-lg text-white/95 drop-shadow-md">{image.description}</p>
                     )}
                   </div>
                 </div>

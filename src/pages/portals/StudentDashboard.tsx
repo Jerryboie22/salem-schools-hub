@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen, Calendar, FileText, Award, Users } from "lucide-react";
+import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -327,10 +327,18 @@ const StudentDashboard = () => {
                 <p className="text-xs sm:text-sm text-muted-foreground truncate">{studentClasses.map(sc => sc.classes.name).join(", ") || "No class"}</p>
               </div>
             </div>
-            <Button onClick={handleSignOut} size="sm" className="gradient-student text-white w-full sm:w-auto">
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Link to="/">
+                <Button size="sm" variant="outline" className="gap-2">
+                  <Home className="w-4 h-4" />
+                  Home
+                </Button>
+              </Link>
+              <Button onClick={handleSignOut} size="sm" className="gradient-student text-white">
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
       </header>

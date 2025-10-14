@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut } from "lucide-react";
+import { LogOut, Home } from "lucide-react";
+import { Link } from "react-router-dom";
 import BlogPostsManager from "./components/BlogPostsManager";
 import GalleryManager from "./components/GalleryManager";
 import LeadershipManager from "./components/LeadershipManager";
@@ -85,10 +86,18 @@ const AdminDashboard = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
               <p className="text-sm text-muted-foreground mt-1">Manage your school system</p>
             </div>
-            <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full sm:w-auto">
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Link to="/">
+                <Button variant="outline" size="sm">
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
+              <Button onClick={handleSignOut} variant="outline" size="sm">
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
       </header>

@@ -8,7 +8,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpen, Users, Trophy, Microscope, Globe, Laptop } from "lucide-react";
-import facilitiesImg from "@/assets/ict-lab.jpg";
+import facilitiesImg from "@/assets/modern-facilities.jpg";
 import aboutImg from "@/assets/school-exterior.jpg";
 
 const Index = () => {
