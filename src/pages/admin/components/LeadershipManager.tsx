@@ -49,6 +49,31 @@ const LeadershipManager = () => {
     setLeaders(data || []);
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `leadership/${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('gallery-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('gallery-images')
+        .getPublicUrl(fileName);
+
+      setFormData({ ...formData, image_url: publicUrl });
+      toast({ title: "Success", description: "Image uploaded successfully" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -142,12 +167,16 @@ const LeadershipManager = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Image URL</Label>
+              <Label>Upload Image or Enter URL</Label>
+              <Input type="file" accept="image/*" onChange={handleImageUpload} className="mb-2" />
               <Input
                 value={formData.image_url}
                 onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://example.com/image.jpg"
+                placeholder="Or enter image URL: https://example.com/image.jpg"
               />
+              {formData.image_url && (
+                <img src={formData.image_url} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded-lg" />
+              )}
             </div>
             <div className="space-y-2">
               <Label>Bio</Label>

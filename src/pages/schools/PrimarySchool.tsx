@@ -59,56 +59,28 @@ const PrimarySchool = () => {
             strong academic foundations while nurturing character, creativity, and critical thinking.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <GraduationCap className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Comprehensive Curriculum</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Aligned with national standards, covering Mathematics, English Language, Science,
-                  Social Studies, and more with engaging teaching methods.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Trophy className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Extracurricular Activities</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Sports, arts, music, drama, and club activities that develop talents,
-                  teamwork, and leadership skills beyond the classroom.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Academic Excellence</h3>
               </CardContent>
             </Card>
 
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Award className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Academic Excellence</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Experienced teachers using innovative teaching methods to ensure every
-                  student reaches their full potential and develops a love for learning.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">ICT Integration</h3>
               </CardContent>
             </Card>
 
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Book className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">ICT Integration</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Modern computer labs and smart classrooms equipped with technology
-                  to prepare students for the digital age.
-                </p>
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Comprehensive Curriculum</h3>
+              </CardContent>
+            </Card>
+
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Extracurricular Activities</h3>
               </CardContent>
             </Card>
           </div>

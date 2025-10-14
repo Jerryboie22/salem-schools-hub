@@ -18,7 +18,7 @@ const Navbar = () => {
   const [portalsOpen, setPortalsOpen] = useState(false);
 
   return (
-    <nav className="bg-primary text-primary-foreground sticky top-0 z-50 shadow-lg">
+    <nav className="bg-primary text-primary-foreground z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-3">

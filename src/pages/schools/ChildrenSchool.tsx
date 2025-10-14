@@ -59,56 +59,28 @@ const ChildrenSchool = () => {
             first steps in education are filled with joy, discovery, and learning through play.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <BookOpen className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Early Learning</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Age-appropriate curriculum focusing on literacy, numeracy, and creative expression
-                  through hands-on activities and play-based learning.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Small Class Sizes</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Low student-to-teacher ratios ensure personalized attention and care for
-                  each child's individual needs and learning pace.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Academic Excellence</h3>
               </CardContent>
             </Card>
 
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Creative Play</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Safe, colorful play areas equipped with age-appropriate toys and learning
-                  materials that encourage imagination and motor skill development.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">ICT Integration</h3>
               </CardContent>
             </Card>
 
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Baby className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Caring Environment</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Experienced, nurturing teachers create a home-away-from-home atmosphere
-                  where children feel safe, loved, and excited to learn.
-                </p>
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Early Learning</h3>
+              </CardContent>
+            </Card>
+
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Creative Play</h3>
               </CardContent>
             </Card>
           </div>

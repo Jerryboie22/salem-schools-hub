@@ -81,6 +81,11 @@ const SchoolInfoManager = () => {
     }
   };
 
+  const handleSavePrincipalInfo = () => {
+    if (!schoolInfo) return;
+    toast.success('Principal information updated');
+  };
+
   const addFacility = () => {
     if (!newFacility.trim() || !schoolInfo) return;
     const updatedFacilities = [...(schoolInfo.facilities || []), newFacility];
@@ -118,23 +123,29 @@ const SchoolInfoManager = () => {
           </div>
 
           <div className="border-t pt-4 space-y-4">
-            <h3 className="font-semibold">Principal/Head Teacher Information</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold">Principal/Head Teacher Information</h3>
+              <Button onClick={handleSavePrincipalInfo} size="sm">
+                <Save className="h-4 w-4 mr-2" />
+                Update Info
+              </Button>
+            </div>
             
+            <div>
+              <Label>Section Title (Editable)</Label>
+              <Input
+                value={schoolInfo?.principal_position || ''}
+                onChange={(e) => updateInfoMutation.mutate({ principal_position: e.target.value })}
+                placeholder="e.g., Principal's Desk, Head Teacher's Message"
+              />
+            </div>
+
             <div>
               <Label>Name</Label>
               <Input
                 value={schoolInfo?.principal_name || ''}
                 onChange={(e) => updateInfoMutation.mutate({ principal_name: e.target.value })}
                 placeholder="Principal name"
-              />
-            </div>
-
-            <div>
-              <Label>Position</Label>
-              <Input
-                value={schoolInfo?.principal_position || ''}
-                onChange={(e) => updateInfoMutation.mutate({ principal_position: e.target.value })}
-                placeholder="e.g., Principal, Head Teacher"
               />
             </div>
 
@@ -151,7 +162,7 @@ const SchoolInfoManager = () => {
             </div>
 
             <div>
-              <Label>Message from Principal's Desk</Label>
+              <Label>Message from Desk</Label>
               <Textarea
                 value={schoolInfo?.principal_message || ''}
                 onChange={(e) => updateInfoMutation.mutate({ principal_message: e.target.value })}

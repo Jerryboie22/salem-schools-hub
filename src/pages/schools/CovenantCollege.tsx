@@ -59,56 +59,28 @@ const CovenantCollege = () => {
             character development, and a commitment to excellence in all endeavors.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Award className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">WAEC & NECO Excellence</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Outstanding track record in West African Examinations Council (WAEC) and
-                  National Examinations Council (NECO) with consistent excellent results.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Specialized Streams</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Science, Commercial, and Arts streams with specialized laboratories,
-                  equipment, and experienced subject teachers.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Academic Excellence</h3>
               </CardContent>
             </Card>
 
             <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Globe className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">University Preparation</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Comprehensive guidance and support for JAMB preparation and university
-                  entrance exams with dedicated counseling services.
-                </p>
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">ICT Integration</h3>
               </CardContent>
             </Card>
 
-            <Card className="border-t-4 border-t-accent hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <GraduationCap className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-bold text-xl mb-3">Leadership Development</h3>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Student government, prefectorial system, and leadership training programs
-                  that build responsible, confident future leaders.
-                </p>
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">University Preparation</h3>
+              </CardContent>
+            </Card>
+
+            <Card className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <h3 className="text-base md:text-lg font-semibold text-center">Leadership Development</h3>
               </CardContent>
             </Card>
           </div>
