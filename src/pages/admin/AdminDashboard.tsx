@@ -19,6 +19,8 @@ import ClassNotesManager from "./components/ClassNotesManager";
 import StudentClassesManager from "./components/StudentClassesManager";
 import SubjectsManager from "./components/SubjectsManager";
 import SchoolFeesManager from "./components/SchoolFeesManager";
+import SchoolPhotosManager from "./components/SchoolPhotosManager";
+import SchoolInfoManager from "./components/SchoolInfoManager";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -131,6 +133,8 @@ const AdminDashboard = () => {
               <TabsList className="w-full h-auto bg-muted/50 p-1 flex flex-wrap gap-1">
                 <TabsTrigger value="blog" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Blog</TabsTrigger>
                 <TabsTrigger value="gallery" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Gallery</TabsTrigger>
+                <TabsTrigger value="schoolphotos" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">School Photos</TabsTrigger>
+                <TabsTrigger value="schoolinfo" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">School Info</TabsTrigger>
                 <TabsTrigger value="leadership" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Leadership</TabsTrigger>
                 <TabsTrigger value="testimonials" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Testimonials</TabsTrigger>
                 <TabsTrigger value="messages" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Messages</TabsTrigger>
@@ -195,6 +199,14 @@ const AdminDashboard = () => {
 
           <TabsContent value="messages">
             <ContactMessagesManager />
+          </TabsContent>
+
+          <TabsContent value="schoolphotos">
+            <SchoolPhotosManager />
+          </TabsContent>
+
+          <TabsContent value="schoolinfo">
+            <SchoolInfoManager />
           </TabsContent>
 
           <TabsContent value="users">

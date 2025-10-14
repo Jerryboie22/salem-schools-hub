@@ -63,6 +63,7 @@ export type Database = {
           due_date: string | null
           file_url: string | null
           id: string
+          school_type: Database["public"]["Enums"]["school_type"] | null
           subject: string | null
           teacher_id: string
           title: string
@@ -75,6 +76,7 @@ export type Database = {
           due_date?: string | null
           file_url?: string | null
           id?: string
+          school_type?: Database["public"]["Enums"]["school_type"] | null
           subject?: string | null
           teacher_id: string
           title: string
@@ -87,6 +89,7 @@ export type Database = {
           due_date?: string | null
           file_url?: string | null
           id?: string
+          school_type?: Database["public"]["Enums"]["school_type"] | null
           subject?: string | null
           teacher_id?: string
           title?: string
@@ -651,6 +654,78 @@ export type Database = {
           },
         ]
       }
+      school_info: {
+        Row: {
+          created_at: string | null
+          facilities: string[] | null
+          id: string
+          principal_image_url: string | null
+          principal_message: string | null
+          principal_name: string | null
+          principal_position: string | null
+          school_type: Database["public"]["Enums"]["school_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          facilities?: string[] | null
+          id?: string
+          principal_image_url?: string | null
+          principal_message?: string | null
+          principal_name?: string | null
+          principal_position?: string | null
+          school_type: Database["public"]["Enums"]["school_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          facilities?: string[] | null
+          id?: string
+          principal_image_url?: string | null
+          principal_message?: string | null
+          principal_name?: string | null
+          principal_position?: string | null
+          school_type?: Database["public"]["Enums"]["school_type"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      school_photos: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          order_index: number | null
+          school_type: Database["public"]["Enums"]["school_type"]
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          order_index?: number | null
+          school_type: Database["public"]["Enums"]["school_type"]
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          order_index?: number | null
+          school_type?: Database["public"]["Enums"]["school_type"]
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       student_classes: {
         Row: {
           class_id: string
@@ -799,6 +874,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "teacher" | "student" | "parent"
+      school_type: "children" | "primary" | "covenant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -927,6 +1003,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "teacher", "student", "parent"],
+      school_type: ["children", "primary", "covenant"],
     },
   },
 } as const
