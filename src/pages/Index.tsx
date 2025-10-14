@@ -18,41 +18,44 @@ const Index = () => {
       <Hero />
       
       {/* About Section */}
-      <section className="py-12 bg-background">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div className="order-2 md:order-1">
               <img 
                 src={aboutImg} 
                 alt="Salem Group of Schools Campus" 
-                className="rounded-lg shadow-xl w-full h-[400px] object-cover"
+                className="rounded-lg shadow-xl w-full"
               />
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">About Salem Group of Schools</h2>
-              <p className="text-base text-muted-foreground mb-3">
-                For over 25 years, Salem Group of Schools has been at the forefront of educational excellence in Ota, Ogun State. We are committed to nurturing young minds and developing well-rounded individuals.
+              <h2 className="text-4xl font-bold mb-6">About Salem Group of Schools</h2>
+              <p className="text-lg text-muted-foreground mb-4">
+                For over 25 years, Salem Group of Schools has been at the forefront of educational excellence in Ota, Ogun State. We are committed to nurturing young minds and developing well-rounded individuals who excel academically, socially, and spiritually.
               </p>
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-6 h-6 text-accent flex-shrink-0" />
-                  <span className="text-sm font-semibold">Excellence in Education</span>
+              <p className="text-lg text-muted-foreground mb-6">
+                Our three schools provide continuous quality education from early childhood through secondary level, ensuring your child receives the best foundation for future success.
+              </p>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <BookOpen className="w-8 h-8 text-accent" />
+                  <span className="font-semibold">Excellence in Education</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-6 h-6 text-accent flex-shrink-0" />
-                  <span className="text-sm font-semibold">Experienced Teachers</span>
+                <div className="flex items-center gap-3">
+                  <Users className="w-8 h-8 text-accent" />
+                  <span className="font-semibold">Experienced Teachers</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Trophy className="w-6 h-6 text-accent flex-shrink-0" />
-                  <span className="text-sm font-semibold">Proven Track Record</span>
+                <div className="flex items-center gap-3">
+                  <Trophy className="w-8 h-8 text-accent" />
+                  <span className="font-semibold">Proven Track Record</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="w-6 h-6 text-accent flex-shrink-0" />
-                  <span className="text-sm font-semibold">Global Standards</span>
+                <div className="flex items-center gap-3">
+                  <Globe className="w-8 h-8 text-accent" />
+                  <span className="font-semibold">Global Standards</span>
                 </div>
               </div>
               <Button variant="outline" asChild>
-                <Link to="/about">Learn More About Us</Link>
+                <Link to="/about">Read More About Salem Group</Link>
               </Button>
             </div>
           </div>
@@ -64,41 +67,41 @@ const Index = () => {
       <GallerySlider />
 
       {/* Facilities Section */}
-      <section className="py-12 bg-muted">
+      <section className="py-16 bg-muted">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our World-Class Facilities</h2>
-              <p className="text-base text-muted-foreground mb-4">
-                Modern facilities designed to enhance learning and student development.
+              <h2 className="text-4xl font-bold mb-6">Our World-Class Facilities</h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                Salem Group of Schools boasts modern facilities designed to enhance learning and overall student development.
               </p>
-              <div className="space-y-3">
-                <div className="flex items-start gap-2">
-                  <BookOpen className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <BookOpen className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-semibold text-sm mb-0.5">Modern Library</h4>
-                    <p className="text-sm text-muted-foreground">Extensive collection of books and digital resources</p>
+                    <h4 className="font-semibold mb-1">Modern Library</h4>
+                    <p className="text-muted-foreground">Extensive collection of books and digital resources</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Microscope className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                <div className="flex items-start gap-3">
+                  <Microscope className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-semibold text-sm mb-0.5">Science Laboratories</h4>
-                    <p className="text-sm text-muted-foreground">Fully equipped labs for Physics, Chemistry, and Biology</p>
+                    <h4 className="font-semibold mb-1">Science Laboratories</h4>
+                    <p className="text-muted-foreground">Fully equipped labs for Physics, Chemistry, and Biology</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Laptop className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                <div className="flex items-start gap-3">
+                  <Laptop className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-semibold text-sm mb-0.5">ICT Center</h4>
-                    <p className="text-sm text-muted-foreground">Modern computer labs with internet access</p>
+                    <h4 className="font-semibold mb-1">ICT Center</h4>
+                    <p className="text-muted-foreground">Modern computer labs with internet access</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Trophy className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                <div className="flex items-start gap-3">
+                  <Trophy className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-semibold text-sm mb-0.5">Sports Facilities</h4>
-                    <p className="text-sm text-muted-foreground">Football fields, basketball courts, and athletic tracks</p>
+                    <h4 className="font-semibold mb-1">Sports Facilities</h4>
+                    <p className="text-muted-foreground">Football fields, basketball courts, and athletic tracks</p>
                   </div>
                 </div>
               </div>
@@ -107,7 +110,7 @@ const Index = () => {
               <img 
                 src={facilitiesImg} 
                 alt="School Facilities" 
-                className="rounded-lg shadow-xl w-full h-[400px] object-cover"
+                className="rounded-lg shadow-xl w-full"
               />
             </div>
           </div>
@@ -118,12 +121,12 @@ const Index = () => {
       <TestimonialsSection />
 
       {/* Contact & Map Section */}
-      <section className="py-12 bg-muted">
+      <section className="py-16 bg-gradient-to-br from-[hsl(var(--gold-light))] via-[hsl(var(--cream))] to-[hsl(var(--gold-light))]">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">Get In Touch</h2>
-              <p className="text-base text-muted-foreground">
+            <div className="text-center mb-10">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary">Get In Touch</h2>
+              <p className="text-lg text-primary/80 max-w-2xl mx-auto">
                 We'd love to hear from you. Visit us or send us a message
               </p>
             </div>
