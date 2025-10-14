@@ -8,70 +8,68 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Salem School Colors */
-    --navy-blue: 210 100% 16.5%;
-    --light-yellow: 48 100% 87%;
-    --sky-blue: 207 65% 59%;
-    --soft-green: 94 22% 85%;
-    --cream-beige: 45 100% 90%;
-    --charcoal-gray: 0 0% 17%;
-    --cool-gray: 210 17% 97%;
-    --golden-amber: 45 91% 61%;
+    /* Brand Colors from Logo - Navy Blue & Gold/Yellow */
+    --brand-navy: 221 83% 20%;
+    --brand-navy-light: 221 50% 35%;
+    --brand-gold: 45 93% 58%;
+    --brand-gold-light: 48 96% 70%;
+    --brand-gold-dark: 42 88% 45%;
     
-    /* Complementary cream/gold colors */
-    --cream: 40 80% 95%;
-    --gold-light: 45 90% 88%;
-    --gold: 48 96% 53%;
-    --gold-dark: 42 88% 45%;
+    /* Complementary Cream/Neutral Palette */
+    --cream: 40 50% 97%;
+    --cream-dark: 40 30% 90%;
+    --ivory: 48 30% 98%;
+    --milk: 45 25% 96%;
+    --warm-gray: 40 10% 60%;
+    
+    /* Accent Colors */
+    --accent-blue: 207 80% 60%;
+    --accent-green: 142 55% 50%;
     
     /* Portal-specific colors */
     --student-primary: 207 90% 54%;
     --student-secondary: 187 85% 43%;
-    --teacher-primary: 271 81% 56%;
-    --teacher-secondary: 291 64% 42%;
-    --parent-primary: 339 80% 59%;
-    --parent-secondary: 350 89% 60%;
     --admin-primary: 24 95% 56%;
     --admin-secondary: 33 100% 50%;
     
-    --background: 220 17% 98%;
-    --foreground: 0 0% 17%;
+    --background: 40 50% 99%;
+    --foreground: 221 60% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 17%;
+    --card-foreground: 221 60% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 17%;
+    --popover-foreground: 221 60% 15%;
 
-    --primary: 210 100% 16.5%;
+    --primary: 221 83% 20%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 48 100% 87%;
-    --secondary-foreground: 0 0% 17%;
+    --secondary: 45 93% 58%;
+    --secondary-foreground: 221 60% 15%;
 
-    --muted: 210 17% 97%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 40 30% 95%;
+    --muted-foreground: 40 10% 40%;
 
-    --accent: 207 65% 59%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 93% 58%;
+    --accent-foreground: 221 60% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 17% 90%;
-    --input: 210 17% 90%;
-    --ring: 210 100% 16.5%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 221 83% 20%;
 
     --radius: 0.75rem;
     
-    /* Creative gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(210 100% 16.5%) 0%, hsl(207 65% 59%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(45 91% 61%) 0%, hsl(48 100% 87%) 100%);
+    /* Modern Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(221 83% 20%) 0%, hsl(221 50% 35%) 50%, hsl(207 80% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 93% 58%) 0%, hsl(48 96% 70%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(221 83% 20%) 0%, hsl(45 93% 58%) 100%);
     --gradient-student: linear-gradient(135deg, hsl(207 90% 54%) 0%, hsl(187 85% 43%) 100%);
-    --gradient-teacher: linear-gradient(135deg, hsl(271 81% 56%) 0%, hsl(291 64% 42%) 100%);
-    --gradient-parent: linear-gradient(135deg, hsl(339 80% 59%) 0%, hsl(350 89% 60%) 100%);
     --gradient-admin: linear-gradient(135deg, hsl(24 95% 56%) 0%, hsl(33 100% 50%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-cream: linear-gradient(180deg, hsl(40 50% 99%) 0%, hsl(40 30% 95%) 100%);
+    --gradient-overlay: linear-gradient(135deg, rgba(221 83% 20% / 0.9) 0%, rgba(45 93% 58% / 0.9) 100%);
   }
 }
 
@@ -95,6 +93,10 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
   
+  .gradient-gold {
+    background: var(--gradient-gold);
+  }
+  
   .gradient-accent {
     background: var(--gradient-accent);
   }
@@ -103,20 +105,19 @@ All colors MUST be HSL.
     background: var(--gradient-student);
   }
   
-  .gradient-teacher {
-    background: var(--gradient-teacher);
-  }
-  
-  .gradient-parent {
-    background: var(--gradient-parent);
-  }
-  
   .gradient-admin {
     background: var(--gradient-admin);
   }
   
-  .gradient-card {
-    background: var(--gradient-card);
+  .gradient-cream {
+    background: var(--gradient-cream);
+  }
+  
+  .text-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .animate-fade-in {
