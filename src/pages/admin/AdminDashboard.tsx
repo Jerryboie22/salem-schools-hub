@@ -13,9 +13,8 @@ import TestimonialsManager from "./components/TestimonialsManager";
 import ContactMessagesManager from "./components/ContactMessagesManager";
 import { UserManagementManager } from "./components/UserManagementManager";
 import ClassesManager from "./components/ClassesManager";
-import AssignmentsManager from "./components/AssignmentsManager";
-import GradesManager from "./components/GradesManager";
-import ClassNotesManager from "./components/ClassNotesManager";
+import AnnouncementsManager from "./components/AnnouncementsManager";
+import TeacherContentView from "./components/TeacherContentView";
 import StudentClassesManager from "./components/StudentClassesManager";
 import SubjectsManager from "./components/SubjectsManager";
 import SchoolFeesManager from "./components/SchoolFeesManager";
@@ -116,11 +115,10 @@ const AdminDashboard = () => {
               <TabsList className="w-full h-auto bg-muted/50 p-1 flex flex-wrap gap-1">
                 <TabsTrigger value="classes" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Classes</TabsTrigger>
                 <TabsTrigger value="subjects" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Subjects</TabsTrigger>
-                <TabsTrigger value="assignments" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Assignments</TabsTrigger>
-                <TabsTrigger value="grades" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Grades</TabsTrigger>
-                <TabsTrigger value="classnotes" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Class Notes</TabsTrigger>
+                <TabsTrigger value="announcements" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Announcements</TabsTrigger>
                 <TabsTrigger value="studentclasses" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Student Classes</TabsTrigger>
                 <TabsTrigger value="schoolfees" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">School Fees</TabsTrigger>
+                <TabsTrigger value="teachercontent" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Teacher Content</TabsTrigger>
               </TabsList>
             </div>
             
@@ -157,20 +155,16 @@ const AdminDashboard = () => {
             <ClassesManager />
           </TabsContent>
 
-          <TabsContent value="assignments">
-            <AssignmentsManager />
-          </TabsContent>
-
-          <TabsContent value="grades">
-            <GradesManager />
-          </TabsContent>
-
-          <TabsContent value="classnotes">
-            <ClassNotesManager />
+          <TabsContent value="announcements">
+            <AnnouncementsManager />
           </TabsContent>
 
           <TabsContent value="studentclasses">
             <StudentClassesManager />
+          </TabsContent>
+
+          <TabsContent value="teachercontent">
+            <TeacherContentView />
           </TabsContent>
 
           <TabsContent value="subjects">

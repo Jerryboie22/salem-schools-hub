@@ -21,6 +21,7 @@ interface Profile {
   phone: string;
   address: string;
   date_of_birth: string;
+  avatar_url: string;
 }
 
 const TeacherDashboard = () => {
@@ -32,7 +33,9 @@ const TeacherDashboard = () => {
     phone: "",
     address: "",
     date_of_birth: "",
+    avatar_url: "",
   });
+  const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -53,6 +56,7 @@ const TeacherDashboard = () => {
         phone: data.phone || "",
         address: data.address || "",
         date_of_birth: data.date_of_birth || "",
+        avatar_url: data.avatar_url || "",
       });
     }
   };
@@ -171,6 +175,45 @@ const TeacherDashboard = () => {
                 <CardTitle>My Profile</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="flex flex-col items-center gap-4 mb-6">
+                  <div className="w-32 h-32 rounded-full gradient-teacher flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white">
+                    {profile.avatar_url ? (
+                      <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-5xl font-bold text-white">{profile.full_name?.[0] || "T"}</span>
+                    )}
+                  </div>
+                  <div className="flex-1 w-full">
+                    <Label className="text-sm font-semibold">Profile Picture</Label>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setUploading(true);
+                        const fileExt = file.name.split('.').pop();
+                        const filePath = `${teacherId}/${Date.now()}.${fileExt}`;
+                        const { error: uploadError } = await supabase.storage
+                          .from('avatars')
+                          .upload(filePath, file);
+                        if (uploadError) {
+                          toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+                          setUploading(false);
+                          return;
+                        }
+                        const { data: { publicUrl } } = supabase.storage
+                          .from('avatars')
+                          .getPublicUrl(filePath);
+                        setProfile({ ...profile, avatar_url: publicUrl });
+                        setUploading(false);
+                      }}
+                      disabled={uploading}
+                      className="mt-2"
+                    />
+                    {uploading && <p className="text-xs text-purple-600 mt-1 animate-pulse">Uploading...</p>}
+                  </div>
+                </div>
                 <div className="space-y-2">
                   <Label>Email</Label>
                   <Input value={userEmail} disabled />

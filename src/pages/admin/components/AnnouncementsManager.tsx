@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 
-interface ClassNote {
+interface Announcement {
   id: string;
   title: string;
   content: string;
@@ -22,8 +22,8 @@ interface Class {
   name: string;
 }
 
-const ClassNotesManager = () => {
-  const [classNotes, setClassNotes] = useState<ClassNote[]>([]);
+const AnnouncementsManager = () => {
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
@@ -37,26 +37,32 @@ const ClassNotesManager = () => {
   }, []);
 
   const fetchData = async () => {
-    const [notesRes, classesRes] = await Promise.all([
+    const [announcementsResult, classesResult] = await Promise.all([
       supabase
         .from("class_notes")
         .select("*, classes(name)")
         .order("created_at", { ascending: false }),
-      supabase.from("classes").select("id, name").order("name"),
+      supabase.from("classes").select("*").order("name"),
     ]);
 
-    if (notesRes.error) {
+    if (announcementsResult.error) {
       toast({
-        title: "Error fetching class notes",
-        description: notesRes.error.message,
+        title: "Error fetching announcements",
+        description: announcementsResult.error.message,
         variant: "destructive",
       });
     } else {
-      setClassNotes(notesRes.data as ClassNote[] || []);
+      setAnnouncements(announcementsResult.data || []);
     }
 
-    if (!classesRes.error) {
-      setClasses(classesRes.data || []);
+    if (classesResult.error) {
+      toast({
+        title: "Error fetching classes",
+        description: classesResult.error.message,
+        variant: "destructive",
+      });
+    } else {
+      setClasses(classesResult.data || []);
     }
 
     setLoading(false);
@@ -68,23 +74,25 @@ const ClassNotesManager = () => {
 
     const { data: { session } } = await supabase.auth.getSession();
 
-    const { error } = await supabase.from("class_notes").insert({
+    const noteData = {
       title,
       content,
       class_id: classId,
       teacher_id: session?.user.id,
-    });
+    };
+
+    const { error } = await supabase.from("class_notes").insert(noteData);
 
     if (error) {
       toast({
-        title: "Error creating class note",
+        title: "Error creating announcement",
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
         title: "Success",
-        description: "Class note created successfully",
+        description: "Announcement created successfully for all teachers",
       });
       setTitle("");
       setContent("");
@@ -99,37 +107,39 @@ const ClassNotesManager = () => {
 
     if (error) {
       toast({
-        title: "Error deleting class note",
+        title: "Error deleting announcement",
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
         title: "Success",
-        description: "Class note deleted successfully",
+        description: "Announcement deleted successfully",
       });
       fetchData();
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Create New Class Note</CardTitle>
+          <CardTitle>Create Announcement for Teachers</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              placeholder="Note Title"
+              placeholder="Announcement Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
             <Textarea
-              placeholder="Content"
+              placeholder="Announcement Content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
@@ -147,7 +157,7 @@ const ClassNotesManager = () => {
               </SelectContent>
             </Select>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Creating..." : "Create Class Note"}
+              {submitting ? "Creating..." : "Create Announcement"}
             </Button>
           </form>
         </CardContent>
@@ -155,26 +165,27 @@ const ClassNotesManager = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>All Class Notes</CardTitle>
+          <CardTitle>All Announcements</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {classNotes.map((note) => (
+            {announcements.map((announcement) => (
               <div
-                key={note.id}
+                key={announcement.id}
                 className="flex items-start justify-between p-4 border rounded-lg"
               >
                 <div>
-                  <h3 className="font-semibold">{note.title}</h3>
-                  <p className="text-sm text-muted-foreground">{note.content}</p>
-                  <p className="text-sm mt-2">
-                    Class: {note.classes.name}
+                  <h3 className="font-semibold">{announcement.title}</h3>
+                  <p className="text-sm text-muted-foreground">{announcement.classes.name}</p>
+                  <p className="text-sm mt-2">{announcement.content}</p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Created: {new Date(announcement.created_at).toLocaleString()}
                   </p>
                 </div>
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => handleDelete(note.id)}
+                  onClick={() => handleDelete(announcement.id)}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
@@ -187,4 +198,4 @@ const ClassNotesManager = () => {
   );
 };
 
-export default ClassNotesManager;
+export default AnnouncementsManager;

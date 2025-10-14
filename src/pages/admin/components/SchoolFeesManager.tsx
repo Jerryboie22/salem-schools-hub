@@ -212,11 +212,16 @@ const SchoolFeesManager = () => {
               min="0"
               step="0.01"
             />
-            <Textarea
-              placeholder="Description (optional)"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Fee Breakdown (Optional)</label>
+              <Textarea
+                placeholder="Use template: Tuition: ₦50,000&#10;Books: ₦10,000&#10;Uniform: ₦15,000&#10;Activities: ₦5,000&#10;Total: ₦80,000"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={6}
+              />
+              <p className="text-xs text-muted-foreground">Enter fee breakdown for student dashboard</p>
+            </div>
             <div className="flex gap-2">
               <Button type="submit" disabled={submitting}>
                 {submitting ? "Saving..." : editingId ? "Update Fee" : "Set Fee"}

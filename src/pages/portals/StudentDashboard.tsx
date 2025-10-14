@@ -22,6 +22,7 @@ interface Assignment {
   title: string;
   description: string;
   due_date: string;
+  file_url: string;
   classes: { name: string };
 }
 
@@ -55,6 +56,7 @@ interface SchoolFee {
   term: string;
   academic_year: string;
   amount: number;
+  description: string;
   classes: { name: string };
 }
 
@@ -144,7 +146,7 @@ const StudentDashboard = () => {
     if (classIds.length > 0) {
       const { data: assignmentsData } = await supabase
         .from("assignments")
-        .select(`id, title, description, due_date, classes (name)`) 
+        .select(`id, title, description, due_date, file_url, classes (name)`) 
         .in("class_id", classIds)
         .order("due_date", { ascending: true })
         .limit(5);
@@ -170,7 +172,7 @@ const StudentDashboard = () => {
       // 6) School fees for student's classes
       const { data: feesData } = await supabase
         .from("school_fees")
-        .select(`id, term, academic_year, amount, classes(name)`) 
+        .select(`id, term, academic_year, amount, description, classes(name)`) 
         .in("class_id", classIds)
         .order("term", { ascending: true });
       if (feesData) setSchoolFees(feesData as SchoolFee[]);
@@ -513,15 +515,30 @@ const StudentDashboard = () => {
                 <div className="space-y-3">
                   {assignments.map((assignment) => (
                     <div key={assignment.id} className="p-4 rounded-xl bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-100 hover:shadow-md transition-all">
-                      <h4 className="font-semibold text-cyan-900">{assignment.title}</h4>
-                      <div className="flex items-center gap-4 mt-2 text-sm">
-                        <span className="text-cyan-600 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-                          {assignment.classes.name}
-                        </span>
-                        <span className="text-muted-foreground">
-                          Due: {new Date(assignment.due_date).toLocaleDateString()}
-                        </span>
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-cyan-900">{assignment.title}</h4>
+                          <div className="flex items-center gap-4 mt-2 text-sm">
+                            <span className="text-cyan-600 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                              {assignment.classes.name}
+                            </span>
+                            <span className="text-muted-foreground">
+                              Due: {new Date(assignment.due_date).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                        {assignment.file_url && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="shrink-0"
+                            onClick={() => window.open(assignment.file_url, "_blank")}
+                          >
+                            <FileText className="w-4 h-4 mr-1" />
+                            Download
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -714,6 +731,7 @@ const StudentDashboard = () => {
                         <TableHead className="font-semibold">Term</TableHead>
                         <TableHead className="font-semibold">Academic Year</TableHead>
                         <TableHead className="font-semibold">Amount</TableHead>
+                        <TableHead className="font-semibold">Breakdown</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -723,6 +741,9 @@ const StudentDashboard = () => {
                           <TableCell className="text-muted-foreground">{fee.term}</TableCell>
                           <TableCell className="text-muted-foreground">{fee.academic_year}</TableCell>
                           <TableCell className="font-bold text-indigo-600">₦{Number(fee.amount).toLocaleString()}</TableCell>
+                          <TableCell className="text-sm text-muted-foreground whitespace-pre-line max-w-xs">
+                            {fee.description || 'No breakdown available'}
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
