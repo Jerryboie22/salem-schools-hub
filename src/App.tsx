@@ -31,27 +31,31 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/leadership" element={<Leadership />} />
-          <Route path="/vision-mission" element={<VisionMission />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/news/:slug" element={<NewsDetail />} />
-          <Route path="/portal/student" element={<StudentPortal />} />
-          <Route path="/portal/student/dashboard" element={<StudentDashboard />} />
-          <Route path="/portal/teacher" element={<TeacherPortal />} />
-          <Route path="/portal/teacher/dashboard" element={<TeacherDashboard />} />
-          <Route path="/portal/admin" element={<AdminPortal />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/schools/children" element={<ChildrenSchool />} />
-          <Route path="/schools/primary" element={<PrimarySchool />} />
-          <Route path="/schools/covenant" element={<CovenantCollege />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="min-h-screen bg-muted">
+          <div className="site-container">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/leadership" element={<Leadership />} />
+              <Route path="/vision-mission" element={<VisionMission />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/news/:slug" element={<NewsDetail />} />
+              <Route path="/portal/student" element={<StudentPortal />} />
+              <Route path="/portal/student/dashboard" element={<StudentDashboard />} />
+              <Route path="/portal/teacher" element={<TeacherPortal />} />
+              <Route path="/portal/teacher/dashboard" element={<TeacherDashboard />} />
+              <Route path="/portal/admin" element={<AdminPortal />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/schools/children" element={<ChildrenSchool />} />
+              <Route path="/schools/primary" element={<PrimarySchool />} />
+              <Route path="/schools/covenant" element={<CovenantCollege />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </div>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

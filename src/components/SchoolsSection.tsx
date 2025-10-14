@@ -28,34 +28,34 @@ const schools = [
 
 const SchoolsSection = () => {
   return (
-    <section className="py-20 bg-soft-green">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Our Schools</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+    <section className="py-12 md:py-16 lg:py-20 bg-soft-green">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Our Schools</h2>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Discover the perfect educational environment for your child at any stage of their development
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {schools.map((school, index) => (
             <Card 
               key={index} 
-              className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col"
             >
-              <div className="h-56 overflow-hidden">
+              <div className="h-48 md:h-56 overflow-hidden">
                 <img 
                   src={school.image} 
                   alt={school.title}
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-2xl font-bold mb-3">{school.title}</h3>
-                <p className="text-muted-foreground">{school.description}</p>
+              <CardContent className="p-4 md:p-6 flex-1 flex flex-col">
+                <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{school.title}</h3>
+                <p className="text-sm md:text-base text-muted-foreground flex-1">{school.description}</p>
               </CardContent>
-              <CardFooter className="p-6 pt-0">
-                <Button variant="outline" className="w-full" asChild>
+              <CardFooter className="p-4 md:p-6 pt-0">
+                <Button variant="outline" className="w-full touch-target" asChild>
                   <Link to={school.link}>Learn More</Link>
                 </Button>
               </CardFooter>

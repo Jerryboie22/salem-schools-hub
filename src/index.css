@@ -88,6 +88,23 @@ All colors MUST be HSL.
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold;
   }
+  
+  /* Mobile-optimized typography */
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+  
+  p {
+    @apply text-base md:text-lg leading-relaxed;
+  }
 }
 
 @layer utilities {
@@ -178,5 +195,20 @@ All colors MUST be HSL.
   .stat-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Container box styling */
+  .site-container {
+    @apply max-w-[1400px] mx-auto bg-card shadow-xl;
+  }
+  
+  /* Mobile touch-friendly buttons */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 }

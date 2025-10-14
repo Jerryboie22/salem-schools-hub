@@ -7,9 +7,10 @@ import NewsSection from "@/components/NewsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { BookOpen, Users, Trophy, Microscope, Globe, Laptop } from "lucide-react";
+import { BookOpen, Users, Trophy, Microscope, Globe, Laptop, GraduationCap, Award, Library, FlaskConical, Monitor, MapPin, Mail, Phone, Clock } from "lucide-react";
 import facilitiesImg from "@/assets/modern-facilities.jpg";
 import aboutImg from "@/assets/school-exterior.jpg";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
   return (
@@ -18,44 +19,57 @@ const Index = () => {
       <Hero />
       
       {/* About Section */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div className="order-2 md:order-1">
+      <section className="py-12 md:py-16 lg:py-20 bg-background">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="order-2 lg:order-1">
               <img 
                 src={aboutImg} 
-                alt="Salem Group of Schools Campus" 
-                className="rounded-lg shadow-xl w-full"
+                alt="Salem School Building" 
+                className="rounded-lg shadow-lg w-full h-auto"
               />
             </div>
-            <div className="order-1 md:order-2">
-              <h2 className="text-4xl font-bold mb-6">About Salem Group of Schools</h2>
-              <p className="text-lg text-muted-foreground mb-4">
-                For over 25 years, Salem Group of Schools has been at the forefront of educational excellence in Ota, Ogun State. We are committed to nurturing young minds and developing well-rounded individuals who excel academically, socially, and spiritually.
+            <div className="order-1 lg:order-2 space-y-4 md:space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold">About Salem Group of Schools</h2>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                For over 25 years, Salem Group of Schools has been a beacon of excellence in education. 
+                We combine academic rigor with Christian values to develop well-rounded individuals 
+                prepared for the challenges of tomorrow.
               </p>
-              <p className="text-lg text-muted-foreground mb-6">
-                Our three schools provide continuous quality education from early childhood through secondary level, ensuring your child receives the best foundation for future success.
-              </p>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <BookOpen className="w-8 h-8 text-accent" />
-                  <span className="font-semibold">Excellence in Education</span>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 pt-4">
+                <div className="flex items-start gap-3">
+                  <GraduationCap className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg mb-1">Quality Education</h3>
+                    <p className="text-sm text-muted-foreground">Comprehensive curriculum meeting international standards</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Users className="w-8 h-8 text-accent" />
-                  <span className="font-semibold">Experienced Teachers</span>
+                <div className="flex items-start gap-3">
+                  <Award className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg mb-1">Excellence Awards</h3>
+                    <p className="text-sm text-muted-foreground">Consistently recognized for outstanding performance</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Trophy className="w-8 h-8 text-accent" />
-                  <span className="font-semibold">Proven Track Record</span>
+                <div className="flex items-start gap-3">
+                  <Users className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg mb-1">Expert Teachers</h3>
+                    <p className="text-sm text-muted-foreground">Dedicated and qualified teaching staff</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Globe className="w-8 h-8 text-accent" />
-                  <span className="font-semibold">Global Standards</span>
+                <div className="flex items-start gap-3">
+                  <BookOpen className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg mb-1">Modern Resources</h3>
+                    <p className="text-sm text-muted-foreground">State-of-the-art facilities and learning materials</p>
+                  </div>
                 </div>
               </div>
-              <Button variant="outline" asChild>
-                <Link to="/about">Read More About Salem Group</Link>
+              
+              <Button size="lg" className="touch-target w-full sm:w-auto mt-4" asChild>
+                <Link to="/about">Read More</Link>
               </Button>
             </div>
           </div>
@@ -63,46 +77,47 @@ const Index = () => {
       </section>
 
       <SchoolsSection />
-
+      
       <GallerySlider />
-
+      
       {/* Facilities Section */}
-      <section className="py-16 bg-muted">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 className="text-4xl font-bold mb-6">Our World-Class Facilities</h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                Salem Group of Schools boasts modern facilities designed to enhance learning and overall student development.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <BookOpen className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Modern Library</h4>
-                    <p className="text-muted-foreground">Extensive collection of books and digital resources</p>
-                  </div>
+      <section className="py-12 md:py-16 lg:py-20 bg-soft-green">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Our World-Class Facilities</h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+              Modern infrastructure designed to enhance learning and development
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-6 md:space-y-8">
+              <div className="flex items-start gap-3 md:gap-4">
+                <Library className="text-primary flex-shrink-0 mt-1" size={28} />
+                <div>
+                  <h3 className="font-semibold text-lg md:text-xl mb-2">Extensive Library</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">Over 10,000 books and digital resources for comprehensive learning</p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Microscope className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Science Laboratories</h4>
-                    <p className="text-muted-foreground">Fully equipped labs for Physics, Chemistry, and Biology</p>
-                  </div>
+              </div>
+              <div className="flex items-start gap-3 md:gap-4">
+                <FlaskConical className="text-primary flex-shrink-0 mt-1" size={28} />
+                <div>
+                  <h3 className="font-semibold text-lg md:text-xl mb-2">Science Labs</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">Fully equipped laboratories for Physics, Chemistry, and Biology</p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Laptop className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold mb-1">ICT Center</h4>
-                    <p className="text-muted-foreground">Modern computer labs with internet access</p>
-                  </div>
+              </div>
+              <div className="flex items-start gap-3 md:gap-4">
+                <Monitor className="text-primary flex-shrink-0 mt-1" size={28} />
+                <div>
+                  <h3 className="font-semibold text-lg md:text-xl mb-2">ICT Center</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">Modern computer labs with high-speed internet connectivity</p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Trophy className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Sports Facilities</h4>
-                    <p className="text-muted-foreground">Football fields, basketball courts, and athletic tracks</p>
-                  </div>
+              </div>
+              <div className="flex items-start gap-3 md:gap-4">
+                <Trophy className="text-primary flex-shrink-0 mt-1" size={28} />
+                <div>
+                  <h3 className="font-semibold text-lg md:text-xl mb-2">Sports Complex</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">Multiple playing fields and indoor sports facilities</p>
                 </div>
               </div>
             </div>
@@ -110,7 +125,7 @@ const Index = () => {
               <img 
                 src={facilitiesImg} 
                 alt="School Facilities" 
-                className="rounded-lg shadow-xl w-full"
+                className="rounded-lg shadow-lg w-full h-auto"
               />
             </div>
           </div>
@@ -120,89 +135,75 @@ const Index = () => {
       <NewsSection />
       <TestimonialsSection />
 
-      {/* Contact & Map Section */}
-      <section className="py-16 bg-gradient-to-br from-[hsl(var(--gold-light))] via-[hsl(var(--cream))] to-[hsl(var(--gold-light))]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary">Get In Touch</h2>
-              <p className="text-lg text-primary/80 max-w-2xl mx-auto">
-                We'd love to hear from you. Visit us or send us a message
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div>
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-[hsl(var(--gold))]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-[hsl(var(--gold-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Address</h4>
-                      <p className="text-primary/70">
-                        No. 17 Bolanle Awosika Street, Off Ilogbo Road, Ojuore, Ota, Ogun State
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Email</h4>
-                      <p className="text-primary/70">info@salemschools.edu.ng</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-[hsl(var(--gold))]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-[hsl(var(--gold-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Phone</h4>
-                      <p className="text-primary/70">+234 XXX XXX XXXX</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Working Hours</h4>
-                      <p className="text-primary/70">Monday - Friday: 8:00 AM - 4:00 PM</p>
-                    </div>
-                  </div>
-                </div>
-
-                <Button size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90" asChild>
-                  <Link to="/contact">Send Us a Message</Link>
-                </Button>
-              </div>
-
-              <div className="h-[500px] rounded-xl overflow-hidden shadow-2xl ring-1 ring-[hsl(var(--gold-dark))]/20">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.2868842!2d3.1897!3d6.6155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzYnNTUuOCJOIDPCsDExJzIyLjkiRQ!5e0!3m2!1sen!2sng!4v1234567890"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
-            </div>
+      {/* Contact Section */}
+      <section className="py-12 md:py-16 lg:py-20 bg-background">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Get In Touch</h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+              We're here to answer any questions you may have about our schools
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4 md:p-6">
+                <MapPin className="text-primary mb-3 md:mb-4 mx-auto" size={32} />
+                <h3 className="font-semibold text-base md:text-lg mb-2 text-center">Address</h3>
+                <p className="text-xs md:text-sm text-muted-foreground text-center">
+                  Salem School Complex, Awka, Anambra State, Nigeria
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4 md:p-6">
+                <Mail className="text-primary mb-3 md:mb-4 mx-auto" size={32} />
+                <h3 className="font-semibold text-base md:text-lg mb-2 text-center">Email</h3>
+                <p className="text-xs md:text-sm text-muted-foreground text-center break-words">
+                  info@salemschools.edu.ng
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4 md:p-6">
+                <Phone className="text-primary mb-3 md:mb-4 mx-auto" size={32} />
+                <h3 className="font-semibold text-base md:text-lg mb-2 text-center">Phone</h3>
+                <p className="text-xs md:text-sm text-muted-foreground text-center">
+                  +234 803 XXX XXXX
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4 md:p-6">
+                <Clock className="text-primary mb-3 md:mb-4 mx-auto" size={32} />
+                <h3 className="font-semibold text-base md:text-lg mb-2 text-center">Working Hours</h3>
+                <p className="text-xs md:text-sm text-muted-foreground text-center">
+                  Mon - Fri: 8:00 AM - 4:00 PM
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="rounded-lg overflow-hidden shadow-lg mb-6 md:mb-8 h-[250px] md:h-[400px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.2!2d7.0!3d6.2!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTInMDAuMCJOIDfCsDAwJzAwLjAiRQ!5e0!3m2!1sen!2sng!4v1234567890"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Salem Schools Location"
+            />
+          </div>
+          
+          <div className="text-center">
+            <Button size="lg" className="touch-target w-full sm:w-auto" asChild>
+              <Link to="/contact">Send Us a Message</Link>
+            </Button>
           </div>
         </div>
       </section>
