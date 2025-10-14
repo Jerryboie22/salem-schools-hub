@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Mail, MapPin } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,6 +19,26 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary text-primary-foreground sticky top-0 z-50 shadow-lg">
+      {/* Contact Info Bar - Hidden on mobile */}
+      <div className="bg-primary/90 border-b border-primary-foreground/10 hidden lg:block">
+        <div className="container mx-auto px-4 py-2">
+          <div className="flex items-center justify-end gap-6 text-xs">
+            <div className="flex items-center gap-2 opacity-90 hover:opacity-100 transition-opacity">
+              <Phone className="w-3.5 h-3.5" />
+              <span>+234 XXX XXX XXXX</span>
+            </div>
+            <div className="flex items-center gap-2 opacity-90 hover:opacity-100 transition-opacity">
+              <Mail className="w-3.5 h-3.5" />
+              <span>info@salemschools.edu.ng</span>
+            </div>
+            <div className="flex items-center gap-2 opacity-90 hover:opacity-100 transition-opacity">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>No. 17 Bolanle Awosika St, Ojuore, Ota</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-3">
@@ -76,8 +96,6 @@ const Navbar = () => {
                   <NavigationMenuContent>
                     <ul className="grid w-[250px] gap-2 p-4 bg-background">
                       <li><NavigationMenuLink asChild><Link to="/portal/student" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Student Portal</Link></NavigationMenuLink></li>
-                      <li><NavigationMenuLink asChild><Link to="/portal/teacher" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Teacher Portal</Link></NavigationMenuLink></li>
-                      <li><NavigationMenuLink asChild><Link to="/portal/parent" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Parent Portal</Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/portal/admin" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Admin Portal</Link></NavigationMenuLink></li>
                     </ul>
                   </NavigationMenuContent>
@@ -146,8 +164,6 @@ const Navbar = () => {
                 {portalsOpen && (
                   <div className="pl-4 pb-2 space-y-2">
                     <Link to="/portal/student" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Student</Link>
-                    <Link to="/portal/teacher" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Teacher</Link>
-                    <Link to="/portal/parent" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Parent</Link>
                     <Link to="/portal/admin" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Admin</Link>
                   </div>
                 )}

@@ -26,9 +26,9 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li><Link to="/about" className="hover:text-accent transition-colors">About Us</Link></li>
-              <li><Link to="/children-school" className="hover:text-accent transition-colors">Children School</Link></li>
-              <li><Link to="/primary-school" className="hover:text-accent transition-colors">Primary School</Link></li>
-              <li><Link to="/covenant-college" className="hover:text-accent transition-colors">Covenant College</Link></li>
+              <li><Link to="/schools/children" className="hover:text-accent transition-colors">Children School</Link></li>
+              <li><Link to="/schools/primary" className="hover:text-accent transition-colors">Primary School</Link></li>
+              <li><Link to="/schools/covenant" className="hover:text-accent transition-colors">Covenant College</Link></li>
               <li><Link to="/gallery" className="hover:text-accent transition-colors">Gallery</Link></li>
               <li><Link to="/news" className="hover:text-accent transition-colors">News & Updates</Link></li>
             </ul>
