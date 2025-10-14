@@ -77,7 +77,6 @@ const Navbar = () => {
                     <ul className="grid w-[250px] gap-2 p-4 bg-background">
                       <li><NavigationMenuLink asChild><Link to="/portal/student" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Student Portal</Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/portal/teacher" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Teacher Portal</Link></NavigationMenuLink></li>
-                      <li><NavigationMenuLink asChild><Link to="/portal/parent" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Parent Portal</Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/portal/admin" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground">Admin Portal</Link></NavigationMenuLink></li>
                     </ul>
                   </NavigationMenuContent>
@@ -147,7 +146,6 @@ const Navbar = () => {
                   <div className="pl-4 pb-2 space-y-2">
                     <Link to="/portal/student" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Student</Link>
                     <Link to="/portal/teacher" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Teacher</Link>
-                    <Link to="/portal/parent" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Parent</Link>
                     <Link to="/portal/admin" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Admin</Link>
                   </div>
                 )}
