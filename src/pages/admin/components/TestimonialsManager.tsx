@@ -20,6 +20,7 @@ interface Testimonial {
 
 const TestimonialsManager = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -74,15 +75,31 @@ const TestimonialsManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { error } = await supabase.from("testimonials").insert([formData]);
+    if (editingId) {
+      const { error } = await supabase
+        .from("testimonials")
+        .update(formData)
+        .eq("id", editingId);
 
-    if (error) {
-      toast({ title: "Error adding testimonial", description: error.message, variant: "destructive" });
-      return;
+      if (error) {
+        toast({ title: "Error updating testimonial", description: error.message, variant: "destructive" });
+        return;
+      }
+
+      toast({ title: "Success", description: "Testimonial updated successfully" });
+    } else {
+      const { error } = await supabase.from("testimonials").insert([formData]);
+
+      if (error) {
+        toast({ title: "Error adding testimonial", description: error.message, variant: "destructive" });
+        return;
+      }
+
+      toast({ title: "Success", description: "Testimonial added successfully" });
     }
 
-    toast({ title: "Success", description: "Testimonial added successfully" });
     setFormData({ name: "", role: "", message: "", image_url: "", is_active: true });
+    setEditingId(null);
     fetchTestimonials();
   };
 
@@ -114,11 +131,27 @@ const TestimonialsManager = () => {
     fetchTestimonials();
   };
 
+  const handleEdit = (testimonial: Testimonial) => {
+    setEditingId(testimonial.id);
+    setFormData({
+      name: testimonial.name,
+      role: testimonial.role,
+      message: testimonial.message,
+      image_url: testimonial.image_url || "",
+      is_active: testimonial.is_active,
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setFormData({ name: "", role: "", message: "", image_url: "", is_active: true });
+  };
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Add New Testimonial</CardTitle>
+          <CardTitle>{editingId ? "Edit Testimonial" : "Add New Testimonial"}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -162,10 +195,17 @@ const TestimonialsManager = () => {
                 rows={4}
               />
             </div>
-            <Button type="submit">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Testimonial
-            </Button>
+            <div className="flex gap-2">
+              <Button type="submit">
+                <Plus className="w-4 h-4 mr-2" />
+                {editingId ? "Update Testimonial" : "Add Testimonial"}
+              </Button>
+              {editingId && (
+                <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                  Cancel
+                </Button>
+              )}
+            </div>
           </form>
         </CardContent>
       </Card>
@@ -196,6 +236,9 @@ const TestimonialsManager = () => {
                       onCheckedChange={() => toggleActive(testimonial.id, testimonial.is_active)}
                     />
                   </div>
+                  <Button size="sm" variant="outline" onClick={() => handleEdit(testimonial)}>
+                    Edit
+                  </Button>
                   <Button size="sm" variant="destructive" onClick={() => handleDelete(testimonial.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>

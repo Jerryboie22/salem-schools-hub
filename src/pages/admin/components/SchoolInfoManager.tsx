@@ -39,7 +39,7 @@ const SchoolInfoManager = () => {
         .from('school_info')
         .select('*')
         .eq('school_type', selectedSchool)
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       
@@ -153,7 +153,7 @@ const SchoolInfoManager = () => {
             <div>
               <Label>Section Title (Editable)</Label>
               <Input
-                value={schoolInfo?.principal_position || ''}
+                value={formData.principal_position}
                 onChange={(e) => setFormData(prev => ({ ...prev, principal_position: e.target.value }))}
                 placeholder="e.g., Principal's Desk, Head Teacher's Message"
               />
@@ -162,7 +162,7 @@ const SchoolInfoManager = () => {
             <div>
               <Label>Name</Label>
               <Input
-                value={schoolInfo?.principal_name || ''}
+                value={formData.principal_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, principal_name: e.target.value }))}
                 placeholder="Principal name"
               />
@@ -183,7 +183,7 @@ const SchoolInfoManager = () => {
             <div>
               <Label>Message from Desk</Label>
               <Textarea
-                value={schoolInfo?.principal_message || ''}
+                value={formData.principal_message}
                 onChange={(e) => setFormData(prev => ({ ...prev, principal_message: e.target.value }))}
                 placeholder="Principal's welcome message"
                 rows={5}
