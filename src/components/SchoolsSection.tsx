@@ -10,19 +10,19 @@ const schools = [
     title: "Salem Children School",
     description: "Early foundation and moral upbringing for your little ones. A nurturing environment where children develop essential life skills.",
     image: childrenSchoolImg,
-    link: "/children-school"
+    link: "/schools/children"
   },
   {
     title: "Salem Nursery & Primary School",
     description: "Academic growth and character development. Building strong foundations in literacy, numeracy, and social skills.",
     image: primarySchoolImg,
-    link: "/primary-school"
+    link: "/schools/primary"
   },
   {
     title: "Salem Covenant College",
     description: "Secondary education with leadership and Christian values. Preparing students for higher education and life beyond.",
     image: covenantCollegeImg,
-    link: "/covenant-college"
+    link: "/schools/covenant"
   }
 ];
 
