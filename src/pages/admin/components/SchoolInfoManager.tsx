@@ -25,6 +25,11 @@ interface SchoolInfo {
 const SchoolInfoManager = () => {
   const [selectedSchool, setSelectedSchool] = useState<SchoolType>('children');
   const [newFacility, setNewFacility] = useState('');
+  const [formData, setFormData] = useState({
+    principal_name: '',
+    principal_position: '',
+    principal_message: ''
+  });
   const queryClient = useQueryClient();
 
   const { data: schoolInfo, isLoading } = useQuery({
@@ -37,6 +42,16 @@ const SchoolInfoManager = () => {
         .single();
       
       if (error) throw error;
+      
+      // Update form data when school info is fetched
+      if (data) {
+        setFormData({
+          principal_name: data.principal_name || '',
+          principal_position: data.principal_position || '',
+          principal_message: data.principal_message || ''
+        });
+      }
+      
       return data as SchoolInfo;
     },
   });
@@ -83,7 +98,11 @@ const SchoolInfoManager = () => {
 
   const handleSavePrincipalInfo = () => {
     if (!schoolInfo) return;
-    toast.success('Principal information updated');
+    updateInfoMutation.mutate({
+      principal_name: formData.principal_name,
+      principal_position: formData.principal_position,
+      principal_message: formData.principal_message
+    });
   };
 
   const addFacility = () => {
@@ -135,7 +154,7 @@ const SchoolInfoManager = () => {
               <Label>Section Title (Editable)</Label>
               <Input
                 value={schoolInfo?.principal_position || ''}
-                onChange={(e) => updateInfoMutation.mutate({ principal_position: e.target.value })}
+                onChange={(e) => setFormData(prev => ({ ...prev, principal_position: e.target.value }))}
                 placeholder="e.g., Principal's Desk, Head Teacher's Message"
               />
             </div>
@@ -144,7 +163,7 @@ const SchoolInfoManager = () => {
               <Label>Name</Label>
               <Input
                 value={schoolInfo?.principal_name || ''}
-                onChange={(e) => updateInfoMutation.mutate({ principal_name: e.target.value })}
+                onChange={(e) => setFormData(prev => ({ ...prev, principal_name: e.target.value }))}
                 placeholder="Principal name"
               />
             </div>
@@ -165,7 +184,7 @@ const SchoolInfoManager = () => {
               <Label>Message from Desk</Label>
               <Textarea
                 value={schoolInfo?.principal_message || ''}
-                onChange={(e) => updateInfoMutation.mutate({ principal_message: e.target.value })}
+                onChange={(e) => setFormData(prev => ({ ...prev, principal_message: e.target.value }))}
                 placeholder="Principal's welcome message"
                 rows={5}
               />

@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Upload, X } from "lucide-react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface BlogPost {
   id: string;
@@ -36,6 +37,25 @@ const BlogPostsManager = () => {
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { toast } = useToast();
+
+  const quillModules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'align': [] }],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
+
+  const quillFormats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike',
+    'list', 'bullet',
+    'align',
+    'link', 'image'
+  ];
 
   useEffect(() => {
     fetchPosts();
@@ -153,7 +173,6 @@ const BlogPostsManager = () => {
 
   const resetForm = () => {
     setEditingPost(null);
-    setSelectedFile(null);
     setFormData({
       title: "",
       slug: "",
@@ -163,95 +182,97 @@ const BlogPostsManager = () => {
       author: "Salem Admin",
       is_published: true,
     });
+    setSelectedFile(null);
   };
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>{editingPost ? "Edit Post" : "Create New Post"}</CardTitle>
+          <CardTitle>{editingPost ? "Edit Blog Post" : "Create New Blog Post"}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Title</Label>
-                <Input
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Slug</Label>
-                <Input
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  required
-                />
-              </div>
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="Post title"
+                required
+              />
             </div>
-            <div className="space-y-2">
+
+            <div>
+              <Label>Slug (URL)</Label>
+              <Input
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                placeholder="post-url-slug"
+                required
+              />
+            </div>
+
+            <div>
               <Label>Featured Image</Label>
               <div className="flex gap-2">
                 <Input
                   type="file"
                   accept="image/*"
                   onChange={handleFileSelect}
-                  className="flex-1"
                 />
-                {selectedFile && (
+                {formData.featured_image && (
                   <Button
                     type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setSelectedFile(null)}
+                    variant="ghost"
+                    onClick={() => setFormData({ ...formData, featured_image: "" })}
                   >
-                    <X className="w-4 h-4" />
+                    <X className="h-4 w-4" />
                   </Button>
                 )}
               </div>
-              {selectedFile && (
-                <p className="text-sm text-muted-foreground">
-                  Selected: {selectedFile.name}
-                </p>
-              )}
-              {formData.featured_image && !selectedFile && (
-                <img 
-                  src={formData.featured_image} 
-                  alt="Current featured" 
-                  className="w-32 h-32 object-cover rounded-md mt-2"
-                />
+              {formData.featured_image && (
+                <img src={formData.featured_image} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded" />
               )}
             </div>
-            <div className="space-y-2">
+
+            <div>
               <Label>Excerpt</Label>
-              <Textarea
+              <Input
                 value={formData.excerpt}
                 onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                placeholder="Brief description"
                 required
-                rows={2}
               />
             </div>
-            <div className="space-y-2">
-              <Label>Content</Label>
-              <Textarea
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                required
-                rows={8}
-              />
+
+            <div>
+              <Label>Content (Rich Text)</Label>
+              <div className="bg-background border rounded-md">
+                <ReactQuill
+                  theme="snow"
+                  value={formData.content}
+                  onChange={(content) => setFormData({ ...formData, content })}
+                  modules={quillModules}
+                  formats={quillFormats}
+                  placeholder="Write your blog post content here..."
+                  className="min-h-[300px]"
+                />
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
+
+            <div className="flex items-center gap-2">
               <Switch
                 checked={formData.is_published}
                 onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
               />
-              <Label>Published</Label>
+              <Label>Publish immediately</Label>
             </div>
+
             <div className="flex gap-2">
               <Button type="submit" disabled={uploading}>
-                {uploading ? "Uploading..." : editingPost ? "Update" : "Create"} Post
+                <Upload className="h-4 w-4 mr-2" />
+                {editingPost ? "Update Post" : "Create Post"}
               </Button>
               {editingPost && (
                 <Button type="button" variant="outline" onClick={resetForm}>
@@ -263,32 +284,41 @@ const BlogPostsManager = () => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4">
-        {posts.map((post) => (
-          <Card key={post.id}>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-2">{post.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-2">{post.excerpt}</p>
-                  <div className="flex gap-4 text-xs text-muted-foreground">
-                    <span>By: {post.author}</span>
-                    <span>Status: {post.is_published ? "Published" : "Draft"}</span>
+      <Card>
+        <CardHeader>
+          <CardTitle>All Blog Posts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {posts.map((post) => (
+              <Card key={post.id}>
+                <CardContent className="p-4 flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg">{post.title}</h3>
+                    <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+                    <div className="flex gap-2 mt-2">
+                      <span className={`text-xs px-2 py-1 rounded ${post.is_published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                        {post.is_published ? 'Published' : 'Draft'}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(post.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => handleEdit(post)}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" onClick={() => handleEdit(post)}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(post.id)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

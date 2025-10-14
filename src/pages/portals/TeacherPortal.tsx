@@ -157,7 +157,9 @@ const TeacherPortal = () => {
       <Navbar />
       <div className="gradient-hero py-20 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <Users className="w-16 h-16 mx-auto mb-6" />
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+            <Users className="w-12 h-12" />
+          </div>
           <h1 className="text-5xl font-bold mb-4">Teacher Portal</h1>
           <p className="text-xl opacity-90">Manage your classes and student records</p>
         </div>
@@ -165,7 +167,8 @@ const TeacherPortal = () => {
 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-md mx-auto">
-          <Card className="border-t-4 border-t-primary">
+          <Card className="border-0 shadow-2xl overflow-hidden animate-scale-in">
+            <div className="h-2 gradient-hero"></div>
             <CardHeader>
               <CardTitle className="text-2xl">Teacher Portal Access</CardTitle>
             </CardHeader>
@@ -284,10 +287,15 @@ const TeacherPortal = () => {
           </Card>
 
           {/* Help Section */}
-          <Card className="mt-8 bg-muted">
-            <CardContent className="p-6 text-center">
-              <h3 className="font-bold text-lg mb-2">Need Help?</h3>
-              <p className="text-muted-foreground mb-4">
+          <Card className="mt-8 border-0 shadow-xl bg-gradient-to-r from-primary/5 to-accent/5 border-l-4 border-l-primary animate-fade-in">
+            <CardContent className="p-8">
+              <h3 className="font-bold text-xl mb-3 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                Need Help?
+              </h3>
+              <p className="text-muted-foreground mb-2">
                 Contact the academic office for assistance with the portal
               </p>
               <p className="text-sm text-accent font-semibold">academics@salemschools.edu.ng</p>
