@@ -17,7 +17,7 @@ const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
-    align: "start",
+    align: "center",
     slidesToScroll: 1
   });
 
@@ -59,24 +59,24 @@ const TestimonialsSection = () => {
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex">
                 {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 px-3">
-                    <Card className="relative hover:shadow-xl transition-all duration-300 border-2 border-[hsl(var(--gold))]/30 bg-white/95 backdrop-blur h-full">
-                      <CardContent className="pt-10 pb-6 px-5">
-                        <Quote className="w-8 h-8 text-[hsl(var(--gold))]/30 absolute top-5 left-5" />
-                        <p className="text-primary/70 mb-6 relative z-10 text-sm leading-relaxed italic">
+                  <div key={testimonial.id} className="flex-[0_0_100%] min-w-0 px-4">
+                    <Card className="relative hover:shadow-xl transition-all duration-300 border-2 border-[hsl(var(--gold))]/30 bg-white/95 backdrop-blur max-w-3xl mx-auto">
+                      <CardContent className="pt-12 pb-8 px-8">
+                        <Quote className="w-12 h-12 text-[hsl(var(--gold))]/30 absolute top-6 left-6" />
+                        <p className="text-primary/70 mb-8 relative z-10 text-base leading-relaxed italic text-center">
                           "{testimonial.message}"
                         </p>
-                        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-[hsl(var(--gold))]/20">
+                        <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-[hsl(var(--gold))]/20">
                           {testimonial.image_url && (
                             <img
                               src={testimonial.image_url}
                               alt={testimonial.name}
-                              className="w-12 h-12 rounded-full object-cover ring-2 ring-[hsl(var(--gold-dark))]/30"
+                              className="w-16 h-16 rounded-full object-cover ring-2 ring-[hsl(var(--gold-dark))]/30"
                             />
                           )}
-                          <div>
-                            <div className="font-bold text-base text-primary">{testimonial.name}</div>
-                            <div className="text-xs text-[hsl(var(--gold-dark))] font-medium">{testimonial.role}</div>
+                          <div className="text-center">
+                            <div className="font-bold text-lg text-primary">{testimonial.name}</div>
+                            <div className="text-sm text-[hsl(var(--gold-dark))] font-medium">{testimonial.role}</div>
                           </div>
                         </div>
                       </CardContent>
