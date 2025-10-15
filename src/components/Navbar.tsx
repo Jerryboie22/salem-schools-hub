@@ -58,7 +58,6 @@ const Navbar = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 bg-background">
-                      <li><NavigationMenuLink asChild><Link to="/about" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Overview</div></Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/leadership" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Leadership Team</div></Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/vision-mission" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Vision & Mission</div></Link></NavigationMenuLink></li>
                       <li><NavigationMenuLink asChild><Link to="/library" className="block p-3 rounded-md hover:bg-accent hover:text-accent-foreground"><div className="font-medium">Library</div></Link></NavigationMenuLink></li>
@@ -129,7 +128,6 @@ const Navbar = () => {
                 </button>
                 {aboutOpen && (
                   <div className="pl-4 pb-2 space-y-1">
-                    <Link to="/about" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Overview</Link>
                     <Link to="/leadership" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Leadership</Link>
                     <Link to="/vision-mission" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Vision & Mission</Link>
                     <Link to="/library" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Library</Link>
