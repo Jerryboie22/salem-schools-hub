@@ -31,6 +31,8 @@ const AssignmentsManager = () => {
   const [classId, setClassId] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -66,8 +68,36 @@ const AssignmentsManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setUploading(true);
 
     const { data: { session } } = await supabase.auth.getSession();
+    
+    let fileUrl = null;
+    if (file) {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${session?.user.id}/${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('assignments')
+        .upload(filePath, file);
+      
+      if (uploadError) {
+        toast({
+          title: "Error uploading file",
+          description: uploadError.message,
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        setUploading(false);
+        return;
+      }
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('assignments')
+        .getPublicUrl(filePath);
+      
+      fileUrl = publicUrl;
+    }
 
     const { error } = await supabase.from("assignments").insert({
       title,
@@ -75,6 +105,7 @@ const AssignmentsManager = () => {
       class_id: classId,
       due_date: dueDate,
       teacher_id: session?.user.id,
+      file_url: fileUrl,
     });
 
     if (error) {
@@ -92,9 +123,11 @@ const AssignmentsManager = () => {
       setDescription("");
       setClassId("");
       setDueDate("");
+      setFile(null);
       fetchData();
     }
     setSubmitting(false);
+    setUploading(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -154,7 +187,16 @@ const AssignmentsManager = () => {
               onChange={(e) => setDueDate(e.target.value)}
               required
             />
-            <Button type="submit" disabled={submitting}>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Attachment (Optional)</label>
+              <Input
+                type="file"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                disabled={uploading}
+              />
+              {uploading && <p className="text-xs text-muted-foreground">Uploading file...</p>}
+            </div>
+            <Button type="submit" disabled={submitting || uploading}>
               {submitting ? "Creating..." : "Create Assignment"}
             </Button>
           </form>

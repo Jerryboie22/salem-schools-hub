@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, Home } from "lucide-react";
+import { LogOut, Home, BookOpen } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +36,7 @@ const TeacherDashboard = () => {
     avatar_url: "",
   });
   const [uploading, setUploading] = useState(false);
+  const [announcements, setAnnouncements] = useState<any[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -59,6 +60,16 @@ const TeacherDashboard = () => {
         avatar_url: data.avatar_url || "",
       });
     }
+  };
+
+  const fetchAnnouncements = async () => {
+    const { data } = await supabase
+      .from("class_notes")
+      .select("*, classes(name)")
+      .order("created_at", { ascending: false })
+      .limit(10);
+    
+    if (data) setAnnouncements(data);
   };
 
   const handleUpdateProfile = async () => {
@@ -111,6 +122,7 @@ const TeacherDashboard = () => {
     setUserEmail(session.user.email || "");
     setTeacherId(session.user.id);
     await fetchProfile(session.user.id);
+    await fetchAnnouncements();
     setLoading(false);
   };
 
@@ -170,10 +182,47 @@ const TeacherDashboard = () => {
           </div>
 
           <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Profile</CardTitle>
-              </CardHeader>
+            <div className="space-y-6">
+              <Card className="border-0 shadow-xl overflow-hidden">
+                <div className="h-2 gradient-teacher"></div>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-2 h-8 bg-gradient-to-b from-purple-400 to-violet-500 rounded-full"></div>
+                    Admin Announcements
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {announcements.length === 0 ? (
+                    <div className="text-center py-12">
+                      <BookOpen className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                      <p className="text-muted-foreground">No announcements yet</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {announcements.map((announcement) => (
+                        <div key={announcement.id} className="p-4 rounded-xl bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-100 hover:shadow-md transition-all">
+                          <h4 className="font-semibold text-purple-900">{announcement.title}</h4>
+                          <p className="text-sm text-muted-foreground mt-2">{announcement.content}</p>
+                          <div className="flex items-center gap-4 mt-2 text-sm">
+                            <span className="text-purple-600 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                              {announcement.classes?.name || 'All Teachers'}
+                            </span>
+                            <span className="text-muted-foreground">
+                              {new Date(announcement.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>My Profile</CardTitle>
+                </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-col items-center gap-4 mb-6">
                   <div className="w-32 h-32 rounded-full gradient-teacher flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white">
@@ -253,6 +302,7 @@ const TeacherDashboard = () => {
                 <Button onClick={handleUpdateProfile}>Update Profile</Button>
               </CardContent>
             </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="attendance">

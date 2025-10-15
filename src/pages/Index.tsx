@@ -18,6 +18,8 @@ const Index = () => {
       <Navbar />
       <Hero />
       
+      <SchoolsSection />
+      
       {/* About Section */}
       <section className="py-12 md:py-16 lg:py-20 bg-background">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -76,9 +78,9 @@ const Index = () => {
         </div>
       </section>
 
-      <SchoolsSection />
-      
       <GallerySlider />
+      
+      <NewsSection />
       
       {/* Facilities Section */}
       <section className="py-12 md:py-16 lg:py-20 bg-soft-green">
@@ -132,7 +134,6 @@ const Index = () => {
         </div>
       </section>
 
-      <NewsSection />
       <TestimonialsSection />
 
       {/* Contact Section */}
