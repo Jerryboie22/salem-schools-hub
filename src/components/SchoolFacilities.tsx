@@ -34,15 +34,15 @@ const SchoolFacilities = ({ schoolType }: SchoolFacilitiesProps) => {
 
   return (
     <Card>
-      <CardContent className="p-6 md:p-8">
-        <h3 className="text-2xl md:text-3xl font-bold mb-6">Our Facilities</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <CardContent className="p-4 md:p-6">
+        <h3 className="text-xl md:text-2xl font-bold mb-4">Our Facilities</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {schoolInfo.facilities.map((facility, index) => (
-            <div key={index} className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Check className="w-4 h-4 text-primary" />
+            <div key={index} className="flex items-start gap-2">
+              <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="w-3 h-3 text-primary" />
               </div>
-              <span className="text-sm md:text-base">{facility}</span>
+              <span className="text-xs md:text-sm">{facility}</span>
             </div>
           ))}
         </div>

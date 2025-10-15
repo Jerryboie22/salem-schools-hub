@@ -62,11 +62,11 @@ const GallerySlider = () => {
   }
 
   return (
-    <section className="py-12 md:py-20 bg-muted/30">
+    <section className="py-6 md:py-10 bg-muted/30">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Photo Gallery</h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">Photo Gallery</h2>
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             Moments of excellence and achievement
           </p>
         </div>
@@ -141,7 +141,7 @@ const GallerySlider = () => {
         </div>
 
         {!loading && images.length > 0 && (
-          <div className="text-center mt-8 md:mt-12">
+          <div className="text-center mt-6 md:mt-8">
             <Button
               onClick={() => navigate("/gallery")}
               size="lg"

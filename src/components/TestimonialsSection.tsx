@@ -44,12 +44,12 @@ const TestimonialsSection = () => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-br from-[hsl(var(--cream))] via-[hsl(var(--gold-light))] to-[hsl(var(--cream))]">
+    <section className="py-6 md:py-10 bg-gradient-to-br from-[hsl(var(--cream))] via-[hsl(var(--gold-light))] to-[hsl(var(--cream))]">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <Quote className="w-10 h-10 mx-auto mb-3 text-[hsl(var(--gold-dark))]" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-primary">What Our People Say</h2>
-          <p className="text-base text-primary/80 max-w-2xl mx-auto">
+        <div className="text-center mb-6 md:mb-8">
+          <Quote className="w-8 h-8 mx-auto mb-2 text-[hsl(var(--gold-dark))]" />
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-primary">What Our People Say</h2>
+          <p className="text-sm md:text-base text-primary/80 max-w-2xl mx-auto">
             Hear from our satisfied parents, students, and alumni
           </p>
         </div>
@@ -60,23 +60,23 @@ const TestimonialsSection = () => {
               <div className="flex">
                 {testimonials.map((testimonial) => (
                   <div key={testimonial.id} className="flex-[0_0_100%] min-w-0 px-4">
-                    <Card className="relative hover:shadow-xl transition-all duration-300 border-2 border-[hsl(var(--gold))]/30 bg-white/95 backdrop-blur max-w-3xl mx-auto">
-                      <CardContent className="pt-12 pb-8 px-8">
-                        <Quote className="w-12 h-12 text-[hsl(var(--gold))]/30 absolute top-6 left-6" />
-                        <p className="text-primary/70 mb-8 relative z-10 text-base leading-relaxed italic text-center">
+                    <Card className="relative hover:shadow-xl transition-all duration-300 border-2 border-[hsl(var(--gold))]/30 bg-white/95 backdrop-blur max-w-2xl mx-auto">
+                      <CardContent className="pt-8 pb-6 px-6 md:pt-10 md:pb-8 md:px-8">
+                        <Quote className="w-8 h-8 md:w-10 md:h-10 text-[hsl(var(--gold))]/30 absolute top-4 left-4 md:top-6 md:left-6" />
+                        <p className="text-primary/70 mb-6 relative z-10 text-sm md:text-base leading-relaxed italic text-center">
                           "{testimonial.message}"
                         </p>
-                        <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-[hsl(var(--gold))]/20">
+                        <div className="flex items-center justify-center gap-3 mt-4 pt-4 border-t border-[hsl(var(--gold))]/20">
                           {testimonial.image_url && (
                             <img
                               src={testimonial.image_url}
                               alt={testimonial.name}
-                              className="w-16 h-16 rounded-full object-cover ring-2 ring-[hsl(var(--gold-dark))]/30"
+                              className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ring-2 ring-[hsl(var(--gold-dark))]/30"
                             />
                           )}
                           <div className="text-center">
-                            <div className="font-bold text-lg text-primary">{testimonial.name}</div>
-                            <div className="text-sm text-[hsl(var(--gold-dark))] font-medium">{testimonial.role}</div>
+                            <div className="font-bold text-base md:text-lg text-primary">{testimonial.name}</div>
+                            <div className="text-xs md:text-sm text-[hsl(var(--gold-dark))] font-medium">{testimonial.role}</div>
                           </div>
                         </div>
                       </CardContent>

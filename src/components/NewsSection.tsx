@@ -44,16 +44,16 @@ const NewsSection = () => {
   };
 
   return (
-    <section className="py-12 md:py-20 bg-background">
+    <section className="py-6 md:py-10 bg-background">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">News & Updates</h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">News & Updates</h2>
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             Stay informed about the latest happenings
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <Card key={i} className="overflow-hidden">
@@ -73,9 +73,9 @@ const NewsSection = () => {
             ))
           ) : (
             posts.map((post) => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
               {post.featured_image && (
-                <div className="h-48 overflow-hidden">
+                <div className="h-40 md:h-48 overflow-hidden">
                   <img
                     src={post.featured_image}
                     alt={post.title}
@@ -83,18 +83,18 @@ const NewsSection = () => {
                   />
                 </div>
               )}
-              <CardHeader>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <Calendar className="w-4 h-4" />
+              <CardHeader className="p-4">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                  <Calendar className="w-3 h-3" />
                   {new Date(post.created_at).toLocaleDateString()}
                 </div>
-                <h3 className="text-xl font-bold line-clamp-2">{post.title}</h3>
+                <h3 className="text-base md:text-lg font-bold line-clamp-2">{post.title}</h3>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
+              <CardContent className="p-4 pt-0 flex-1">
+                <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
               </CardContent>
-              <CardFooter>
-                <Button variant="link" className="p-0" asChild>
+              <CardFooter className="p-4 pt-0">
+                <Button variant="link" className="p-0 text-sm" asChild>
                   <Link to={`/news/${post.slug}`}>Read More →</Link>
                 </Button>
               </CardFooter>
@@ -108,7 +108,7 @@ const NewsSection = () => {
         )}
 
         {!loading && posts.length > 0 && (
-          <div className="text-center mt-8 md:mt-12">
+          <div className="text-center mt-6 md:mt-8">
             <Button variant="outline" className="touch-target" asChild>
               <Link to="/news">View All News</Link>
             </Button>
