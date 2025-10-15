@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 
 interface Leader {
   id: string;
@@ -140,6 +140,41 @@ const LeadershipManager = () => {
     });
   };
 
+  const moveLeader = async (leaderId: string, direction: 'up' | 'down') => {
+    const currentIndex = leaders.findIndex(l => l.id === leaderId);
+    if (currentIndex === -1) return;
+    
+    if (direction === 'up' && currentIndex === 0) return;
+    if (direction === 'down' && currentIndex === leaders.length - 1) return;
+    
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    const currentLeader = leaders[currentIndex];
+    const targetLeader = leaders[targetIndex];
+    
+    // Swap order_index values
+    const { error: error1 } = await supabase
+      .from('leadership_team')
+      .update({ order_index: targetLeader.order_index })
+      .eq('id', currentLeader.id);
+      
+    const { error: error2 } = await supabase
+      .from('leadership_team')
+      .update({ order_index: currentLeader.order_index })
+      .eq('id', targetLeader.id);
+    
+    if (error1 || error2) {
+      toast({ 
+        title: "Error reordering", 
+        description: "Failed to update order", 
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    toast({ title: "Success", description: "Order updated successfully" });
+    fetchLeaders();
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -207,41 +242,98 @@ const LeadershipManager = () => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4">
-        {leaders.map((leader) => (
-          <Card key={leader.id}>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start">
-                <div className="flex gap-4 flex-1">
-                  {leader.image_url && (
-                    <img
-                      src={leader.image_url}
-                      alt={leader.name}
-                      className="w-20 h-20 rounded-full object-cover"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg">{leader.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">{leader.position}</p>
-                    <p className="text-sm">{leader.bio}</p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Status: {leader.is_active ? "Active" : "Inactive"}
-                    </p>
+      <Card>
+        <CardHeader>
+          <CardTitle>Leadership Team Members (Drag to Reorder)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {leaders.map((leader, index) => (
+              <Card key={leader.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-4">
+                    {/* Rank Badge */}
+                    <div className="flex flex-col gap-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-6 w-6 p-0"
+                        onClick={() => moveLeader(leader.id, 'up')}
+                        disabled={index === 0}
+                      >
+                        <ChevronUp className="w-4 h-4" />
+                      </Button>
+                      <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
+                        {index + 1}
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-6 w-6 p-0"
+                        onClick={() => moveLeader(leader.id, 'down')}
+                        disabled={index === leaders.length - 1}
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    
+                    {/* Leader Image */}
+                    {leader.image_url && (
+                      <img
+                        src={leader.image_url}
+                        alt={leader.name}
+                        className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                      />
+                    )}
+                    
+                    {/* Leader Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-lg truncate">{leader.name}</h3>
+                      <p className="text-sm text-muted-foreground truncate">{leader.position}</p>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{leader.bio}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className={`text-xs px-2 py-0.5 rounded ${leader.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {leader.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          Order: {leader.order_index}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="flex flex-col gap-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={() => handleEdit(leader)}
+                        className="whitespace-nowrap"
+                      >
+                        <Edit className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="destructive" 
+                        onClick={() => handleDelete(leader.id)}
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => handleEdit(leader)}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(leader.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {leaders.length === 0 && (
+              <div className="text-center py-8 text-muted-foreground">
+                No leadership team members yet. Add one above to get started.
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

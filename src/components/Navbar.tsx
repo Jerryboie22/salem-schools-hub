@@ -91,62 +91,81 @@ const Navbar = () => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden fixed inset-0 top-20 bg-primary z-40 overflow-y-auto pb-4">
-            <div className="container mx-auto px-4 space-y-2">
-              <Link to="/" className="block py-3 hover:text-accent border-b border-primary-foreground/20" onClick={() => setIsOpen(false)}>Home</Link>
+          <div className="md:hidden fixed inset-0 top-20 bg-primary z-40 overflow-y-auto max-h-[calc(100vh-5rem)]">
+            <div className="container mx-auto px-4 py-4 space-y-1">
+              <Link 
+                to="/" 
+                className="block py-2.5 px-3 hover:bg-primary-foreground/10 rounded transition-colors border-b border-primary-foreground/10" 
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
               
-              <div className="border-b border-primary-foreground/20">
+              <div className="border-b border-primary-foreground/10">
                 <button 
                   onClick={() => setAboutOpen(!aboutOpen)}
-                  className="w-full flex items-center justify-between py-3 font-semibold"
+                  className="w-full flex items-center justify-between py-2.5 px-3 hover:bg-primary-foreground/10 rounded transition-colors"
                 >
-                  About Us
+                  <span className="font-medium">About Us</span>
                   <ChevronDown className={`w-4 h-4 transition-transform ${aboutOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {aboutOpen && (
-                  <div className="pl-4 pb-2 space-y-2">
-                    <Link to="/about" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Overview</Link>
-                    <Link to="/leadership" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Leadership</Link>
-                    <Link to="/vision-mission" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Vision & Mission</Link>
-                    <Link to="/library" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Library</Link>
-                    <Link to="/gallery" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Gallery</Link>
+                  <div className="pl-4 pb-2 space-y-1">
+                    <Link to="/about" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Overview</Link>
+                    <Link to="/leadership" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Leadership</Link>
+                    <Link to="/vision-mission" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Vision & Mission</Link>
+                    <Link to="/library" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Library</Link>
+                    <Link to="/gallery" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Gallery</Link>
                   </div>
                 )}
               </div>
 
-              <div className="border-b border-primary-foreground/20">
+              <div className="border-b border-primary-foreground/10">
                 <button 
                   onClick={() => setSchoolsOpen(!schoolsOpen)}
-                  className="w-full flex items-center justify-between py-3 font-semibold"
+                  className="w-full flex items-center justify-between py-2.5 px-3 hover:bg-primary-foreground/10 rounded transition-colors"
                 >
-                  Our Schools
+                  <span className="font-medium">Our Schools</span>
                   <ChevronDown className={`w-4 h-4 transition-transform ${schoolsOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {schoolsOpen && (
-                  <div className="pl-4 pb-2 space-y-2">
-                    <Link to="/schools/children" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Children School</Link>
-                    <Link to="/schools/primary" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Primary School</Link>
-                    <Link to="/schools/covenant" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Covenant College</Link>
+                  <div className="pl-4 pb-2 space-y-1">
+                    <Link to="/schools/children" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Children School</Link>
+                    <Link to="/schools/primary" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Primary School</Link>
+                    <Link to="/schools/covenant" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Covenant College</Link>
                   </div>
                 )}
               </div>
 
-              <Link to="/news" className="block py-3 hover:text-accent border-b border-primary-foreground/20" onClick={() => setIsOpen(false)}>News</Link>
-              <Link to="/contact" className="block py-3 hover:text-accent border-b border-primary-foreground/20" onClick={() => setIsOpen(false)}>Contact</Link>
+              <Link 
+                to="/news" 
+                className="block py-2.5 px-3 hover:bg-primary-foreground/10 rounded transition-colors border-b border-primary-foreground/10" 
+                onClick={() => setIsOpen(false)}
+              >
+                News
+              </Link>
               
-              <div className="border-b border-primary-foreground/20">
+              <Link 
+                to="/contact" 
+                className="block py-2.5 px-3 hover:bg-primary-foreground/10 rounded transition-colors border-b border-primary-foreground/10" 
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+              
+              <div>
                 <button 
                   onClick={() => setPortalsOpen(!portalsOpen)}
-                  className="w-full flex items-center justify-between py-3 font-semibold"
+                  className="w-full flex items-center justify-between py-2.5 px-3 bg-accent text-accent-foreground rounded transition-colors"
                 >
-                  Portals
+                  <span className="font-medium">Portals</span>
                   <ChevronDown className={`w-4 h-4 transition-transform ${portalsOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {portalsOpen && (
-                  <div className="pl-4 pb-2 space-y-2">
-                    <Link to="/portal/student" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Student</Link>
-                    <Link to="/portal/teacher" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Teacher</Link>
-                    <Link to="/portal/admin" className="block py-2 hover:text-accent" onClick={() => setIsOpen(false)}>Admin</Link>
+                  <div className="pl-4 pt-2 pb-2 space-y-1">
+                    <Link to="/portal/student" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Student</Link>
+                    <Link to="/portal/teacher" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Teacher</Link>
+                    <Link to="/portal/admin" className="block py-2 px-3 text-sm hover:bg-primary-foreground/10 rounded" onClick={() => setIsOpen(false)}>Admin</Link>
                   </div>
                 )}
               </div>
