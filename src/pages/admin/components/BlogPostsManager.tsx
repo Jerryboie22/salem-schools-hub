@@ -77,8 +77,14 @@ const BlogPostsManager = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 20 * 1024 * 1024) {
-        toast({ title: "Error", description: "File size must be less than 20MB", variant: "destructive" });
+      const maxSize = 400 * 1024; // 400KB in bytes
+      if (file.size > maxSize) {
+        toast({ 
+          title: "Image too large", 
+          description: "Please upload an image smaller than 400KB to ensure fast page loading", 
+          variant: "destructive" 
+        });
+        e.target.value = ""; // Clear the input
         return;
       }
       setSelectedFile(file);
