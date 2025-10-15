@@ -75,10 +75,12 @@ const NewsSection = () => {
             posts.map((post) => (
             <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
               {post.featured_image && (
-                <div className="h-40 md:h-48 overflow-hidden">
+                <div className="h-40 md:h-48 overflow-hidden bg-muted">
                   <img
                     src={post.featured_image}
                     alt={post.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
