@@ -28,12 +28,12 @@ const schools = [
 
 const SchoolsSection = () => {
   return (
-    <section className="py-12 md:py-16 lg:py-20 bg-soft-green">
+    <section className="py-12 md:py-20 bg-secondary/30">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Our Schools</h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            Discover the perfect educational environment for your child at any stage of their development
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Quality education from early childhood to secondary school
           </p>
         </div>
 
