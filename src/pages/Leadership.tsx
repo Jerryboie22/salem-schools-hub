@@ -1,115 +1,189 @@
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
-import { Users, Mail, Linkedin, Award } from "lucide-react";
+import { Mail, Phone, Award } from "lucide-react";
 
 interface Leader {
   id: string;
   name: string;
   position: string;
-  bio: string;
+  bio: string | null;
   image_url: string | null;
   order_index: number;
+  is_active: boolean;
 }
 
 const Leadership = () => {
   const [leaders, setLeaders] = useState<Leader[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchLeaders();
   }, []);
 
   const fetchLeaders = async () => {
-    const { data, error } = await supabase
-      .from("leadership_team")
-      .select("*")
-      .eq("is_active", true)
-      .order("order_index", { ascending: true });
+    try {
+      const { data, error } = await supabase
+        .from("leadership_team")
+        .select("*")
+        .eq("is_active", true)
+        .order("order_index");
 
-    if (error) {
+      if (error) throw error;
+      setLeaders(data || []);
+    } catch (error) {
       console.error("Error fetching leaders:", error);
-      return;
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setLeaders(data || []);
+  // Parse bio to extract qualifications if formatted with bullets
+  const parseBio = (bio: string | null) => {
+    if (!bio) return { about: "", qualifications: [] };
+    
+    const lines = bio.split('\n').filter(line => line.trim());
+    const qualifications: string[] = [];
+    let about = "";
+    let inQualifications = false;
+
+    lines.forEach(line => {
+      if (line.toLowerCase().includes('qualification') || line.startsWith('•') || line.startsWith('-')) {
+        inQualifications = true;
+        if (line.startsWith('•') || line.startsWith('-')) {
+          qualifications.push(line.replace(/^[•-]\s*/, ''));
+        }
+      } else if (!inQualifications) {
+        about += line + ' ';
+      }
+    });
+
+    return { 
+      about: about.trim() || bio, 
+      qualifications 
+    };
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary via-primary/95 to-accent py-16 md:py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
-        <div className="container mx-auto px-4 text-center relative">
-          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur rounded-full mb-6">
-            <Users className="w-8 h-8 md:w-10 md:h-10 text-white" />
-          </div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">Leadership Team</h1>
-          <p className="text-base md:text-xl text-white/90 max-w-2xl mx-auto">
-            Meet the dedicated professionals guiding Salem Group of Schools toward excellence
+      <section className="relative py-20 bg-gradient-to-r from-primary via-primary/90 to-accent overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCAzLjk5LTRoMi4wMmMxLjEgMCAyIC45IDIgMnYyYzAgMS4xLS45IDItMiAySDM4Yy0xLjEgMC0yLS45LTItMnYtMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4 animate-fade-in">
+            Leadership Team
+          </h1>
+          <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto animate-fade-in">
+            Meet the dedicated leaders shaping the future of Salem Group of Schools
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* Leadership Grid */}
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {leaders.map((leader, index) => (
-            <Card 
-              key={leader.id} 
-              className="group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-t-4 border-t-primary"
-            >
-              {/* Image Section */}
-              <div className="relative h-64 md:h-72 overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10">
-                {leader.image_url ? (
-                  <img
-                    src={leader.image_url}
-                    alt={leader.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Users className="w-24 h-24 md:w-32 md:h-32 text-primary/30" />
-                  </div>
-                )}
-                {/* Ranking Badge */}
-                <div className="absolute top-3 right-3 w-10 h-10 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold shadow-lg">
-                  {index + 1}
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <CardContent className="p-5 md:p-6">
-                <div className="mb-3">
-                  <h3 className="text-xl md:text-2xl font-bold mb-1 group-hover:text-primary transition-colors">
-                    {leader.name}
-                  </h3>
-                  <div className="flex items-center gap-2 text-accent font-semibold text-sm">
-                    <Award className="w-4 h-4" />
-                    <span>{leader.position}</span>
-                  </div>
-                </div>
+      {/* Leaders Section */}
+      <section className="py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+              <p className="mt-4 text-muted-foreground">Loading leadership team...</p>
+            </div>
+          ) : leaders.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">No leadership team members found.</p>
+            </div>
+          ) : (
+            <div className="space-y-8 max-w-6xl mx-auto">
+              {leaders.map((leader, index) => {
+                const { about, qualifications } = parseBio(leader.bio);
+                const isEven = index % 2 === 0;
                 
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-4">
-                  {leader.bio}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+                return (
+                  <div
+                    key={leader.id}
+                    className="bg-card rounded-2xl shadow-lg overflow-hidden border border-border/50 hover:shadow-xl transition-all duration-300 animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className={`grid md:grid-cols-[400px,1fr] gap-0 ${!isEven ? 'md:grid-cols-[1fr,400px]' : ''}`}>
+                      {/* Profile Section */}
+                      <div className={`bg-gradient-to-br from-accent/5 via-background to-primary/5 p-8 md:p-12 flex flex-col items-center justify-center ${!isEven ? 'md:order-2' : ''}`}>
+                        <div className="relative mb-6">
+                          <div className="relative w-48 h-48 rounded-full overflow-hidden ring-4 ring-background shadow-2xl">
+                            {leader.image_url ? (
+                              <img
+                                src={leader.image_url}
+                                alt={leader.name}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                                <span className="text-6xl font-bold text-primary/40">
+                                  {leader.name.charAt(0)}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                            <Award className="w-6 h-6 text-accent-foreground" />
+                          </div>
+                        </div>
+                        
+                        <h2 className="text-2xl font-bold text-foreground mb-2 text-center">
+                          {leader.name}
+                        </h2>
+                        <span className="inline-block px-4 py-1.5 bg-accent text-accent-foreground rounded-full text-sm font-semibold mb-6">
+                          {leader.position}
+                        </span>
+                        
+                        <div className="space-y-3 text-sm text-muted-foreground w-full max-w-xs">
+                          <div className="flex items-center gap-3 justify-center">
+                            <Mail className="w-4 h-4 flex-shrink-0" />
+                            <span className="truncate">info@salemschools.com</span>
+                          </div>
+                          <div className="flex items-center gap-3 justify-center">
+                            <Phone className="w-4 h-4 flex-shrink-0" />
+                            <span>+234 XXX XXX XXXX</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bio Section */}
+                      <div className={`p-8 md:p-12 flex flex-col justify-center ${!isEven ? 'md:order-1' : ''}`}>
+                        <div className="space-y-6">
+                          <div>
+                            <h3 className="text-xl font-bold text-foreground mb-3">About</h3>
+                            <p className="text-muted-foreground leading-relaxed">
+                              {about}
+                            </p>
+                          </div>
+                          
+                          {qualifications.length > 0 && (
+                            <div>
+                              <h3 className="text-xl font-bold text-foreground mb-3">Qualifications</h3>
+                              <ul className="space-y-2">
+                                {qualifications.map((qual, idx) => (
+                                  <li key={idx} className="flex items-start gap-3">
+                                    <span className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                                    <span className="text-muted-foreground">{qual}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
-        
-        {leaders.length === 0 && (
-          <div className="text-center py-12">
-            <Users className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
-            <p className="text-muted-foreground">No leadership team members to display</p>
-          </div>
-        )}
-      </div>
-      
+      </section>
+
       <Footer />
     </div>
   );
