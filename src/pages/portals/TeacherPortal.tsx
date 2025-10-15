@@ -62,15 +62,24 @@ const TeacherPortal = () => {
       return;
     }
 
-    // Check if user has teacher role
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", data.user.id)
-      .eq("role", "teacher")
-      .maybeSingle();
+    // Check teacher role via secure DB function (bypasses RLS edge cases)
+    const { data: hasTeacherRole, error: roleCheckError } = await supabase.rpc('has_role', {
+      _user_id: data.user.id,
+      _role: 'teacher' as any,
+    });
 
-    if (!roleData) {
+    if (roleCheckError) {
+      toast({
+        title: "Access Denied",
+        description: "Unable to verify teacher access. Please try again.",
+        variant: "destructive",
+      });
+      await supabase.auth.signOut();
+      setLoading(false);
+      return;
+    }
+
+    if (!hasTeacherRole) {
       toast({
         title: "Access Denied",
         description: "You don't have teacher access.",
