@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Mail, Phone, Award } from "lucide-react";
+import { Award } from "lucide-react";
 
 interface Leader {
   id: string;
@@ -40,29 +40,21 @@ const Leadership = () => {
   };
 
   // Parse bio to extract qualifications if formatted with bullets
-  const parseBio = (bio: string | null) => {
-    if (!bio) return { about: "", qualifications: [] };
+  const parseQualifications = (bio: string | null) => {
+    if (!bio) return [];
     
     const lines = bio.split('\n').filter(line => line.trim());
     const qualifications: string[] = [];
-    let about = "";
-    let inQualifications = false;
 
     lines.forEach(line => {
-      if (line.toLowerCase().includes('qualification') || line.startsWith('•') || line.startsWith('-')) {
-        inQualifications = true;
-        if (line.startsWith('•') || line.startsWith('-')) {
-          qualifications.push(line.replace(/^[•-]\s*/, ''));
-        }
-      } else if (!inQualifications) {
-        about += line + ' ';
+      if (line.startsWith('•') || line.startsWith('-')) {
+        qualifications.push(line.replace(/^[•-]\s*/, ''));
+      } else if (!line.toLowerCase().includes('qualification') && !line.toLowerCase().includes('about')) {
+        qualifications.push(line);
       }
     });
 
-    return { 
-      about: about.trim() || bio, 
-      qualifications 
-    };
+    return qualifications.filter(q => q.length > 0);
   };
 
   return (
@@ -95,22 +87,22 @@ const Leadership = () => {
               <p className="text-muted-foreground text-lg">No leadership team members found.</p>
             </div>
           ) : (
-            <div className="space-y-8 max-w-6xl mx-auto">
+            <div className="space-y-6 max-w-5xl mx-auto">
               {leaders.map((leader, index) => {
-                const { about, qualifications } = parseBio(leader.bio);
+                const qualifications = parseQualifications(leader.bio);
                 const isEven = index % 2 === 0;
                 
                 return (
                   <div
                     key={leader.id}
-                    className="bg-card rounded-2xl shadow-lg overflow-hidden border border-border/50 hover:shadow-xl transition-all duration-300 animate-fade-in"
+                    className="bg-card rounded-xl shadow-md overflow-hidden border border-border/50 hover:shadow-lg transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className={`grid md:grid-cols-[400px,1fr] gap-0 ${!isEven ? 'md:grid-cols-[1fr,400px]' : ''}`}>
+                    <div className={`grid md:grid-cols-[280px,1fr] gap-0 ${!isEven ? 'md:grid-cols-[1fr,280px]' : ''}`}>
                       {/* Profile Section */}
-                      <div className={`bg-gradient-to-br from-accent/5 via-background to-primary/5 p-8 md:p-12 flex flex-col items-center justify-center ${!isEven ? 'md:order-2' : ''}`}>
-                        <div className="relative mb-6">
-                          <div className="relative w-48 h-48 rounded-full overflow-hidden ring-4 ring-background shadow-2xl">
+                      <div className={`bg-gradient-to-br from-accent/5 via-background to-primary/5 p-6 flex flex-col items-center justify-center ${!isEven ? 'md:order-2' : ''}`}>
+                        <div className="relative mb-4">
+                          <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-background shadow-lg">
                             {leader.image_url ? (
                               <img
                                 src={leader.image_url}
@@ -120,60 +112,40 @@ const Leadership = () => {
                               />
                             ) : (
                               <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                                <span className="text-6xl font-bold text-primary/40">
+                                <span className="text-4xl font-bold text-primary/40">
                                   {leader.name.charAt(0)}
                                 </span>
                               </div>
                             )}
                           </div>
-                          <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
-                            <Award className="w-6 h-6 text-accent-foreground" />
+                          <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-accent rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                            <Award className="w-5 h-5 text-accent-foreground" />
                           </div>
                         </div>
                         
-                        <h2 className="text-2xl font-bold text-foreground mb-2 text-center">
+                        <h2 className="text-xl font-bold text-foreground mb-1 text-center">
                           {leader.name}
                         </h2>
-                        <span className="inline-block px-4 py-1.5 bg-accent text-accent-foreground rounded-full text-sm font-semibold mb-6">
+                        <span className="inline-block px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-semibold">
                           {leader.position}
                         </span>
-                        
-                        <div className="space-y-3 text-sm text-muted-foreground w-full max-w-xs">
-                          <div className="flex items-center gap-3 justify-center">
-                            <Mail className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">info@salemschools.com</span>
-                          </div>
-                          <div className="flex items-center gap-3 justify-center">
-                            <Phone className="w-4 h-4 flex-shrink-0" />
-                            <span>+234 XXX XXX XXXX</span>
-                          </div>
-                        </div>
                       </div>
 
-                      {/* Bio Section */}
-                      <div className={`p-8 md:p-12 flex flex-col justify-center ${!isEven ? 'md:order-1' : ''}`}>
-                        <div className="space-y-6">
+                      {/* Qualifications Section */}
+                      <div className={`p-6 flex flex-col justify-center ${!isEven ? 'md:order-1' : ''}`}>
+                        {qualifications.length > 0 && (
                           <div>
-                            <h3 className="text-xl font-bold text-foreground mb-3">About</h3>
-                            <p className="text-muted-foreground leading-relaxed">
-                              {about}
-                            </p>
+                            <h3 className="text-lg font-bold text-foreground mb-3">Qualifications</h3>
+                            <ul className="space-y-2">
+                              {qualifications.map((qual, idx) => (
+                                <li key={idx} className="flex items-start gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                                  <span className="text-sm text-muted-foreground">{qual}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          
-                          {qualifications.length > 0 && (
-                            <div>
-                              <h3 className="text-xl font-bold text-foreground mb-3">Qualifications</h3>
-                              <ul className="space-y-2">
-                                {qualifications.map((qual, idx) => (
-                                  <li key={idx} className="flex items-start gap-3">
-                                    <span className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                                    <span className="text-muted-foreground">{qual}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>
