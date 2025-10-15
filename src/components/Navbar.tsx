@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import {
@@ -13,6 +13,24 @@ import logo from "@/assets/salem-logo-new.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isOpen]);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [schoolsOpen, setSchoolsOpen] = useState(false);
   const [portalsOpen, setPortalsOpen] = useState(false);

@@ -252,24 +252,25 @@ const LeadershipManager = () => {
               <Card key={leader.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
-                    {/* Rank Badge */}
-                    <div className="flex flex-col gap-1">
+                    {/* Modern Rank Badge with Controls */}
+                    <div className="flex flex-col items-center gap-2">
                       <Button
                         size="sm"
-                        variant="ghost"
-                        className="h-6 w-6 p-0"
+                        variant="outline"
+                        className="h-8 w-8 p-0 rounded-full border-2 hover:border-primary hover:bg-primary/10 transition-all disabled:opacity-30"
                         onClick={() => moveLeader(leader.id, 'up')}
                         disabled={index === 0}
                       >
                         <ChevronUp className="w-4 h-4" />
                       </Button>
-                      <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
-                        {index + 1}
+                      <div className="relative w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center font-bold text-lg text-primary-foreground shadow-lg">
+                        <span className="relative z-10">#{index + 1}</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
                       </div>
                       <Button
                         size="sm"
-                        variant="ghost"
-                        className="h-6 w-6 p-0"
+                        variant="outline"
+                        className="h-8 w-8 p-0 rounded-full border-2 hover:border-primary hover:bg-primary/10 transition-all disabled:opacity-30"
                         onClick={() => moveLeader(leader.id, 'down')}
                         disabled={index === leaders.length - 1}
                       >
