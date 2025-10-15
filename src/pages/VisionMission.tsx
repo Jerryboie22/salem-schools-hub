@@ -44,94 +44,67 @@ const VisionMission = () => {
                   <Target className="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                    Building a generation rooted in knowledge, discipline, and excellence through quality education and Christian values. Our mission is to:
+                  <h2 className="text-3xl font-bold mb-4 text-primary">Mission Statement</h2>
+                  <p className="text-lg leading-relaxed">
+                    The mission of the school is to raise leaders of tomorrow from adolescents through academics, character, and spiritual training that orientates them to pursue values for self and beyond self.
                   </p>
-                  <ul className="space-y-3 text-muted-foreground">
-                    <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <span>Provide world-class education that combines academic excellence with moral and spiritual development</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <span>Foster an environment where students discover and develop their God-given talents and abilities</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <span>Instill discipline, integrity, and leadership qualities in every student</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <span>Partner with parents to ensure holistic child development</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <span>Equip students with 21st-century skills for global competitiveness</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Core Values */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-            <Card className="hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-accent" />
+          <div className="mt-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Core Values</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 border-t-4 border-t-primary">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold">Excellence</h3>
-                </div>
-                <p className="text-muted-foreground">
-                  We pursue the highest standards in everything we do, from academics to character development.
-                </p>
-              </CardContent>
-            </Card>
+                  <h3 className="text-xl font-bold mb-2">Fear of God</h3>
+                  <p className="text-sm text-muted-foreground italic">
+                    The foundation of wisdom and character
+                  </p>
+                </CardContent>
+              </Card>
 
-            <Card className="hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <BookOpen className="w-6 h-6 text-primary" />
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 border-t-4 border-t-accent">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold">Integrity</h3>
-                </div>
-                <p className="text-muted-foreground">
-                  We uphold honesty, transparency, and ethical behavior in all our interactions and decisions.
-                </p>
-              </CardContent>
-            </Card>
+                  <h3 className="text-xl font-bold mb-2">Integrity</h3>
+                  <p className="text-sm text-muted-foreground italic">
+                    Upholding honesty and ethical standards
+                  </p>
+                </CardContent>
+              </Card>
 
-            <Card className="hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <Target className="w-6 h-6 text-accent" />
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 border-t-4 border-t-primary">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Target className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold">Discipline</h3>
-                </div>
-                <p className="text-muted-foreground">
-                  We instill self-control, focus, and determination in our students to achieve their goals.
-                </p>
-              </CardContent>
-            </Card>
+                  <h3 className="text-xl font-bold mb-2">Diligence</h3>
+                  <p className="text-sm text-muted-foreground italic">
+                    Persistent effort towards excellence
+                  </p>
+                </CardContent>
+              </Card>
 
-            <Card className="hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-primary" />
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 border-t-4 border-t-accent">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold">Godly Character</h3>
-                </div>
-                <p className="text-muted-foreground">
-                  We nurture Christian values and spiritual growth in every aspect of school life.
-                </p>
-              </CardContent>
-            </Card>
+                  <h3 className="text-xl font-bold mb-2">Help</h3>
+                  <p className="text-sm text-muted-foreground italic">
+                    Serving others with compassion
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

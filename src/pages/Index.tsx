@@ -7,7 +7,7 @@ import NewsSection from "@/components/NewsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { BookOpen, Users, Award, Library, FlaskConical, Monitor, Trophy, MapPin, Mail, Phone } from "lucide-react";
+import { BookOpen, Users, Award, Library, FlaskConical, Monitor, Trophy, MapPin, Mail, Phone, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import aboutImg from "@/assets/school-exterior.jpg";
 import facilitiesImg from "@/assets/modern-facilities.jpg";
@@ -72,6 +72,73 @@ const Index = () => {
                   alt="Salem School" 
                   className="rounded-lg shadow-xl w-full h-auto"
                 />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Mission & Values Section */}
+      <section className="py-8 md:py-12 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(var(--primary-rgb),0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(var(--accent-rgb),0.1),transparent_50%)]"></div>
+        
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 relative">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-6 md:mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">Our Mission</h2>
+              <div className="max-w-3xl mx-auto">
+                <p className="text-base md:text-lg leading-relaxed">
+                  To raise leaders of tomorrow from adolescents through academics, character, and spiritual training that orientates them to pursue values for self and beyond self.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 md:mt-10">
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">Core Values</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                <Card className="hover:shadow-lg transition-all hover:-translate-y-1 border-t-4 border-t-primary bg-background/80 backdrop-blur">
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                      <Heart className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    </div>
+                    <h4 className="text-sm md:text-base font-bold">Fear of God</h4>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-lg transition-all hover:-translate-y-1 border-t-4 border-t-accent bg-background/80 backdrop-blur">
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                      <BookOpen className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    </div>
+                    <h4 className="text-sm md:text-base font-bold">Integrity</h4>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-lg transition-all hover:-translate-y-1 border-t-4 border-t-primary bg-background/80 backdrop-blur">
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                      <Award className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    </div>
+                    <h4 className="text-sm md:text-base font-bold">Diligence</h4>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-lg transition-all hover:-translate-y-1 border-t-4 border-t-accent bg-background/80 backdrop-blur">
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                      <Users className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    </div>
+                    <h4 className="text-sm md:text-base font-bold">Help</h4>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="text-center mt-6">
+                <Button variant="outline" size="lg" className="touch-target" asChild>
+                  <Link to="/vision-mission">Learn More About Our Vision</Link>
+                </Button>
               </div>
             </div>
           </div>
