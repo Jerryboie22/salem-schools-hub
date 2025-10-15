@@ -203,9 +203,22 @@ All colors MUST be HSL.
   }
   
   /* Mobile touch-friendly buttons */
-  .touch-target {
-    @apply min-h-[44px] min-w-[44px];
-  }
+.touch-target {
+  @apply min-h-[44px] min-w-[44px];
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
   
   /* Smooth scrolling */
   html {
