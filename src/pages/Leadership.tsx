@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Award } from "lucide-react";
+import leadershipHero from "@/assets/leadership-hero.jpg";
 
 interface Leader {
   id: string;
@@ -62,15 +63,24 @@ const Leadership = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-primary via-primary/90 to-accent overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCAzLjk5LTRoMi4wMmMxLjEgMCAyIC45IDIgMnYyYzAgMS4xLS45IDItMiAySDM4Yy0xLjEgMC0yLS45LTItMnYtMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4 animate-fade-in">
-            Leadership Team
-          </h1>
-          <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto animate-fade-in">
-            Meet the dedicated leaders shaping the future of Salem Group of Schools
-          </p>
+      <section className="relative h-[400px] overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={leadershipHero} 
+            alt="Leadership Team" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-accent/70"></div>
+        </div>
+        <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4 animate-fade-in">
+              Leadership Team
+            </h1>
+            <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto animate-fade-in">
+              Meet the dedicated leaders shaping the future of Salem Group of Schools
+            </p>
+          </div>
         </div>
       </section>
 

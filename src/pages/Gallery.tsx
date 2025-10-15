@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Images, X } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import galleryHero from "@/assets/gallery-hero.jpg";
 
 interface GalleryImage {
   id: string;
@@ -38,13 +39,17 @@ const Gallery = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="gradient-hero py-20 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <Images className="w-16 h-16 mx-auto mb-6" />
-          <h1 className="text-5xl font-bold mb-4">Media & Gallery</h1>
-          <p className="text-xl opacity-90 max-w-2xl mx-auto">
-            Explore moments and memories from Salem Group of Schools
-          </p>
+      <div className="relative h-[400px] overflow-hidden">
+        <img src={galleryHero} alt="Gallery" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-accent/70"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-4 text-center text-primary-foreground">
+            <Images className="w-16 h-16 mx-auto mb-6" />
+            <h1 className="text-5xl font-bold mb-4">Media & Gallery</h1>
+            <p className="text-xl opacity-90 max-w-2xl mx-auto">
+              Explore moments and memories from Salem Group of Schools
+            </p>
+          </div>
         </div>
       </div>
 

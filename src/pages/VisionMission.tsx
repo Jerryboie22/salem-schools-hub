@@ -2,18 +2,23 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Target, Eye, Heart, BookOpen } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import visionHero from "@/assets/vision-hero.jpg";
 
 const VisionMission = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="gradient-hero py-20 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <Target className="w-16 h-16 mx-auto mb-6" />
-          <h1 className="text-5xl font-bold mb-4">Vision & Mission</h1>
-          <p className="text-xl opacity-90 max-w-2xl mx-auto">
-            Our commitment to educational excellence and godly character
-          </p>
+      <div className="relative h-[400px] overflow-hidden">
+        <img src={visionHero} alt="Vision & Mission" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-accent/70"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-4 text-center text-primary-foreground">
+            <Target className="w-16 h-16 mx-auto mb-6" />
+            <h1 className="text-5xl font-bold mb-4">Vision & Mission</h1>
+            <p className="text-xl opacity-90 max-w-2xl mx-auto">
+              Our commitment to educational excellence and godly character
+            </p>
+          </div>
         </div>
       </div>
 

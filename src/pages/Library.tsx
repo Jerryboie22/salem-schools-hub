@@ -2,18 +2,23 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BookOpen, Search, Users, Clock, Book, Laptop } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import libraryHero from "@/assets/library-hero.jpg";
 
 const Library = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="gradient-hero py-20 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <BookOpen className="w-16 h-16 mx-auto mb-6" />
-          <h1 className="text-5xl font-bold mb-4">Salem Library</h1>
-          <p className="text-xl opacity-90 max-w-2xl mx-auto">
-            A world of knowledge at your fingertips
-          </p>
+      <div className="relative h-[400px] overflow-hidden">
+        <img src={libraryHero} alt="Salem Library" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-accent/70"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-4 text-center text-primary-foreground">
+            <BookOpen className="w-16 h-16 mx-auto mb-6" />
+            <h1 className="text-5xl font-bold mb-4">Salem Library</h1>
+            <p className="text-xl opacity-90 max-w-2xl mx-auto">
+              A world of knowledge at your fingertips
+            </p>
+          </div>
         </div>
       </div>
 
