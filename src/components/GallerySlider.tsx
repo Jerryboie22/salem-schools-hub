@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogClose } from "./ui/dialog";
 import { Skeleton } from "./ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface GalleryImage {
   id: string;
@@ -17,9 +24,7 @@ const GallerySlider = () => {
   const navigate = useNavigate();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-  const imagesPerPage = 8;
 
   useEffect(() => {
     fetchGalleryImages();
@@ -31,8 +36,7 @@ const GallerySlider = () => {
         .from("gallery_images")
         .select("*")
         .eq("is_active", true)
-        .order("order_index", { ascending: true })
-        .limit(20);
+        .order("order_index", { ascending: true });
 
       if (error) {
         console.error("Error fetching gallery images:", error);
@@ -43,18 +47,6 @@ const GallerySlider = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const totalPages = Math.ceil(images.length / imagesPerPage);
-  const startIndex = currentPage * imagesPerPage;
-  const currentImages = images.slice(startIndex, startIndex + imagesPerPage);
-
-  const nextPage = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
   };
 
   if (!loading && images.length === 0) {
@@ -71,74 +63,51 @@ const GallerySlider = () => {
           </p>
         </div>
 
-        <div className="relative max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {loading ? (
-              Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="aspect-square rounded-lg" />
-              ))
-            ) : (
-              currentImages.map((image, idx) => (
-                <div 
-                  key={image.id} 
-                  onClick={() => setSelectedImage(image)}
-                  className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
-                >
-                  <img
-                    src={image.image_url}
-                    alt={image.title || "Gallery image"}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {image.title && (
-                      <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <h3 className="text-white text-sm md:text-base font-semibold">
-                          {image.title}
-                        </h3>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))
-            )}
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-7xl mx-auto">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="aspect-square rounded-lg" />
+            ))}
           </div>
-
-          {!loading && totalPages > 1 && (
-            <>
-              <Button
-                onClick={prevPage}
-                size="icon"
-                variant="outline"
-                className="absolute -left-4 md:left-0 top-1/2 -translate-y-1/2 h-10 w-10 md:h-12 md:w-12 rounded-full shadow-lg bg-background"
-              >
-                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-              </Button>
-
-              <Button
-                onClick={nextPage}
-                size="icon"
-                variant="outline"
-                className="absolute -right-4 md:right-0 top-1/2 -translate-y-1/2 h-10 w-10 md:h-12 md:w-12 rounded-full shadow-lg bg-background"
-              >
-                <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-              </Button>
-
-              <div className="flex justify-center gap-2 mt-6 md:mt-8">
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPage(index)}
-                    className={`h-2 rounded-full transition-all ${
-                      index === currentPage
-                        ? "bg-primary w-8"
-                        : "bg-muted-foreground/30 w-2"
-                    }`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+        ) : (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-7xl mx-auto"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {images.map((image) => (
+                <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-1/2 md:basis-1/4">
+                  <div 
+                    onClick={() => setSelectedImage(image)}
+                    className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={image.title || "Gallery image"}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {image.title && (
+                        <div className="absolute bottom-0 left-0 right-0 p-3">
+                          <h3 className="text-white text-sm md:text-base font-semibold">
+                            {image.title}
+                          </h3>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
+        )}
 
         {!loading && images.length > 0 && (
           <div className="text-center mt-6 md:mt-8">
