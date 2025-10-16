@@ -143,97 +143,82 @@ const TeacherDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-fuchsia-50 pb-safe">
-      <header className="glass-effect border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-fuchsia-50">
+      <header className="glass-effect border-b sticky top-0 z-10 bg-white/95 backdrop-blur">
+        <div className="container mx-auto px-3 sm:px-6 py-2.5 sm:py-4">
+          <div className="flex justify-between items-center gap-2">
             <div className="min-w-0 flex-1">
-              <h1 className="text-lg sm:text-2xl font-bold bg-gradient-teacher bg-clip-text text-transparent">Teacher Dashboard</h1>
-              <p className="text-xs sm:text-sm text-muted-foreground truncate mt-0.5">{userEmail}</p>
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-teacher bg-clip-text text-transparent">Dashboard</h1>
+              <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <Link to="/" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="gap-2 w-full touch-target">
+            <div className="flex gap-1.5 sm:gap-2">
+              <Link to="/">
+                <Button size="sm" variant="outline" className="h-8 w-8 sm:w-auto sm:h-9 sm:gap-2 p-0 sm:px-3">
                   <Home className="w-4 h-4" />
-                  <span className="hidden sm:inline">Home</span>
+                  <span className="hidden sm:inline text-xs">Home</span>
                 </Button>
               </Link>
-              <Button onClick={handleSignOut} size="sm" className="gradient-teacher text-white border-0 shadow-lg hover:shadow-xl transition-all flex-1 sm:flex-none touch-target">
-                <LogOut className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Sign Out</span>
+              <Button onClick={handleSignOut} size="sm" className="gradient-teacher text-white border-0 h-8 w-8 sm:w-auto sm:h-9 p-0 sm:px-3">
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline text-xs sm:ml-2">Sign Out</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        <Tabs defaultValue="profile" className="space-y-4 sm:space-y-6">
-          <div className="overflow-x-auto -mx-4 px-4 scrollbar-hide">
-            <TabsList className="inline-flex w-full sm:w-auto min-w-full h-auto p-1 gap-1 bg-white/80 backdrop-blur">
-              <TabsTrigger value="profile" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Profile</TabsTrigger>
-              <TabsTrigger value="attendance" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Attendance</TabsTrigger>
-              <TabsTrigger value="lesson-plans" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Lessons</TabsTrigger>
-              <TabsTrigger value="schedules" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Schedules</TabsTrigger>
-              <TabsTrigger value="students" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Students</TabsTrigger>
-              <TabsTrigger value="assignments" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Assignments</TabsTrigger>
-              <TabsTrigger value="grades" className="flex-1 sm:flex-none text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-2.5 touch-target">Grades</TabsTrigger>
-            </TabsList>
-          </div>
+      <div className="container mx-auto px-3 sm:px-6 py-3 sm:py-6 max-w-7xl">
+        <Tabs defaultValue="profile" className="space-y-3 sm:space-y-4">
+          <TabsList className="grid grid-cols-4 sm:grid-cols-7 w-full h-auto gap-1 bg-white/90 backdrop-blur p-1 rounded-lg shadow-sm">
+            <TabsTrigger value="profile" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Profile</TabsTrigger>
+            <TabsTrigger value="attendance" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Attend</TabsTrigger>
+            <TabsTrigger value="lesson-plans" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Lessons</TabsTrigger>
+            <TabsTrigger value="schedules" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Schedule</TabsTrigger>
+            <TabsTrigger value="students" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Students</TabsTrigger>
+            <TabsTrigger value="assignments" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Tasks</TabsTrigger>
+            <TabsTrigger value="grades" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-gradient-teacher data-[state=active]:text-white">Grades</TabsTrigger>
+          </TabsList>
 
-          <TabsContent value="profile">
-            <div className="space-y-4 sm:space-y-6">
-              <Card className="border-0 shadow-xl overflow-hidden">
-                <div className="h-2 gradient-teacher"></div>
-                <CardHeader className="p-4 sm:p-6">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                    <div className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-purple-400 to-violet-500 rounded-full"></div>
-                    Admin Announcements
+          <TabsContent value="profile" className="space-y-3">
+            {announcements.length > 0 && (
+              <Card className="border shadow-md">
+                <CardHeader className="p-3 sm:p-4 pb-2 sm:pb-3">
+                  <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-purple-600" />
+                    Announcements
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0">
-                  {announcements.length === 0 ? (
-                    <div className="text-center py-8 sm:py-12">
-                      <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
-                      <p className="text-sm sm:text-base text-muted-foreground">No announcements yet</p>
+                <CardContent className="p-3 sm:p-4 pt-0 space-y-2">
+                  {announcements.slice(0, 3).map((announcement) => (
+                    <div key={announcement.id} className="p-3 rounded-lg bg-purple-50/50 border border-purple-100">
+                      <h4 className="font-medium text-sm text-purple-900">{announcement.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{announcement.content}</p>
+                      <div className="flex items-center gap-2 mt-2 text-xs text-purple-600">
+                        <span>{announcement.classes?.name || 'All'}</span>
+                        <span>•</span>
+                        <span>{new Date(announcement.created_at).toLocaleDateString()}</span>
+                      </div>
                     </div>
-                  ) : (
-                    <div className="space-y-3 sm:space-y-4">
-                      {announcements.map((announcement) => (
-                        <div key={announcement.id} className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-100 hover:shadow-md transition-all">
-                          <h4 className="font-semibold text-purple-900 text-sm sm:text-base">{announcement.title}</h4>
-                          <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed">{announcement.content}</p>
-                          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 text-xs sm:text-sm">
-                            <span className="text-purple-600 flex items-center gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                              {announcement.classes?.name || 'All Teachers'}
-                            </span>
-                            <span className="text-muted-foreground">
-                              {new Date(announcement.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  ))}
                 </CardContent>
               </Card>
+            )}
 
-              <Card>
-                <CardHeader className="p-4 sm:p-6">
-                  <CardTitle className="text-lg sm:text-xl">My Profile</CardTitle>
-                </CardHeader>
-              <CardContent className="space-y-4 sm:space-y-5 p-4 sm:p-6 pt-0">
-                <div className="flex flex-col items-center gap-4 sm:gap-5 pb-4 sm:pb-6 border-b">
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full gradient-teacher flex items-center justify-center overflow-hidden shadow-lg ring-4 ring-white">
+            <Card>
+              <CardHeader className="p-3 sm:p-4">
+                <CardTitle className="text-base sm:text-lg">My Profile</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
+                <div className="flex items-start gap-3 pb-3 border-b">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full gradient-teacher flex items-center justify-center overflow-hidden shadow-md ring-2 ring-white flex-shrink-0">
                     {profile.avatar_url ? (
                       <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-4xl sm:text-5xl font-bold text-white">{profile.full_name?.[0] || "T"}</span>
+                      <span className="text-2xl sm:text-3xl font-bold text-white">{profile.full_name?.[0] || "T"}</span>
                     )}
                   </div>
-                  <div className="w-full">
-                    <Label className="text-sm font-semibold">Profile Picture</Label>
+                  <div className="flex-1 min-w-0">
+                    <Label className="text-xs font-semibold">Profile Picture</Label>
                     <Input
                       type="file"
                       accept="image/*"
@@ -258,78 +243,81 @@ const TeacherDashboard = () => {
                         setUploading(false);
                       }}
                       disabled={uploading}
-                      className="mt-2 touch-target"
+                      className="mt-1 text-xs h-8"
                     />
-                    {uploading && <p className="text-xs text-purple-600 mt-1 animate-pulse">Uploading...</p>}
+                    {uploading && <p className="text-xs text-purple-600 mt-0.5 animate-pulse">Uploading...</p>}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-sm sm:text-base">Email</Label>
-                  <Input value={userEmail} disabled className="touch-target" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Email</Label>
+                    <Input value={userEmail} disabled className="h-9 text-sm" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Full Name</Label>
+                    <Input
+                      value={profile.full_name}
+                      onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
+                      placeholder="Full name"
+                      className="h-9 text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Phone</Label>
+                    <Input
+                      value={profile.phone}
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      placeholder="Phone number"
+                      className="h-9 text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Date of Birth</Label>
+                    <Input
+                      type="date"
+                      value={profile.date_of_birth}
+                      onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
+                      className="h-9 text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5 sm:col-span-2">
+                    <Label className="text-xs">Address</Label>
+                    <Input
+                      value={profile.address}
+                      onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                      placeholder="Address"
+                      className="h-9 text-sm"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-sm sm:text-base">Full Name</Label>
-                  <Input
-                    value={profile.full_name}
-                    onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                    placeholder="Enter your full name"
-                    className="touch-target"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm sm:text-base">Phone Number</Label>
-                  <Input
-                    value={profile.phone}
-                    onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                    placeholder="Enter your phone number"
-                    className="touch-target"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm sm:text-base">Address</Label>
-                  <Input
-                    value={profile.address}
-                    onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                    placeholder="Enter your address"
-                    className="touch-target"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm sm:text-base">Date of Birth</Label>
-                  <Input
-                    type="date"
-                    value={profile.date_of_birth}
-                    onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
-                    className="touch-target"
-                  />
-                </div>
-                <Button onClick={handleUpdateProfile} className="w-full sm:w-auto touch-target">Update Profile</Button>
+                
+                <Button onClick={handleUpdateProfile} className="w-full h-9 text-sm">Update Profile</Button>
               </CardContent>
             </Card>
-            </div>
           </TabsContent>
 
-          <TabsContent value="attendance" className="mt-4 sm:mt-6">
+          <TabsContent value="attendance">
             <AttendanceManager />
           </TabsContent>
 
-          <TabsContent value="lesson-plans" className="mt-4 sm:mt-6">
+          <TabsContent value="lesson-plans">
             <LessonPlansManager teacherId={teacherId} />
           </TabsContent>
 
-          <TabsContent value="schedules" className="mt-4 sm:mt-6">
+          <TabsContent value="schedules">
             <SchedulesManager teacherId={teacherId} />
           </TabsContent>
 
-          <TabsContent value="students" className="mt-4 sm:mt-6">
+          <TabsContent value="students">
             <TeacherStudentsView />
           </TabsContent>
 
-          <TabsContent value="assignments" className="mt-4 sm:mt-6">
+          <TabsContent value="assignments">
             <AssignmentsManager />
           </TabsContent>
 
-          <TabsContent value="grades" className="mt-4 sm:mt-6">
+          <TabsContent value="grades">
             <GradesManager />
           </TabsContent>
         </Tabs>
