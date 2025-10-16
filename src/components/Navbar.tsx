@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Mail, Phone } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -37,13 +37,30 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary text-primary-foreground z-50 shadow-lg">
+      {/* Top Contact Bar */}
+      <div className="bg-primary/90 border-b border-primary-foreground/10">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center md:justify-end gap-4 py-2 text-xs">
+            <a href="mailto:info@salemschools.edu.ng" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+              <Mail size={14} />
+              <span className="hidden sm:inline">info@salemschools.edu.ng</span>
+            </a>
+            <span className="hidden sm:inline text-primary-foreground/30">|</span>
+            <a href="tel:+234803XXXXXXX" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+              <Phone size={14} />
+              <span>+234 803 XXX XXXX</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-3">
-            <img src={logo} alt="Salem Logo" className="w-12 h-12 rounded-full object-cover" />
-            <div className="hidden md:block">
-              <div className="font-bold text-xl">Salem Group of Schools</div>
-              <div className="text-xs opacity-90">Excellence in Education</div>
+        <div className="flex items-center justify-between h-16 md:h-20">
+          <Link to="/" className="flex items-center space-x-2 md:space-x-3">
+            <img src={logo} alt="Salem Logo" className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover" />
+            <div>
+              <div className="font-bold text-sm md:text-xl">Salem Group of Schools</div>
+              <div className="text-[10px] md:text-xs opacity-90">Excellence in Education</div>
             </div>
           </Link>
 

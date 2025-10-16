@@ -4,6 +4,13 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Images, X } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import galleryHero from "@/assets/gallery-hero.jpg";
 
 interface GalleryImage {
@@ -54,37 +61,48 @@ const Gallery = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {images.map((image) => (
-            <div
-              key={image.id}
-              onClick={() => setSelectedImage(image)}
-              className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] cursor-pointer bg-card"
-            >
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={image.image_url}
-                  alt={image.title || "Gallery image"}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                />
-              </div>
-              {(image.title || image.description) && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                  <div className="p-8 text-white w-full">
-                    {image.title && (
-                      <h3 className="text-2xl md:text-3xl font-bold mb-3 drop-shadow-lg">{image.title}</h3>
-                    )}
-                    {image.description && (
-                      <p className="text-base md:text-lg text-white/95 drop-shadow-md">{image.description}</p>
+        {images.length > 0 ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {images.map((image) => (
+                <CarouselItem key={image.id} className="pl-4 basis-full md:basis-1/2">
+                  <div
+                    onClick={() => setSelectedImage(image)}
+                    className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] cursor-pointer bg-card"
+                  >
+                    <div className="aspect-[16/10] overflow-hidden">
+                      <img
+                        src={image.image_url}
+                        alt={image.title || "Gallery image"}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                      />
+                    </div>
+                    {(image.title || image.description) && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
+                        <div className="p-6 md:p-8 text-white w-full">
+                          {image.title && (
+                            <h3 className="text-xl md:text-3xl font-bold mb-2 md:mb-3 drop-shadow-lg">{image.title}</h3>
+                          )}
+                          {image.description && (
+                            <p className="text-sm md:text-lg text-white/95 drop-shadow-md">{image.description}</p>
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {images.length === 0 && (
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
+        ) : (
           <div className="text-center py-12">
             <Images className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
             <p className="text-lg text-muted-foreground">No gallery images available at the moment.</p>

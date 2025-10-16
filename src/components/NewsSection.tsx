@@ -3,8 +3,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface BlogPost {
   id: string;
@@ -53,9 +60,9 @@ const NewsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
               <Card key={i} className="overflow-hidden">
                 <Skeleton className="h-48 w-full" />
                 <CardHeader>
@@ -70,40 +77,54 @@ const NewsSection = () => {
                   <Skeleton className="h-4 w-24" />
                 </CardFooter>
               </Card>
-            ))
-          ) : (
-            posts.map((post) => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
-              {post.featured_image && (
-                <div className="h-40 md:h-48 overflow-hidden bg-muted">
-                  <img
-                    src={post.featured_image}
-                    alt={post.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              )}
-              <CardHeader className="p-4">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <Calendar className="w-3 h-3" />
-                  {new Date(post.created_at).toLocaleDateString()}
-                </div>
-                <h3 className="text-base md:text-lg font-bold line-clamp-2">{post.title}</h3>
-              </CardHeader>
-              <CardContent className="p-4 pt-0 flex-1">
-                <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
-              </CardContent>
-              <CardFooter className="p-4 pt-0">
-                <Button variant="link" className="p-0 text-sm" asChild>
-                  <Link to={`/news/${post.slug}`}>Read More →</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        ) : posts.length > 0 ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-6xl mx-auto"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {posts.map((post) => (
+                <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
+                    {post.featured_image && (
+                      <div className="h-40 md:h-48 overflow-hidden bg-muted">
+                        <img
+                          src={post.featured_image}
+                          alt={post.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <CardHeader className="p-4">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(post.created_at).toLocaleDateString()}
+                      </div>
+                      <h3 className="text-base md:text-lg font-bold line-clamp-2">{post.title}</h3>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0 flex-1">
+                      <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="p-4 pt-0">
+                      <Button variant="link" className="p-0 text-sm" asChild>
+                        <Link to={`/news/${post.slug}`}>Read More →</Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
+        ) : null}
 
         {!loading && posts.length === 0 && (
           <p className="text-center text-muted-foreground">No news available at the moment.</p>
