@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, Users, Globe, Award } from "lucide-react";
-import covenantCollegeImg from "@/assets/covenant-college.jpg";
+import covenantCollegeImg from "@/assets/IMG-20251016-WA0062.jpg";
 import SchoolPhotoSlider from "@/components/SchoolPhotoSlider";
 import PrincipalDesk from "@/components/PrincipalDesk";
 import SchoolFacilities from "@/components/SchoolFacilities";
