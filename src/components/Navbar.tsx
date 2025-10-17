@@ -46,9 +46,9 @@ const Navbar = () => {
               <span className="hidden sm:inline">info@salemschools.edu.ng</span>
             </a>
             <span className="hidden sm:inline text-primary-foreground/30">|</span>
-            <a href="tel:+234803XXXXXXX" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+234 802 370 2107" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={14} />
-              <span>+234 803 XXX XXXX</span>
+              <span>+234 802 370 2107</span>
             </a>
           </div>
         </div>
