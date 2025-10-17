@@ -60,7 +60,7 @@ const Hero = () => {
                     <Link to="/contact">Apply Now</Link>
                   </Button>
                   <Button size="lg" variant="outline" className="bg-white/90 text-primary hover:bg-white border-white text-base" asChild>
-                    <Link to="/about">Learn More</Link>
+                    <Link to="/contact">Learn More</Link>
                   </Button>
                 </div>
               </div>
