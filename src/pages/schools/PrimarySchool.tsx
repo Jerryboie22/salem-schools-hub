@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, Book, Award, Trophy } from "lucide-react";
-import primarySchoolImg from "@/assets/primary-school.jpg";
+import primarySchoolImg from "@/assets/IMG-20251016-WA0013.jpg";
 import SchoolPhotoSlider from "@/components/SchoolPhotoSlider";
 import PrincipalDesk from "@/components/PrincipalDesk";
 import SchoolFacilities from "@/components/SchoolFacilities";
