@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import childrenSchoolImg from "@/assets/IMG-20251016-WA0010.jpg";
-import primarySchoolImg from "@/assets/IMG-20251016-WA0013.jpg";
+import primarySchoolImg from "@/assets/IMG-20251016-WA0008.jpg";
 import covenantCollegeImg from "@/assets/IMG-20251016-WA0016.jpg";
 
 const schools = [
