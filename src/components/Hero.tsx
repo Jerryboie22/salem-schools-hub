@@ -28,7 +28,7 @@ const slides = [
 
 const Hero = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 5000, stopOnInteraction: false })
+    Autoplay({ delay: 3800, stopOnInteraction: false })
   ]);
 
   return (
