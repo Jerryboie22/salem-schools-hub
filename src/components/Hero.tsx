@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useCallback } from "react";
-import heroImage1 from "@/IMG-20251016-WA0022.jpg";
+import heroImage1 from "@/assets/IMG-20251016-WA0015.jpg";
 import heroImage2 from "@/assets/school-courtyard-hero.jpg";
 import heroImage3 from "@/assets/modern-facilities.jpg";
 import logo from "@/assets/salem-logo-new.jpg";
