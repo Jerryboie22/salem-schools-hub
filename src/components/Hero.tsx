@@ -4,8 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useCallback } from "react";
 import heroImage1 from "@/assets/IMG-20251016-WA0015.jpg";
-import heroImage2 from "@/assets/school-courtyard-hero.jpg";
-import heroImage3 from "@/assets/modern-facilities.jpg";
+import heroImage2 from "@/assets/IMG-20251016-WA0022.jpg";
+import heroImage3 from "@/assets/IMG-20251016-WA0008.jpg";
 import logo from "@/assets/salem-logo-new.jpg";
 
 const slides = [
@@ -21,7 +21,7 @@ const slides = [
   },
   {
     image: heroImage3,
-    title: "Modern Learning Environment",
+    title: "Embracing cultural heritages",
     subtitle: "State-of-the-Art Facilities for Quality Education"
   }
 ];
