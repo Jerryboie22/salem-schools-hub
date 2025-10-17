@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Baby, BookOpen, Sparkles, Users } from "lucide-react";
-import childrenSchoolImg from "@/assets/children-school.jpg";
+import childrenSchoolImg from "@/assets/IMG-20251016-WA0007.jpg";
 import SchoolPhotoSlider from "@/components/SchoolPhotoSlider";
 import PrincipalDesk from "@/components/PrincipalDesk";
 import SchoolFacilities from "@/components/SchoolFacilities";
