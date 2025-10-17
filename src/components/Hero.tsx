@@ -2,47 +2,43 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+import { useEffect, useCallback } from "react";
+import heroImage1 from "@/assets/children-school.jpg";
+import heroImage2 from "@/assets/school-courtyard-hero.jpg";
+import heroImage3 from "@/assets/modern-facilities.jpg";
 import logo from "@/assets/salem-logo-new.jpg";
+
+const slides = [
+  {
+    image: heroImage1,
+    title: "Excellence in Education",
+    subtitle: "Nurturing Future Leaders with Christian Values"
+  },
+  {
+    image: heroImage2,
+    title: "Character Development",
+    subtitle: "Building Strong Foundations for Tomorrow"
+  },
+  {
+    image: heroImage3,
+    title: "Modern Learning Environment",
+    subtitle: "State-of-the-Art Facilities for Quality Education"
+  }
+];
 
 const Hero = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false })
   ]);
 
-  const { data: slides, isLoading } = useQuery({
-    queryKey: ["hero-slides"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("homepage_content")
-        .select("*")
-        .eq("section", "hero")
-        .eq("is_active", true)
-        .order("order_index");
-      
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <section className="relative h-[55vh] md:h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </section>
-    );
-  }
-
   return (
     <section className="relative h-[55vh] md:h-[60vh] overflow-hidden" ref={emblaRef}>
       <div className="flex h-full">
-        {slides?.map((slide) => (
-          <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full">
+        {slides.map((slide, index) => (
+          <div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
             <div 
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image_url})` }}
+              style={{ backgroundImage: `url(${slide.image})` }}
             />
             <div className="absolute inset-0 bg-black/30" />
             

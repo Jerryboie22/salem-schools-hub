@@ -12,7 +12,6 @@ import LeadershipManager from "./components/LeadershipManager";
 import TestimonialsManager from "./components/TestimonialsManager";
 import ContactMessagesManager from "./components/ContactMessagesManager";
 import { UserManagementManager } from "./components/UserManagementManager";
-import HomepageManager from "./components/HomepageManager";
 import ClassesManager from "./components/ClassesManager";
 import AnnouncementsManager from "./components/AnnouncementsManager";
 import TeacherContentView from "./components/TeacherContentView";
@@ -130,7 +129,6 @@ const AdminDashboard = () => {
                 Website Content
               </h2>
               <TabsList className="w-full h-auto bg-muted/50 p-1 flex flex-wrap gap-1">
-                <TabsTrigger value="homepage" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Homepage</TabsTrigger>
                 <TabsTrigger value="blog" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Blog</TabsTrigger>
                 <TabsTrigger value="gallery" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">Gallery</TabsTrigger>
                 <TabsTrigger value="schoolphotos" className="flex-1 min-w-[100px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm">School Photos</TabsTrigger>
@@ -175,10 +173,6 @@ const AdminDashboard = () => {
 
           <TabsContent value="schoolfees">
             <SchoolFeesManager />
-          </TabsContent>
-
-          <TabsContent value="homepage">
-            <HomepageManager />
           </TabsContent>
 
           <TabsContent value="blog">
