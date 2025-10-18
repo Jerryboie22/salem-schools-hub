@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpen, Users, Award, Library, FlaskConical, Monitor, Trophy, MapPin, Mail, Phone, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import aboutImg from "@/assets/school-exterior.jpg";
+import aboutImg from "@/assets/welcome-salem-building.jpg";
 import facilitiesImg from "@/assets/modern-facilities.jpg";
 
 const Index = () => {
