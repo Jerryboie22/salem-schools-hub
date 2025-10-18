@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Calendar, Newspaper } from "lucide-react";
-import newsHero from "@/assets/news-hero.jpg";
+import newsHero from "@/assets/school-building-new.jpg";
 
 interface BlogPost {
   id: string;
