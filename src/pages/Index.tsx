@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { BookOpen, Users, Award, Library, FlaskConical, Monitor, Trophy, MapPin, Mail, Phone, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import aboutImg from "@/assets/welcome-salem-building.jpg";
-import facilitiesImg from "@/assets/modern-facilities.jpg";
+import facilitiesImg from "@/assets/science-lab.jpg";
 
 const Index = () => {
   return (
@@ -62,7 +62,7 @@ const Index = () => {
                 </div>
                 
                 <Button size="lg" className="touch-target w-full sm:w-auto mt-4" asChild>
-                  <Link to="/about">Learn More</Link>
+                  <Link to="/vision-mission">Learn More</Link>
                 </Button>
               </div>
               
@@ -251,7 +251,7 @@ const Index = () => {
                       <div>
                         <h3 className="font-semibold text-sm mb-1">Address</h3>
                         <p className="text-xs md:text-sm text-muted-foreground">
-                          Salem School Complex<br />Awka, Anambra State
+                          No. 17 Bolanle Awosika Street, Off Ilogbo Road, Ojuore, Ota, Ogun State
                         </p>
                       </div>
                     </div>
@@ -279,7 +279,7 @@ const Index = () => {
                       <div>
                         <h3 className="font-semibold text-sm mb-1">Phone</h3>
                         <p className="text-xs md:text-sm text-muted-foreground">
-                          +234 803 XXX XXXX
+                          +234 802 370 2107
                         </p>
                       </div>
                     </div>
