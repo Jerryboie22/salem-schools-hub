@@ -26,7 +26,6 @@ const GallerySlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  // refs for intervals so we can clear them
   const mainAutoRef = useRef<number | null>(null);
   const dialogAutoRef = useRef<number | null>(null);
 
@@ -46,74 +45,51 @@ const GallerySlider = () => {
         console.error("Error fetching gallery images:", error);
         return;
       }
-
       setImages(data || []);
     } finally {
       setLoading(false);
     }
   };
 
-  // MAIN carousel autoplay (clicks the carousel next button every 3s)
+  // MAIN autoplay every 3s
   useEffect(() => {
-    // clear any existing interval
-    if (mainAutoRef.current) {
-      clearInterval(mainAutoRef.current);
-      mainAutoRef.current = null;
-    }
-
+    if (mainAutoRef.current) clearInterval(mainAutoRef.current);
     if (images.length === 0) return;
 
     mainAutoRef.current = window.setInterval(() => {
-      // if dialog is open, pause main autoplay
+      // don't change if dialog is open
       if (selectedIndex !== null) return;
-
       const nextBtn = document.querySelector('[data-carousel-next]') as HTMLElement | null;
-      if (nextBtn) {
-        nextBtn.click();
-      }
+      if (nextBtn) nextBtn.click();
     }, 3000);
 
     return () => {
-      if (mainAutoRef.current) {
-        clearInterval(mainAutoRef.current);
-        mainAutoRef.current = null;
-      }
+      if (mainAutoRef.current) clearInterval(mainAutoRef.current);
     };
   }, [images, selectedIndex]);
 
-  // DIALOG autoplay while open
+  // DIALOG autoplay every 3s
   useEffect(() => {
-    // Clear any existing dialog interval
-    if (dialogAutoRef.current) {
-      clearInterval(dialogAutoRef.current);
-      dialogAutoRef.current = null;
-    }
-
+    if (dialogAutoRef.current) clearInterval(dialogAutoRef.current);
     if (selectedIndex === null) return;
 
     dialogAutoRef.current = window.setInterval(() => {
-      setSelectedIndex((prev) => {
-        if (prev === null) return 0;
-        return (prev + 1) % images.length;
-      });
+      setSelectedIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
     }, 3000);
 
     return () => {
-      if (dialogAutoRef.current) {
-        clearInterval(dialogAutoRef.current);
-        dialogAutoRef.current = null;
-      }
+      if (dialogAutoRef.current) clearInterval(dialogAutoRef.current);
     };
   }, [selectedIndex, images.length]);
 
-  const handleNextDialog = () => {
-    if (selectedIndex === null) return;
-    setSelectedIndex((s) => (s! + 1) % images.length);
-  };
-
   const handlePrevDialog = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((s) => (s! - 1 + images.length) % images.length);
+    setSelectedIndex((prev) => (prev! - 1 + images.length) % images.length);
+  };
+
+  const handleNextDialog = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((prev) => (prev! + 1) % images.length);
   };
 
   if (!loading && images.length === 0) return null;
@@ -129,37 +105,35 @@ const GallerySlider = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto">
-            {Array.from({ length: 4 }).map((_, i) => (
+          <div className="grid grid-cols-1 gap-4 max-w-4xl mx-auto">
+            {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} className="aspect-video rounded-lg" />
             ))}
           </div>
         ) : (
-          // Main Carousel showing ONE slide per view
           <Carousel
             opts={{
-              align: "center", // center single slide
+              align: "center",
               loop: true,
             }}
             className="w-full max-w-4xl mx-auto"
           >
             <CarouselContent>
               {images.map((image, index) => (
-                <CarouselItem key={image.id} className="basis-full flex items-center justify-center">
-                  {/* Maintain fixed height & width (responsive) while keeping object-cover */}
+                <CarouselItem key={image.id} className="basis-full flex justify-center">
                   <div
                     onClick={() => setSelectedIndex(index)}
-                    className="w-full h-[420px] md:h-[520px] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                    className="relative w-full h-[420px] md:h-[500px] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group"
                   >
                     <img
                       src={image.image_url}
                       alt={image.title || "Gallery image"}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {image.title && (
-                      <div className="absolute bottom-4 left-4 bg-black/40 py-1 px-3 rounded text-white text-sm backdrop-blur-sm">
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-white text-sm md:text-base">
                         {image.title}
                       </div>
                     )}
@@ -168,26 +142,25 @@ const GallerySlider = () => {
               ))}
             </CarouselContent>
 
-            {/* visible nav on md+ */}
-            <CarouselPrevious className="hidden md:flex -left-12" />
-            <CarouselNext className="hidden md:flex -right-12" />
+            <CarouselPrevious className="hidden md:flex -left-10" />
+            <CarouselNext className="hidden md:flex -right-10" />
           </Carousel>
         )}
 
         {!loading && images.length > 0 && (
           <div className="text-center mt-6 md:mt-8">
-            <Button onClick={() => navigate("/gallery")} size="lg" className="touch-target">
+            <Button onClick={() => navigate("/gallery")} size="lg">
               View Full Gallery
             </Button>
           </div>
         )}
       </div>
 
-      {/* Fullscreen Dialog / Viewer with next/prev and its own autoplay */}
+      {/* LIGHT THEME DIALOG VIEWER */}
       <Dialog open={selectedIndex !== null} onOpenChange={() => setSelectedIndex(null)}>
-        <DialogContent className="max-w-5xl w-full p-0 bg-white border-0 relative rounded-lg shadow-2xl overflow-hidden">
-          <DialogClose className="absolute right-3 top-3 z-50 rounded-full bg-black/10 p-2 hover:bg-black/20 transition-colors">
-            <X className="h-5 w-5 text-black" />
+        <DialogContent className="max-w-6xl w-full p-0 bg-white border-0 relative rounded-lg overflow-hidden shadow-2xl">
+          <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-black/10 p-2 hover:bg-black/20 transition-colors">
+            <X className="h-6 w-6 text-black" />
           </DialogClose>
 
           {selectedIndex !== null && (
@@ -195,8 +168,7 @@ const GallerySlider = () => {
               <div className="relative w-full flex items-center justify-center">
                 <button
                   onClick={handlePrevDialog}
-                  className="absolute left-2 md:left-4 text-black bg-white/80 hover:bg-white/95 rounded-full p-2 z-50 shadow-md"
-                  aria-label="Previous"
+                  className="absolute left-3 md:left-5 text-black bg-white/80 hover:bg-white rounded-full p-2 shadow-md z-50"
                 >
                   ‹
                 </button>
@@ -204,13 +176,12 @@ const GallerySlider = () => {
                 <img
                   src={images[selectedIndex].image_url}
                   alt={images[selectedIndex].title || "Gallery image"}
-                  className="max-w-full max-h-[80vh] object-contain rounded-md transition-all duration-500"
+                  className="max-w-full max-h-[80vh] object-contain rounded-lg transition-all duration-500"
                 />
 
                 <button
                   onClick={handleNextDialog}
-                  className="absolute right-2 md:right-4 text-black bg-white/80 hover:bg-white/95 rounded-full p-2 z-50 shadow-md"
-                  aria-label="Next"
+                  className="absolute right-3 md:right-5 text-black bg-white/80 hover:bg-white rounded-full p-2 shadow-md z-50"
                 >
                   ›
                 </button>
