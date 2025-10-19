@@ -41,14 +41,14 @@ const Navbar = () => {
       <div className="bg-primary/90 border-b border-primary-foreground/10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center md:justify-end gap-4 py-2 text-xs">
-            <a href="mailto:info@salemschools.edu.ng" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="mailto:salemcovenantsecondaryschool@gmail.com" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Mail size={14} />
-              <span className="hidden sm:inline">info@salemschools.edu.ng</span>
+              <span className="hidden sm:inline">salemcovenantsecondaryschool@gmail.com</span>
             </a>
             <span className="hidden sm:inline text-primary-foreground/30">|</span>
-            <a href="tel:+234 802 370 2107" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+234 810 051 0611" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={14} />
-              <span>+234 0802 370 2107</span>
+              <span>+234 810 051 0611</span>
             </a>
           </div>
         </div>
