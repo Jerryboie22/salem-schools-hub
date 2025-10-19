@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
@@ -26,6 +26,10 @@ const GallerySlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+  // refs for intervals so we can clear them
+  const mainAutoRef = useRef<number | null>(null);
+  const dialogAutoRef = useRef<number | null>(null);
+
   useEffect(() => {
     fetchGalleryImages();
   }, []);
@@ -49,28 +53,68 @@ const GallerySlider = () => {
     }
   };
 
-  // Handle next/previous in fullscreen
-  const handleNext = () => {
-    if (selectedIndex === null) return;
-    setSelectedIndex((prev) => (prev! + 1) % images.length);
-  };
-
-  const handlePrev = () => {
-    if (selectedIndex === null) return;
-    setSelectedIndex((prev) => (prev! - 1 + images.length) % images.length);
-  };
-
-  // Autoplay carousel (every 3 seconds)
+  // MAIN carousel autoplay (clicks the carousel next button every 3s)
   useEffect(() => {
+    // clear any existing interval
+    if (mainAutoRef.current) {
+      clearInterval(mainAutoRef.current);
+      mainAutoRef.current = null;
+    }
+
     if (images.length === 0) return;
-    const interval = setInterval(() => {
+
+    mainAutoRef.current = window.setInterval(() => {
+      // if dialog is open, pause main autoplay
+      if (selectedIndex !== null) return;
+
+      const nextBtn = document.querySelector('[data-carousel-next]') as HTMLElement | null;
+      if (nextBtn) {
+        nextBtn.click();
+      }
+    }, 3000);
+
+    return () => {
+      if (mainAutoRef.current) {
+        clearInterval(mainAutoRef.current);
+        mainAutoRef.current = null;
+      }
+    };
+  }, [images, selectedIndex]);
+
+  // DIALOG autoplay while open
+  useEffect(() => {
+    // Clear any existing dialog interval
+    if (dialogAutoRef.current) {
+      clearInterval(dialogAutoRef.current);
+      dialogAutoRef.current = null;
+    }
+
+    if (selectedIndex === null) return;
+
+    dialogAutoRef.current = window.setInterval(() => {
       setSelectedIndex((prev) => {
         if (prev === null) return 0;
         return (prev + 1) % images.length;
       });
     }, 3000);
-    return () => clearInterval(interval);
-  }, [images]);
+
+    return () => {
+      if (dialogAutoRef.current) {
+        clearInterval(dialogAutoRef.current);
+        dialogAutoRef.current = null;
+      }
+    };
+  }, [selectedIndex, images.length]);
+
+  const handleNextDialog = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((s) => (s! + 1) % images.length);
+  };
+
+  const handlePrevDialog = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((s) => (s! - 1 + images.length) % images.length);
+  };
 
   if (!loading && images.length === 0) return null;
 
@@ -91,19 +135,21 @@ const GallerySlider = () => {
             ))}
           </div>
         ) : (
+          // Main Carousel showing ONE slide per view
           <Carousel
             opts={{
-              align: "center",
+              align: "center", // center single slide
               loop: true,
             }}
             className="w-full max-w-4xl mx-auto"
           >
-            <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselContent>
               {images.map((image, index) => (
-                <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full">
+                <CarouselItem key={image.id} className="basis-full flex items-center justify-center">
+                  {/* Maintain fixed height & width (responsive) while keeping object-cover */}
                   <div
                     onClick={() => setSelectedIndex(index)}
-                    className="relative aspect-video rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                    className="w-full h-[420px] md:h-[520px] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
                   >
                     <img
                       src={image.image_url}
@@ -112,19 +158,17 @@ const GallerySlider = () => {
                       decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {image.title && (
-                        <div className="absolute bottom-0 left-0 right-0 p-3">
-                          <h3 className="text-white text-base md:text-lg font-semibold">
-                            {image.title}
-                          </h3>
-                        </div>
-                      )}
-                    </div>
+                    {image.title && (
+                      <div className="absolute bottom-4 left-4 bg-black/40 py-1 px-3 rounded text-white text-sm backdrop-blur-sm">
+                        {image.title}
+                      </div>
+                    )}
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
+
+            {/* visible nav on md+ */}
             <CarouselPrevious className="hidden md:flex -left-12" />
             <CarouselNext className="hidden md:flex -right-12" />
           </Carousel>
@@ -139,7 +183,7 @@ const GallerySlider = () => {
         )}
       </div>
 
-      {/* Fullscreen Viewer */}
+      {/* Fullscreen Dialog / Viewer with next/prev and its own autoplay */}
       <Dialog open={selectedIndex !== null} onOpenChange={() => setSelectedIndex(null)}>
         <DialogContent className="max-w-5xl w-full p-0 bg-white border-0 relative rounded-lg shadow-2xl overflow-hidden">
           <DialogClose className="absolute right-3 top-3 z-50 rounded-full bg-black/10 p-2 hover:bg-black/20 transition-colors">
@@ -150,8 +194,9 @@ const GallerySlider = () => {
             <div className="relative w-full flex flex-col items-center justify-center p-4">
               <div className="relative w-full flex items-center justify-center">
                 <button
-                  onClick={handlePrev}
-                  className="absolute left-2 md:left-4 text-black bg-white/70 hover:bg-white/90 rounded-full p-2 z-50 shadow-md"
+                  onClick={handlePrevDialog}
+                  className="absolute left-2 md:left-4 text-black bg-white/80 hover:bg-white/95 rounded-full p-2 z-50 shadow-md"
+                  aria-label="Previous"
                 >
                   ‹
                 </button>
@@ -163,8 +208,9 @@ const GallerySlider = () => {
                 />
 
                 <button
-                  onClick={handleNext}
-                  className="absolute right-2 md:right-4 text-black bg-white/70 hover:bg-white/90 rounded-full p-2 z-50 shadow-md"
+                  onClick={handleNextDialog}
+                  className="absolute right-2 md:right-4 text-black bg-white/80 hover:bg-white/95 rounded-full p-2 z-50 shadow-md"
+                  aria-label="Next"
                 >
                   ›
                 </button>
@@ -172,13 +218,9 @@ const GallerySlider = () => {
 
               {images[selectedIndex].title && (
                 <div className="mt-3 text-center">
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {images[selectedIndex].title}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-800">{images[selectedIndex].title}</h3>
                   {images[selectedIndex].description && (
-                    <p className="text-sm text-gray-600 mt-1">
-                      {images[selectedIndex].description}
-                    </p>
+                    <p className="text-sm text-gray-600 mt-1">{images[selectedIndex].description}</p>
                   )}
                 </div>
               )}
