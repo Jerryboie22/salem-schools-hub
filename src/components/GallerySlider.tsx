@@ -144,10 +144,10 @@ const GallerySlider = () => {
           </DialogClose>
 
           {selectedIndex !== null && (
-            <Carousel opts={{ align: "center", loop: true }} startIndex={selectedIndex}>
+            <Carousel opts={{ align: "center", loop: true }}>
               <CarouselContent>
-                {images.map((image) => (
-                  <CarouselItem key={image.id} className="flex justify-center">
+                {images.map((image, idx) => (
+                  <CarouselItem key={image.id} className="flex justify-center" style={{ display: idx === selectedIndex ? 'block' : 'none' }}>
                     <div className="relative w-full h-[80vh] flex items-center justify-center p-4">
                       <img
                         src={image.image_url}

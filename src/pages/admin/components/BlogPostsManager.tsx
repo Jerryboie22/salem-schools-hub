@@ -40,21 +40,24 @@ const BlogPostsManager = () => {
 
   const quillModules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
       [{ 'align': [] }],
-      ['link', 'image'],
+      ['link'],
+      [{ 'color': [] }, { 'background': [] }],
       ['clean']
     ],
   };
 
   const quillFormats = [
     'header',
-    'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet',
+    'bold', 'italic', 'underline',
+    'list', 'bullet', 'indent',
     'align',
-    'link', 'image'
+    'link',
+    'color', 'background'
   ];
 
   useEffect(() => {
@@ -302,8 +305,11 @@ const BlogPostsManager = () => {
             </div>
 
             <div>
-              <Label>Content (Rich Text)</Label>
-              <div className="bg-background border rounded-md">
+              <Label>Content (Rich Text Editor)</Label>
+              <p className="text-sm text-muted-foreground mb-2">
+                Use the formatting tools below to create your blog post. Format your text, add headings, create lists, and add links.
+              </p>
+              <div className="bg-background border rounded-lg overflow-hidden">
                 <ReactQuill
                   theme="snow"
                   value={formData.content}
@@ -311,7 +317,7 @@ const BlogPostsManager = () => {
                   modules={quillModules}
                   formats={quillFormats}
                   placeholder="Write your blog post content here..."
-                  className="min-h-[300px]"
+                  style={{ height: '400px', marginBottom: '42px' }}
                 />
               </div>
             </div>
@@ -348,15 +354,27 @@ const BlogPostsManager = () => {
             {posts.map((post) => (
               <Card key={post.id}>
                 <CardContent className="p-4 flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg">{post.title}</h3>
-                    <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2">
+                      {post.featured_image && (
+                        <img src={post.featured_image} alt={post.title} className="w-16 h-16 object-cover rounded" />
+                      )}
+                      <div>
+                        <h3 className="font-bold text-lg">{post.title}</h3>
+                        <p className="text-xs text-muted-foreground">Slug: /{post.slug}</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
                     <div className="flex gap-2 mt-2">
-                      <span className={`text-xs px-2 py-1 rounded ${post.is_published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                      <span className={`text-xs px-2 py-1 rounded ${post.is_published ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100'}`}>
                         {post.is_published ? 'Published' : 'Draft'}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {new Date(post.created_at).toLocaleDateString()}
+                        {new Date(post.created_at).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}
                       </span>
                     </div>
                   </div>

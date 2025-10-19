@@ -113,12 +113,13 @@ const NewsDetail = () => {
         </div>
 
         <div className="prose prose-lg max-w-none">
-          <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+          <p className="text-xl text-muted-foreground leading-relaxed mb-8 italic border-l-4 border-accent pl-4">
             {post.excerpt}
           </p>
-          <div className="whitespace-pre-wrap leading-relaxed">
-            {post.content}
-          </div>
+          <div 
+            className="blog-content"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
         </div>
       </article>
 
