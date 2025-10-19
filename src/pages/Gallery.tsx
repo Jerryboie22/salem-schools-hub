@@ -22,12 +22,12 @@ interface GalleryImage {
 
 const Gallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     fetchGalleryImages();
 
-    // Auto-slide effect (every 5 seconds)
+    // Auto-slide main gallery
     const interval = setInterval(() => {
       const nextBtn = document.querySelector("[data-carousel-next]");
       if (nextBtn) (nextBtn as HTMLButtonElement).click();
@@ -80,10 +80,10 @@ const Gallery = () => {
             className="w-full max-w-5xl mx-auto"
           >
             <CarouselContent>
-              {images.map((image) => (
+              {images.map((image, index) => (
                 <CarouselItem key={image.id} className="basis-full">
                   <div
-                    onClick={() => setSelectedImage(image)}
+                    onClick={() => setSelectedIndex(index)}
                     className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] cursor-pointer bg-card"
                   >
                     <div className="aspect-[16/10] overflow-hidden">
@@ -114,7 +114,6 @@ const Gallery = () => {
               ))}
             </CarouselContent>
 
-            {/* Navigation Controls */}
             <CarouselPrevious className="hidden md:flex -left-12" />
             <CarouselNext className="hidden md:flex -right-12" />
           </Carousel>
@@ -128,28 +127,46 @@ const Gallery = () => {
         )}
       </div>
 
-      {/* Image Modal */}
-      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+      {/* Fullscreen Image Viewer */}
+      <Dialog open={selectedIndex !== null} onOpenChange={() => setSelectedIndex(null)}>
         <DialogContent className="max-w-7xl w-full p-0 bg-black/95 border-0">
           <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 hover:bg-white/20 transition-colors">
             <X className="h-6 w-6 text-white" />
           </DialogClose>
 
-          {selectedImage && (
+          {selectedIndex !== null && (
             <div className="relative w-full h-[90vh] flex items-center justify-center p-4">
-              <img
-                src={selectedImage.image_url}
-                alt={selectedImage.title || "Gallery image"}
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
-              {selectedImage.title && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <h3 className="text-white text-2xl font-bold">{selectedImage.title}</h3>
-                  {selectedImage.description && (
-                    <p className="text-white/80 mt-2">{selectedImage.description}</p>
-                  )}
-                </div>
-              )}
+              <Carousel
+                opts={{
+                  align: "center",
+                  loop: true,
+                  startIndex: selectedIndex,
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  {images.map((img) => (
+                    <CarouselItem key={img.id} className="basis-full flex items-center justify-center">
+                      <img
+                        src={img.image_url}
+                        alt={img.title || "Gallery image"}
+                        className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                      />
+                      {img.title && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-center">
+                          <h3 className="text-white text-2xl font-bold">{img.title}</h3>
+                          {img.description && (
+                            <p className="text-white/80 mt-2">{img.description}</p>
+                          )}
+                        </div>
+                      )}
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <CarouselPrevious className="absolute left-2 md:left-10 bg-white/10 hover:bg-white/20 text-white" />
+                <CarouselNext className="absolute right-2 md:right-10 bg-white/10 hover:bg-white/20 text-white" />
+              </Carousel>
             </div>
           )}
         </DialogContent>
