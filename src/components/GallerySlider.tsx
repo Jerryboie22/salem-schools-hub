@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface GalleryImage {
   id: string;
@@ -57,7 +58,6 @@ const GallerySlider = () => {
     const interval = setInterval(() => {
       api.scrollNext();
     }, 3000);
-
     return () => clearInterval(interval);
   }, [api]);
 
@@ -136,45 +136,60 @@ const GallerySlider = () => {
         )}
       </div>
 
-      {/* Dialog (Popup Slider) */}
+      {/* Animated Dialog (Popup Slider) */}
       <Dialog open={selectedIndex !== null} onOpenChange={() => setSelectedIndex(null)}>
-        <DialogContent className="max-w-3xl w-full p-0 rounded-2xl bg-gradient-to-br from-[#fefdf8] via-[#faf6ec] to-[#e3e0d9] border-0 shadow-2xl">
-          <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-[#1e2a3a]/10 p-2 hover:bg-[#1e2a3a]/20 transition-colors">
-            <X className="h-6 w-6 text-[#1e2a3a]" />
-          </DialogClose>
-
+        <AnimatePresence>
           {selectedIndex !== null && (
-            <Carousel opts={{ align: "center", loop: true }}>
-              <CarouselContent>
-                {images.map((image, idx) => (
-                  <CarouselItem key={image.id} className="flex justify-center" style={{ display: idx === selectedIndex ? 'block' : 'none' }}>
-                    <div className="relative w-full h-[80vh] flex items-center justify-center p-4">
-                      <img
-                        src={image.image_url}
-                        alt={image.title || "Gallery image"}
-                        className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
-                      />
-                      {image.title && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#fefdf8]/90 to-transparent p-4 text-center rounded-b-xl">
-                          <h3 className="text-[#1e2a3a] text-xl font-semibold">
-                            {image.title}
-                          </h3>
-                          {image.description && (
-                            <p className="text-[#3b4a5a] mt-2">
-                              {image.description}
-                            </p>
+            <DialogContent className="max-w-3xl w-full p-0 rounded-2xl bg-gradient-to-br from-[#fefdf8] via-[#faf6ec] to-[#e3e0d9] border-0 shadow-2xl overflow-hidden">
+              <motion.div
+                key="dialog"
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-[#1e2a3a]/10 p-2 hover:bg-[#1e2a3a]/20 transition-colors">
+                  <X className="h-6 w-6 text-[#1e2a3a]" />
+                </DialogClose>
+
+                <Carousel opts={{ align: "center", loop: true }}>
+                  <CarouselContent>
+                    {images.map((image, idx) => (
+                      <CarouselItem
+                        key={image.id}
+                        className={`flex justify-center transition-all duration-500 ${
+                          idx === selectedIndex ? "opacity-100" : "opacity-0 hidden"
+                        }`}
+                      >
+                        <div className="relative w-full h-[80vh] flex items-center justify-center p-4">
+                          <img
+                            src={image.image_url}
+                            alt={image.title || "Gallery image"}
+                            className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
+                          />
+                          {image.title && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#fefdf8]/90 to-transparent p-4 text-center rounded-b-xl">
+                              <h3 className="text-[#1e2a3a] text-xl font-semibold">
+                                {image.title}
+                              </h3>
+                              {image.description && (
+                                <p className="text-[#3b4a5a] mt-2">
+                                  {image.description}
+                                </p>
+                              )}
+                            </div>
                           )}
                         </div>
-                      )}
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
-              <CarouselNext className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
-            </Carousel>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
+                  <CarouselNext className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
+                </Carousel>
+              </motion.div>
+            </DialogContent>
           )}
-        </DialogContent>
+        </AnimatePresence>
       </Dialog>
     </section>
   );
