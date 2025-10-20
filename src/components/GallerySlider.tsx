@@ -27,7 +27,6 @@ const GallerySlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [api, setApi] = useState<CarouselApi>();
-  const [dialogApi, setDialogApi] = useState<CarouselApi>();
 
   useEffect(() => {
     fetchGalleryImages();
@@ -61,13 +60,6 @@ const GallerySlider = () => {
 
     return () => clearInterval(interval);
   }, [api]);
-
-  // Set initial slide when dialog opens
-  useEffect(() => {
-    if (dialogApi && selectedIndex !== null) {
-      dialogApi.scrollTo(selectedIndex);
-    }
-  }, [dialogApi, selectedIndex]);
 
   if (!loading && images.length === 0) return null;
 
@@ -152,33 +144,23 @@ const GallerySlider = () => {
           </DialogClose>
 
           {selectedIndex !== null && (
-            <Carousel 
-              opts={{ 
-                align: "center", 
-                loop: true,
-                startIndex: selectedIndex
-              }}
-              setApi={setDialogApi}
-              className="w-full"
-            >
+            <Carousel opts={{ align: "center", loop: true }}>
               <CarouselContent>
                 {images.map((image, idx) => (
-                  <CarouselItem key={image.id} className="flex justify-center">
+                  <CarouselItem key={image.id} className="flex justify-center" style={{ display: idx === selectedIndex ? 'block' : 'none' }}>
                     <div className="relative w-full h-[80vh] flex items-center justify-center p-4">
                       <img
                         src={image.image_url}
                         alt={image.title || "Gallery image"}
                         className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
                       />
-                      {(image.title || image.description) && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#1e2a3a]/90 to-transparent p-4 text-center rounded-b-xl">
-                          {image.title && (
-                            <h3 className="text-white text-xl font-semibold">
-                              {image.title}
-                            </h3>
-                          )}
+                      {image.title && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#fefdf8]/90 to-transparent p-4 text-center rounded-b-xl">
+                          <h3 className="text-[#1e2a3a] text-xl font-semibold">
+                            {image.title}
+                          </h3>
                           {image.description && (
-                            <p className="text-white/90 mt-2">
+                            <p className="text-[#3b4a5a] mt-2">
                               {image.description}
                             </p>
                           )}
@@ -188,8 +170,8 @@ const GallerySlider = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="absolute left-4 bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
-              <CarouselNext className="absolute right-4 bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
+              <CarouselPrevious className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
+              <CarouselNext className="bg-[#1e2a3a]/70 hover:bg-[#1e2a3a]/90 text-white" />
             </Carousel>
           )}
         </DialogContent>
