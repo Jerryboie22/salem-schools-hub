@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home } from "lucide-react";
+import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -84,6 +84,14 @@ interface Attendance {
   classes: { name: string };
 }
 
+interface Result {
+  id: string;
+  term: string;
+  academic_year: string;
+  file_url: string;
+  created_at: string;
+}
+
 const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
@@ -103,6 +111,7 @@ const StudentDashboard = () => {
   const [schoolFees, setSchoolFees] = useState<SchoolFee[]>([]);
   const [allClasses, setAllClasses] = useState<Class[]>([]);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const [results, setResults] = useState<Result[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -657,6 +666,49 @@ const StudentDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 animate-slide-up" style={{animationDelay: '0.4s'}}>
+          <Card className="border-0 shadow-xl overflow-hidden">
+            <div className="h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-8 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-full"></div>
+                My Results
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {results.length === 0 ? (
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                  <p className="text-muted-foreground">No results available yet</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {results.map((result) => (
+                    <div key={result.id} className="p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 hover:shadow-md transition-all">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-semibold text-emerald-900">
+                            {result.term} - {result.academic_year}
+                          </h4>
+                          <p className="text-sm text-emerald-600 mt-1">
+                            Uploaded: {new Date(result.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Button
+                          size="sm"
+                          onClick={() => window.open(result.file_url, "_blank")}
+                          className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           <Card className="border-0 shadow-xl overflow-hidden">
             <div className="h-2 bg-gradient-to-r from-rose-400 to-pink-500"></div>
             <CardHeader>

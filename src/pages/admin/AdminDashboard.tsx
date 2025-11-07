@@ -20,6 +20,7 @@ import SubjectsManager from "./components/SubjectsManager";
 import SchoolFeesManager from "./components/SchoolFeesManager";
 import SchoolPhotosManager from "./components/SchoolPhotosManager";
 import SchoolInfoManager from "./components/SchoolInfoManager";
+import ResultsManager from "./components/ResultsManager";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -118,6 +119,7 @@ const AdminDashboard = () => {
                 <TabsTrigger value="announcements" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Announcements</TabsTrigger>
                 <TabsTrigger value="studentclasses" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Student Classes</TabsTrigger>
                 <TabsTrigger value="schoolfees" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">School Fees</TabsTrigger>
+                <TabsTrigger value="results" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Results</TabsTrigger>
                 <TabsTrigger value="teachercontent" className="flex-1 min-w-[120px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm">Teacher Content</TabsTrigger>
               </TabsList>
             </div>
@@ -173,6 +175,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="schoolfees">
             <SchoolFeesManager />
+          </TabsContent>
+
+          <TabsContent value="results">
+            <ResultsManager />
           </TabsContent>
 
           <TabsContent value="blog">
