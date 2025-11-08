@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2 } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
+import AssignmentViewer from "@/components/AssignmentViewer";
 
 interface Assignment {
   id: string;
@@ -14,6 +15,7 @@ interface Assignment {
   description: string;
   due_date: string;
   class_id: string;
+  file_url: string;
   classes: { name: string };
 }
 
@@ -33,6 +35,7 @@ const AssignmentsManager = () => {
   const [submitting, setSubmitting] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -214,7 +217,7 @@ const AssignmentsManager = () => {
                 key={assignment.id}
                 className="flex items-start justify-between p-4 border rounded-lg"
               >
-                <div>
+                <div className="flex-1">
                   <h3 className="font-semibold">{assignment.title}</h3>
                   <p className="text-sm text-muted-foreground">{assignment.description}</p>
                   <p className="text-sm mt-2">
@@ -222,18 +225,36 @@ const AssignmentsManager = () => {
                     {new Date(assignment.due_date).toLocaleDateString()}
                   </p>
                 </div>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(assignment.id)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-2">
+                  {assignment.file_url && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedAssignment(assignment)}
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(assignment.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Assignment Viewer */}
+      <AssignmentViewer
+        assignment={selectedAssignment}
+        open={!!selectedAssignment}
+        onClose={() => setSelectedAssignment(null)}
+      />
     </div>
   );
 };

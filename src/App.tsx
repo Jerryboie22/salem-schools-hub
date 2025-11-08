@@ -23,6 +23,7 @@ import CovenantCollege from "./pages/schools/CovenantCollege";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
+import SitemapGenerator from "./components/SitemapGenerator";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <BackToTop />
+        <SitemapGenerator />
         <div className="min-h-screen bg-muted">
           <div className="site-container">
             <Routes>

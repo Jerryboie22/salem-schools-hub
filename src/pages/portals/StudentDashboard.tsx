@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download, Eye, TrendingUp } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PerformanceAnalytics from "@/components/PerformanceAnalytics";
+import AssignmentViewer from "@/components/AssignmentViewer";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -127,6 +128,7 @@ const StudentDashboard = () => {
   const [previewResult, setPreviewResult] = useState<Result | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("overview");
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -579,10 +581,13 @@ const StudentDashboard = () => {
                             size="sm"
                             variant="outline"
                             className="shrink-0"
-                            onClick={() => window.open(assignment.file_url, "_blank")}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAssignment(assignment);
+                            }}
                           >
-                            <FileText className="w-4 h-4 mr-1" />
-                            Download
+                            <Eye className="w-4 h-4 mr-1" />
+                            View
                           </Button>
                         )}
                       </div>
@@ -1001,6 +1006,13 @@ const StudentDashboard = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Assignment Viewer */}
+      <AssignmentViewer
+        assignment={selectedAssignment}
+        open={!!selectedAssignment}
+        onClose={() => setSelectedAssignment(null)}
+      />
     </div>
   );
 };

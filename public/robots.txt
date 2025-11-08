@@ -12,3 +12,21 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Disallow portal pages from indexing
+Disallow: /portal/
+Disallow: /admin/
+
+# Allow public pages
+Allow: /
+Allow: /news
+Allow: /gallery
+Allow: /contact
+Allow: /schools/
+Allow: /vision-mission
+Allow: /leadership
+Allow: /library
+
