@@ -4,7 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download, Eye } from "lucide-react";
+import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download, Eye, TrendingUp } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PerformanceAnalytics from "@/components/PerformanceAnalytics";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -124,6 +126,7 @@ const StudentDashboard = () => {
   const [resultYearFilter, setResultYearFilter] = useState<string>("all");
   const [previewResult, setPreviewResult] = useState<Result | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>("overview");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -463,9 +466,23 @@ const StudentDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-up" style={{animationDelay: '0.1s'}}>
-          <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
+        {/* Tab Navigation */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-6">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Performance Analytics
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-up" style={{animationDelay: '0.1s'}}>
+              <Card className="stat-card border-0 shadow-lg overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Academic Calendar</CardTitle>
@@ -921,6 +938,12 @@ const StudentDashboard = () => {
             </p>
           </div>
         </Card>
+      </TabsContent>
+
+      <TabsContent value="analytics" className="space-y-6">
+        <PerformanceAnalytics studentId={studentId} />
+      </TabsContent>
+    </Tabs>
       </div>
 
       {/* Result Preview Dialog */}
