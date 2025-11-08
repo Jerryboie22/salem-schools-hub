@@ -97,6 +97,7 @@ interface Result {
   academic_year: string;
   file_url: string;
   created_at: string;
+  feedback?: string;
 }
 
 const StudentDashboard = () => {
@@ -930,10 +931,19 @@ const StudentDashboard = () => {
               {previewResult?.term} - {previewResult?.academic_year}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-auto space-y-4">
+            {previewResult?.feedback && (
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-4">
+                <h4 className="font-semibold text-emerald-900 mb-2 flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Teacher Comments
+                </h4>
+                <p className="text-emerald-800 whitespace-pre-wrap">{previewResult.feedback}</p>
+              </div>
+            )}
             <iframe
               src={previewUrl}
-              className="w-full h-[calc(90vh-180px)] border rounded-lg"
+              className="w-full h-[calc(90vh-280px)] border rounded-lg"
               title="Result Preview"
             />
           </div>

@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Upload, FileText, FileSpreadsheet, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import Papa from "papaparse";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,6 +21,7 @@ interface Result {
   academic_year: string;
   file_url: string;
   created_at: string;
+  feedback?: string;
   profiles: { full_name: string };
   classes: { name: string };
 }
@@ -41,6 +43,7 @@ interface BulkUploadRow {
   term: string;
   academic_year: string;
   pdf_filename: string;
+  feedback?: string;
   status?: 'pending' | 'success' | 'error';
   error?: string;
 }
@@ -57,6 +60,7 @@ const ResultsManager = () => {
   const [term, setTerm] = useState("");
   const [academicYear, setAcademicYear] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [feedback, setFeedback] = useState("");
   
   // Bulk upload states
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -198,6 +202,7 @@ const ResultsManager = () => {
           academic_year: academicYear,
           file_url: urlData.publicUrl,
           uploaded_by: session?.user.id,
+          feedback: feedback || null,
         });
 
       if (insertError) throw insertError;
@@ -213,6 +218,7 @@ const ResultsManager = () => {
       setTerm("");
       setAcademicYear("");
       setFile(null);
+      setFeedback("");
       
       // Reset file input
       const fileInput = document.getElementById("result-file") as HTMLInputElement;
@@ -284,7 +290,7 @@ const ResultsManager = () => {
       complete: (results) => {
         const data = results.data as BulkUploadRow[];
         
-        // Validate CSV structure
+        // Validate CSV structure (feedback is optional)
         const requiredFields = ['student_email', 'class_name', 'term', 'academic_year', 'pdf_filename'];
         const firstRow = data[0];
         const missingFields = requiredFields.filter(field => !(field in firstRow));
@@ -407,6 +413,7 @@ const ResultsManager = () => {
             academic_year: row.academic_year,
             file_url: urlData.publicUrl,
             uploaded_by: session?.user.id,
+            feedback: row.feedback || null,
           });
 
         if (insertError) throw insertError;
@@ -439,9 +446,9 @@ const ResultsManager = () => {
   };
 
   const downloadSampleCsv = () => {
-    const sampleData = `student_email,class_name,term,academic_year,pdf_filename
-john.doe@example.com,JSS1,First Term,2024/2025,john_doe_result.pdf
-jane.smith@example.com,JSS2,First Term,2024/2025,jane_smith_result.pdf`;
+    const sampleData = `student_email,class_name,term,academic_year,pdf_filename,feedback
+john.doe@example.com,JSS1,First Term,2024/2025,john_doe_result.pdf,Excellent performance
+jane.smith@example.com,JSS2,First Term,2024/2025,jane_smith_result.pdf,Good work keep it up`;
 
     const blob = new Blob([sampleData], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -542,6 +549,18 @@ jane.smith@example.com,JSS2,First Term,2024/2025,jane_smith_result.pdf`;
               )}
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="feedback">Teacher Comments/Feedback (Optional)</Label>
+              <Textarea
+                id="feedback"
+                placeholder="Enter your comments or feedback about the student's performance..."
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                rows={4}
+                className="resize-none"
+              />
+            </div>
+
             <Button type="submit" disabled={uploading}>
               <Upload className="w-4 h-4 mr-2" />
               {uploading ? "Uploading..." : "Upload Result"}
@@ -561,7 +580,8 @@ jane.smith@example.com,JSS2,First Term,2024/2025,jane_smith_result.pdf`;
                 <FileSpreadsheet className="h-4 w-4" />
                 <AlertDescription>
                   Upload a CSV file with student information and multiple PDF files. The CSV must contain columns: 
-                  <strong> student_email, class_name, term, academic_year, pdf_filename</strong>
+                  <strong> student_email, class_name, term, academic_year, pdf_filename</strong> (required), 
+                  <strong> feedback</strong> (optional)
                   <Button
                     variant="link"
                     size="sm"

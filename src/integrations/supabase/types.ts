@@ -802,6 +802,7 @@ export type Database = {
           academic_year: string
           class_id: string
           created_at: string | null
+          feedback: string | null
           file_url: string
           id: string
           student_id: string
@@ -813,6 +814,7 @@ export type Database = {
           academic_year: string
           class_id: string
           created_at?: string | null
+          feedback?: string | null
           file_url: string
           id?: string
           student_id: string
@@ -824,6 +826,7 @@ export type Database = {
           academic_year?: string
           class_id?: string
           created_at?: string | null
+          feedback?: string | null
           file_url?: string
           id?: string
           student_id?: string
