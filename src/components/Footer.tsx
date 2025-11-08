@@ -35,7 +35,7 @@ const Footer = () => {
             <ul className="space-y-2 text-xs md:text-sm">
               <li>
                 <Link
-                  to="/about"
+                  to="/vision-mission"
                   className="hover:text-secondary transition-colors opacity-95 hover:opacity-100"
                 >
                   About Us
@@ -120,9 +120,20 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/20 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-xs md:text-sm opacity-95">
-          <p>
+          <p className="mb-2">
             &copy; {new Date().getFullYear()} Salem Group of Schools. All rights
             reserved.
+          </p>
+          <p className="text-xs opacity-90">
+            Developed by:{" "}
+            <a
+              href="https://wa.me/2348134813380"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-secondary transition-colors font-medium"
+            >
+              Jerry Emeka
+            </a>
           </p>
         </div>
       </div>

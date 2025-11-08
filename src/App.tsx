@@ -21,6 +21,7 @@ import ChildrenSchool from "./pages/schools/ChildrenSchool";
 import PrimarySchool from "./pages/schools/PrimarySchool";
 import CovenantCollege from "./pages/schools/CovenantCollege";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <div className="min-h-screen bg-muted">
           <div className="site-container">
             <Routes>
