@@ -112,6 +112,8 @@ const StudentDashboard = () => {
   const [allClasses, setAllClasses] = useState<Class[]>([]);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [resultTermFilter, setResultTermFilter] = useState<string>("all");
+  const [resultYearFilter, setResultYearFilter] = useState<string>("all");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -689,8 +691,45 @@ const StudentDashboard = () => {
                   <p className="text-muted-foreground">No results available yet</p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {results.map((result) => (
+                <>
+                  <div className="flex gap-4 mb-4">
+                    <div className="flex-1">
+                      <Label className="text-sm text-muted-foreground mb-2">Filter by Term</Label>
+                      <Select value={resultTermFilter} onValueChange={setResultTermFilter}>
+                        <SelectTrigger className="bg-white">
+                          <SelectValue placeholder="All Terms" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Terms</SelectItem>
+                          {Array.from(new Set(results.map(r => r.term))).map(term => (
+                            <SelectItem key={term} value={term}>{term}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex-1">
+                      <Label className="text-sm text-muted-foreground mb-2">Filter by Academic Year</Label>
+                      <Select value={resultYearFilter} onValueChange={setResultYearFilter}>
+                        <SelectTrigger className="bg-white">
+                          <SelectValue placeholder="All Years" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Years</SelectItem>
+                          {Array.from(new Set(results.map(r => r.academic_year))).map(year => (
+                            <SelectItem key={year} value={year}>{year}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {results
+                      .filter(result => {
+                        const termMatch = resultTermFilter === "all" || result.term === resultTermFilter;
+                        const yearMatch = resultYearFilter === "all" || result.academic_year === resultYearFilter;
+                        return termMatch && yearMatch;
+                      })
+                      .map((result) => (
                     <div key={result.id} className="p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 hover:shadow-md transition-all">
                       <div className="flex items-center justify-between">
                         <div>
@@ -746,7 +785,17 @@ const StudentDashboard = () => {
                       </div>
                     </div>
                   ))}
-                </div>
+                  </div>
+                  {results.filter(result => {
+                    const termMatch = resultTermFilter === "all" || result.term === resultTermFilter;
+                    const yearMatch = resultYearFilter === "all" || result.academic_year === resultYearFilter;
+                    return termMatch && yearMatch;
+                  }).length === 0 && (
+                    <div className="text-center py-8">
+                      <p className="text-muted-foreground">No results match the selected filters</p>
+                    </div>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>
