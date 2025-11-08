@@ -209,6 +209,14 @@ const StudentDashboard = () => {
       .order("date", { ascending: false })
       .limit(10);
     if (attendanceData) setAttendance(attendanceData as Attendance[]);
+
+    // 9) Fetch student results
+    const { data: resultsData } = await supabase
+      .from("student_results")
+      .select("id, term, academic_year, file_url, created_at")
+      .eq("student_id", studentId)
+      .order("created_at", { ascending: false });
+    if (resultsData) setResults(resultsData);
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -695,7 +703,41 @@ const StudentDashboard = () => {
                         </div>
                         <Button
                           size="sm"
-                          onClick={() => window.open(result.file_url, "_blank")}
+                          onClick={async () => {
+                            try {
+                              // Extract file path from URL
+                              const urlParts = result.file_url.split('/results/');
+                              if (urlParts.length > 1) {
+                                const filePath = urlParts[1];
+                                
+                                // Generate signed URL for secure download
+                                const { data, error } = await supabase.storage
+                                  .from('results')
+                                  .createSignedUrl(filePath, 60); // Valid for 60 seconds
+                                
+                                if (error) {
+                                  toast({
+                                    title: "Download failed",
+                                    description: "Unable to access the file",
+                                    variant: "destructive",
+                                  });
+                                  return;
+                                }
+                                
+                                // Open the signed URL in a new tab
+                                window.open(data.signedUrl, '_blank');
+                              } else {
+                                // Fallback to direct URL
+                                window.open(result.file_url, "_blank");
+                              }
+                            } catch (error) {
+                              toast({
+                                title: "Error",
+                                description: "Failed to download result",
+                                variant: "destructive",
+                              });
+                            }
+                          }}
                           className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                         >
                           <Download className="w-4 h-4 mr-2" />
