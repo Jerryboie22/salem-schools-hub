@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download } from "lucide-react";
+import { LogOut, BookOpen, Calendar, FileText, Award, Users, Home, Download, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 interface Assignment {
   id: string;
@@ -114,6 +121,8 @@ const StudentDashboard = () => {
   const [results, setResults] = useState<Result[]>([]);
   const [resultTermFilter, setResultTermFilter] = useState<string>("all");
   const [resultYearFilter, setResultYearFilter] = useState<string>("all");
+  const [previewResult, setPreviewResult] = useState<Result | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -749,38 +758,39 @@ const StudentDashboard = () => {
                               if (urlParts.length > 1) {
                                 const filePath = urlParts[1];
                                 
-                                // Generate signed URL for secure download
+                                // Generate signed URL for preview
                                 const { data, error } = await supabase.storage
                                   .from('results')
-                                  .createSignedUrl(filePath, 60); // Valid for 60 seconds
+                                  .createSignedUrl(filePath, 3600); // Valid for 1 hour
                                 
                                 if (error) {
                                   toast({
-                                    title: "Download failed",
+                                    title: "Preview failed",
                                     description: "Unable to access the file",
                                     variant: "destructive",
                                   });
                                   return;
                                 }
                                 
-                                // Open the signed URL in a new tab
-                                window.open(data.signedUrl, '_blank');
+                                setPreviewUrl(data.signedUrl);
+                                setPreviewResult(result);
                               } else {
                                 // Fallback to direct URL
-                                window.open(result.file_url, "_blank");
+                                setPreviewUrl(result.file_url);
+                                setPreviewResult(result);
                               }
                             } catch (error) {
                               toast({
                                 title: "Error",
-                                description: "Failed to download result",
+                                description: "Failed to preview result",
                                 variant: "destructive",
                               });
                             }
                           }}
                           className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                         >
-                          <Download className="w-4 h-4 mr-2" />
-                          Download
+                          <Eye className="w-4 h-4 mr-2" />
+                          View Result
                         </Button>
                       </div>
                     </div>
@@ -911,6 +921,53 @@ const StudentDashboard = () => {
           </div>
         </Card>
       </div>
+
+      {/* Result Preview Dialog */}
+      <Dialog open={!!previewResult} onOpenChange={(open) => !open && setPreviewResult(null)}>
+        <DialogContent className="max-w-4xl h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>
+              {previewResult?.term} - {previewResult?.academic_year}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-hidden">
+            <iframe
+              src={previewUrl}
+              className="w-full h-[calc(90vh-180px)] border rounded-lg"
+              title="Result Preview"
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setPreviewResult(null)}
+            >
+              Close
+            </Button>
+            <Button
+              onClick={() => {
+                if (previewUrl) {
+                  const link = document.createElement('a');
+                  link.href = previewUrl;
+                  link.download = `Result_${previewResult?.term}_${previewResult?.academic_year}.pdf`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  
+                  toast({
+                    title: "Download started",
+                    description: "Your result is being downloaded",
+                  });
+                }
+              }}
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
