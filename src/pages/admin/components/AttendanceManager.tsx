@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { CalendarCheck, Users } from "lucide-react";
 
 interface Student {
   id: string;
@@ -54,17 +55,27 @@ const AttendanceManager = () => {
   };
 
   const fetchClasses = async (teacherId: string) => {
-    // Get classes taught by this teacher (from class_schedules)
-    const { data } = await supabase
+    // First try to get classes from class_schedules
+    const { data: scheduleData } = await supabase
       .from("class_schedules")
       .select("class_id, classes(id, name)")
       .eq("teacher_id", teacherId);
 
-    if (data) {
+    if (scheduleData && scheduleData.length > 0) {
       const uniqueClasses = Array.from(
-        new Map(data.map((item: any) => [item.classes.id, item.classes])).values()
+        new Map(scheduleData.map((item: any) => [item.classes.id, item.classes])).values()
       );
       setClasses(uniqueClasses as Class[]);
+    } else {
+      // Fallback: get all classes if no schedules exist (for admins or when schedules aren't set)
+      const { data: allClasses } = await supabase
+        .from("classes")
+        .select("id, name")
+        .order("name");
+      
+      if (allClasses) {
+        setClasses(allClasses);
+      }
     }
   };
 
@@ -125,7 +136,7 @@ const AttendanceManager = () => {
     if (error) {
       toast({
         title: "Error",
-        description: "Failed to mark attendance",
+        description: "Failed to mark attendance: " + error.message,
         variant: "destructive"
       });
     } else {
@@ -134,8 +145,28 @@ const AttendanceManager = () => {
     }
   };
 
+  const markAllPresent = async () => {
+    const promises = students.map(student => 
+      supabase
+        .from("attendance")
+        .upsert({
+          student_id: student.id,
+          class_id: selectedClass,
+          teacher_id: teacherId,
+          date: date.toISOString().split('T')[0],
+          status: 'present'
+        }, {
+          onConflict: 'student_id,class_id,date'
+        })
+    );
+
+    await Promise.all(promises);
+    toast({ title: "Success", description: "All students marked present" });
+    fetchStudents();
+  };
+
   const getStatusBadge = (status?: string) => {
-    if (!status) return <Badge variant="outline">Not Marked</Badge>;
+    if (!status) return <Badge variant="outline" className="text-gray-500">Not Marked</Badge>;
     
     const variants: Record<string, "default" | "destructive" | "secondary" | "outline"> = {
       present: "default",
@@ -144,17 +175,34 @@ const AttendanceManager = () => {
       excused: "outline"
     };
 
-    return <Badge variant={variants[status] || "outline"}>{status.toUpperCase()}</Badge>;
+    const colors: Record<string, string> = {
+      present: "bg-green-500 hover:bg-green-600",
+      absent: "",
+      late: "bg-amber-500 hover:bg-amber-600",
+      excused: "border-blue-500 text-blue-600"
+    };
+
+    return (
+      <Badge 
+        variant={variants[status] || "outline"} 
+        className={colors[status] || ""}
+      >
+        {status.toUpperCase()}
+      </Badge>
+    );
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <Card>
-        <CardHeader>
-          <CardTitle>Attendance Management</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2">
+            <CalendarCheck className="w-5 h-5 text-purple-600" />
+            Attendance Management
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Select Class</label>
@@ -171,6 +219,11 @@ const AttendanceManager = () => {
                   </SelectContent>
                 </Select>
               </div>
+              {classes.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  No classes available. Please contact admin to assign classes.
+                </p>
+              )}
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">Select Date</label>
@@ -187,66 +240,85 @@ const AttendanceManager = () => {
 
       {selectedClass && (
         <Card>
-          <CardHeader>
-            <CardTitle>Students - {date.toLocaleDateString()}</CardTitle>
+          <CardHeader className="pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <CardTitle className="text-base">
+                Students - {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </CardTitle>
+              {students.length > 0 && (
+                <Button size="sm" variant="outline" onClick={markAllPresent}>
+                  Mark All Present
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <p className="text-muted-foreground">Loading students...</p>
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+              </div>
             ) : students.length === 0 ? (
-              <p className="text-muted-foreground">No students found in this class</p>
+              <div className="text-center py-12">
+                <Users className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
+                <p className="text-muted-foreground">No students enrolled in this class</p>
+              </div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Student Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {students.map((student) => (
-                    <TableRow key={student.id}>
-                      <TableCell className="font-medium">{student.full_name || "N/A"}</TableCell>
-                      <TableCell>{student.email}</TableCell>
-                      <TableCell>{getStatusBadge(student.attendance_status)}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant={student.attendance_status === 'present' ? 'default' : 'outline'}
-                            onClick={() => markAttendance(student.id, 'present')}
-                          >
-                            Present
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={student.attendance_status === 'absent' ? 'destructive' : 'outline'}
-                            onClick={() => markAttendance(student.id, 'absent')}
-                          >
-                            Absent
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={student.attendance_status === 'late' ? 'secondary' : 'outline'}
-                            onClick={() => markAttendance(student.id, 'late')}
-                          >
-                            Late
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={student.attendance_status === 'excused' ? 'outline' : 'outline'}
-                            onClick={() => markAttendance(student.id, 'excused')}
-                          >
-                            Excused
-                          </Button>
-                        </div>
-                      </TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Student Name</TableHead>
+                      <TableHead className="hidden sm:table-cell">Email</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {students.map((student) => (
+                      <TableRow key={student.id}>
+                        <TableCell className="font-medium">{student.full_name || "N/A"}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-muted-foreground">{student.email}</TableCell>
+                        <TableCell>{getStatusBadge(student.attendance_status)}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap gap-1">
+                            <Button
+                              size="sm"
+                              variant={student.attendance_status === 'present' ? 'default' : 'outline'}
+                              className={student.attendance_status === 'present' ? 'bg-green-500 hover:bg-green-600' : ''}
+                              onClick={() => markAttendance(student.id, 'present')}
+                            >
+                              P
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant={student.attendance_status === 'absent' ? 'destructive' : 'outline'}
+                              onClick={() => markAttendance(student.id, 'absent')}
+                            >
+                              A
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant={student.attendance_status === 'late' ? 'secondary' : 'outline'}
+                              className={student.attendance_status === 'late' ? 'bg-amber-500 hover:bg-amber-600 text-white' : ''}
+                              onClick={() => markAttendance(student.id, 'late')}
+                            >
+                              L
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className={student.attendance_status === 'excused' ? 'border-blue-500 text-blue-600' : ''}
+                              onClick={() => markAttendance(student.id, 'excused')}
+                            >
+                              E
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>

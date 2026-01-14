@@ -846,40 +846,83 @@ const StudentDashboard = () => {
                 <div className="text-center py-12">
                   <Users className="w-12 h-12 mx-auto text-muted-foreground opacity-50 mb-3" />
                   <p className="text-muted-foreground">No attendance records yet</p>
+                  <p className="text-sm text-muted-foreground mt-1">Your attendance will appear here once your teacher marks it</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-rose-100">
-                        <TableHead className="font-semibold">Date</TableHead>
-                        <TableHead className="font-semibold">Class</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {attendance.map((record) => (
-                        <TableRow key={record.id} className="hover:bg-rose-50/50 transition-colors">
-                          <TableCell className="font-medium">{new Date(record.date).toLocaleDateString()}</TableCell>
-                          <TableCell className="text-muted-foreground">{record.classes?.name || 'N/A'}</TableCell>
-                          <TableCell>
-                            <Badge 
-                              variant={
-                                record.status === 'present' ? 'default' : 
-                                record.status === 'absent' ? 'destructive' : 
-                                record.status === 'late' ? 'secondary' : 
-                                'outline'
-                              }
-                              className="font-semibold"
-                            >
-                              {record.status.toUpperCase()}
-                            </Badge>
-                          </TableCell>
+                <>
+                  {/* Attendance Summary */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div className="bg-green-50 rounded-xl p-3 text-center border border-green-100">
+                      <p className="text-2xl font-bold text-green-600">
+                        {attendance.filter(a => a.status === 'present').length}
+                      </p>
+                      <p className="text-xs text-green-700">Present</p>
+                    </div>
+                    <div className="bg-red-50 rounded-xl p-3 text-center border border-red-100">
+                      <p className="text-2xl font-bold text-red-600">
+                        {attendance.filter(a => a.status === 'absent').length}
+                      </p>
+                      <p className="text-xs text-red-700">Absent</p>
+                    </div>
+                    <div className="bg-amber-50 rounded-xl p-3 text-center border border-amber-100">
+                      <p className="text-2xl font-bold text-amber-600">
+                        {attendance.filter(a => a.status === 'late').length}
+                      </p>
+                      <p className="text-xs text-amber-700">Late</p>
+                    </div>
+                    <div className="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {attendance.length > 0 
+                          ? Math.round((attendance.filter(a => a.status === 'present').length / attendance.length) * 100)
+                          : 0}%
+                      </p>
+                      <p className="text-xs text-blue-700">Rate</p>
+                    </div>
+                  </div>
+                  
+                  <div className="overflow-x-auto rounded-lg border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-rose-50/50">
+                          <TableHead className="font-semibold">Date</TableHead>
+                          <TableHead className="font-semibold">Class</TableHead>
+                          <TableHead className="font-semibold">Status</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                      </TableHeader>
+                      <TableBody>
+                        {attendance.map((record) => (
+                          <TableRow key={record.id} className="hover:bg-rose-50/50 transition-colors">
+                            <TableCell className="font-medium">
+                              {new Date(record.date).toLocaleDateString('en-US', { 
+                                weekday: 'short', 
+                                month: 'short', 
+                                day: 'numeric' 
+                              })}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{record.classes?.name || 'N/A'}</TableCell>
+                            <TableCell>
+                              <Badge 
+                                variant={
+                                  record.status === 'present' ? 'default' : 
+                                  record.status === 'absent' ? 'destructive' : 
+                                  record.status === 'late' ? 'secondary' : 
+                                  'outline'
+                                }
+                                className={`font-semibold ${
+                                  record.status === 'present' ? 'bg-green-500' :
+                                  record.status === 'late' ? 'bg-amber-500' :
+                                  ''
+                                }`}
+                              >
+                                {record.status.toUpperCase()}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </>
               )}
             </CardContent>
           </Card>
